@@ -11,7 +11,6 @@ const badgeVariants = cva('inline-flex items-center gap-[4px] rounded-[var(--ds-
       warning: 'bg-[var(--ds-color-warning-subtle)] text-[var(--ds-color-warning)]',
       danger: 'bg-[var(--ds-color-danger-subtle)] text-[var(--ds-color-danger)]',
       info: 'bg-[var(--ds-color-info-subtle)] text-[var(--ds-color-info)]',
-      accent: 'bg-[var(--ds-color-accent-subtle)] text-[var(--ds-neutral-800)]',
     },
   },
   defaultVariants: { tone: 'neutral' },

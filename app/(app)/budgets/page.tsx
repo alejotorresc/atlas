@@ -41,8 +41,8 @@ export default async function BudgetsPage({ searchParams }: { searchParams: Prom
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-xl font-semibold capitalize">Presupuestos — {monthLabel(month)}</h1>
         <form method="get" className="flex items-center gap-2">
-          <input type="month" name="month" defaultValue={monthKey} className="rounded-md border border-slate-300 px-2 py-1.5 text-sm" />
-          <button type="submit" className="rounded-md border border-slate-300 px-3 py-1.5 text-sm">
+          <input type="month" name="month" defaultValue={monthKey} className="rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm" />
+          <button type="submit" className="rounded-md border border-[var(--ds-neutral-300)] px-3 py-1.5 text-sm">
             Ver
           </button>
         </form>
@@ -51,22 +51,22 @@ export default async function BudgetsPage({ searchParams }: { searchParams: Prom
       <BudgetActions month={monthKey} categories={categories} />
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-2">
-        <div className="rounded-lg border border-slate-200 bg-white p-4">
-          <p className="text-xs text-slate-500">Total planeado</p>
+        <div className="rounded-lg border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)] p-4">
+          <p className="text-xs text-[var(--ds-neutral-500)]">Total planeado</p>
           <p className="text-lg font-semibold">{formatCurrency(totalPlanned)}</p>
         </div>
-        <div className="rounded-lg border border-slate-200 bg-white p-4">
-          <p className="text-xs text-slate-500">Total gastado</p>
+        <div className="rounded-lg border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)] p-4">
+          <p className="text-xs text-[var(--ds-neutral-500)]">Total gastado</p>
           <p className="text-lg font-semibold">{formatCurrency(totalSpent)}</p>
         </div>
       </div>
 
       {budgets.length === 0 ? (
-        <p className="text-sm text-slate-600">Aun no has asignado presupuestos para este mes.</p>
+        <p className="text-sm text-[var(--ds-neutral-600)]">Aun no has asignado presupuestos para este mes.</p>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-slate-200">
+        <div className="overflow-x-auto rounded-lg border border-[var(--ds-neutral-200)]">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-xs uppercase text-slate-500">
+            <thead className="bg-[var(--ds-neutral-50)] text-left text-xs uppercase text-[var(--ds-neutral-500)]">
               <tr>
                 <th className="px-4 py-2">Categoria</th>
                 <th className="px-4 py-2 text-right">Asignado</th>
@@ -82,7 +82,7 @@ export default async function BudgetsPage({ searchParams }: { searchParams: Prom
                 const spent = spendByCategory.get(b.category_id) ?? 0;
                 const projection = projectBudget(b.budget_amount_minor, spent, dayOfMonth, totalDaysInMonth);
                 return (
-                  <tr key={b.id} className="border-t border-slate-100">
+                  <tr key={b.id} className="border-t border-[var(--ds-neutral-100)]">
                     <td className="px-4 py-2">{categoriesById.get(b.category_id)?.name ?? 'Categoria'}</td>
                     <td className="px-4 py-2 text-right">{formatCurrency(b.budget_amount_minor)}</td>
                     <td className="px-4 py-2 text-right">{formatCurrency(spent)}</td>

@@ -41,7 +41,7 @@ export function ActionForm({
     <form action={handleAction} className="space-y-4">
       {children}
       {error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-sm text-[var(--ds-color-danger)]">
           {error}
         </p>
       )}

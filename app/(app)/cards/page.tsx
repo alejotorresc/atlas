@@ -33,7 +33,7 @@ export default async function CardsPage() {
 
       {active.length === 0 ? (
         <Card>
-          <p className="text-sm text-slate-600">Aun no tienes tarjetas registradas.</p>
+          <p className="text-sm text-[var(--ds-neutral-600)]">Aun no tienes tarjetas registradas.</p>
         </Card>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -45,11 +45,11 @@ export default async function CardsPage() {
 
             return (
               <Link key={card.id} href={`/cards/${card.id}`}>
-                <Card className="h-full hover:border-slate-400">
+                <Card className="h-full hover:border-[var(--ds-neutral-400)]">
                   <div className="flex items-start justify-between">
                     <div>
                       <p className="font-medium">{card.name}</p>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-[var(--ds-neutral-500)]">
                         {card.institution_name ?? 'Sin institucion'}
                         {card.last_four ? ` · ****${card.last_four}` : ''}
                       </p>
@@ -57,8 +57,8 @@ export default async function CardsPage() {
                     <Badge tone={utilizationTone(utilization)}>{utilization.toFixed(0)}% usado</Badge>
                   </div>
                   <p className="mt-3 text-lg font-semibold">{formatCurrency(card.current_balance_minor, card.currency)}</p>
-                  <p className="text-xs text-slate-500">Disponible: {formatCurrency(available, card.currency)}</p>
-                  <div className="mt-3 flex justify-between text-xs text-slate-500">
+                  <p className="text-xs text-[var(--ds-neutral-500)]">Disponible: {formatCurrency(available, card.currency)}</p>
+                  <div className="mt-3 flex justify-between text-xs text-[var(--ds-neutral-500)]">
                     <span>Corte: {formatDateGT(nextStatement.toISOString().slice(0, 10))}</span>
                     <span>Pago: {formatDateGT(nextPayment.toISOString().slice(0, 10))}</span>
                   </div>
@@ -71,7 +71,7 @@ export default async function CardsPage() {
 
       {archived.length > 0 && (
         <div>
-          <h2 className="mb-2 text-sm font-medium text-slate-500">Tarjetas archivadas</h2>
+          <h2 className="mb-2 text-sm font-medium text-[var(--ds-neutral-500)]">Tarjetas archivadas</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {archived.map((card) => (
               <Card key={card.id} className="opacity-60">

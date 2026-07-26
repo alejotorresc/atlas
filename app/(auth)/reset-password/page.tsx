@@ -5,7 +5,7 @@ export default function ResetPasswordPage() {
   return (
     <div>
       <h1 className="mb-4 text-lg font-semibold">Restablecer contrasena</h1>
-      <Suspense fallback={<p className="text-sm text-slate-500">Cargando...</p>}>
+      <Suspense fallback={<p className="text-sm text-[var(--ds-neutral-500)]">Cargando...</p>}>
         <ResetPasswordForm />
       </Suspense>
     </div>

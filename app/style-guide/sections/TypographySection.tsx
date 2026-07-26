@@ -7,8 +7,16 @@ export function TypographySection() {
     <Section
       id="typography"
       title="Typography"
-      description="GT Pressura Extended is the official ATLAS typeface — ~95% of the interface, self-hosted in three weights (Regular, Medium, Bold). Hierarchy comes from size and spacing first — reach for weight last. GT Pressura Mono is a separate, deliberately rare (~5%) editorial accent — see below."
+      description="GT Pressura Extended is the official ATLAS typeface — ~95% of the interface. Hierarchy comes from size and spacing first — reach for weight last. GT Pressura Mono is a separate, deliberately rare (~5%) editorial accent — see below."
     >
+      <SubSection title="Weights">
+        <RuleList>
+          <Rule>Allowed: Light, Regular, Medium, Bold.</Rule>
+          <Rule>Black exists in the source family but is not loaded by default — reserve it for an exceptional, rare display moment, if one ever arises.</Rule>
+          <Rule>No italic in the UI — the italic cut is intentionally not loaded.</Rule>
+        </RuleList>
+      </SubSection>
+
       <SubSection title="Type scale">
         <div className="space-y-[24px]">
           {(Object.entries(typeScale) as [string, (typeof typeScale)[string]][]).map(([key, style]) => (

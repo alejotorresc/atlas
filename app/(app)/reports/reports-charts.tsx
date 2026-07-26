@@ -23,7 +23,7 @@ export function IncomeExpenseChart({ data }: { data: MonthSummary[] }) {
 }
 
 export function ExpenseDistributionChart({ data }: { data: CategoryExpense[] }) {
-  if (data.length === 0) return <p className="text-sm text-slate-500">Sin gastos categorizados este mes.</p>;
+  if (data.length === 0) return <p className="text-sm text-[var(--ds-neutral-500)]">Sin gastos categorizados este mes.</p>;
   return (
     <ResponsiveContainer width="100%" height={280}>
       <PieChart>

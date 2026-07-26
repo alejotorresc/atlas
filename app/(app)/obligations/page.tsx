@@ -58,15 +58,15 @@ export default async function ObligationsPage() {
       </div>
 
       <div>
-        <h2 className="mb-2 text-sm font-medium text-slate-500">Obligaciones activas</h2>
+        <h2 className="mb-2 text-sm font-medium text-[var(--ds-neutral-500)]">Obligaciones activas</h2>
         {obligations.length === 0 ? (
           <Card>
-            <p className="text-sm text-slate-600">Aun no tienes obligaciones registradas.</p>
+            <p className="text-sm text-[var(--ds-neutral-600)]">Aun no tienes obligaciones registradas.</p>
           </Card>
         ) : (
-          <div className="overflow-x-auto rounded-lg border border-slate-200">
+          <div className="overflow-x-auto rounded-lg border border-[var(--ds-neutral-200)]">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-left text-xs uppercase text-slate-500">
+              <thead className="bg-[var(--ds-neutral-50)] text-left text-xs uppercase text-[var(--ds-neutral-500)]">
                 <tr>
                   <th className="px-4 py-2">Nombre</th>
                   <th className="px-4 py-2">Proximo vencimiento</th>
@@ -77,7 +77,7 @@ export default async function ObligationsPage() {
               </thead>
               <tbody>
                 {obligations.map((o) => (
-                  <tr key={o.id} className="border-t border-slate-100">
+                  <tr key={o.id} className="border-t border-[var(--ds-neutral-100)]">
                     <td className="px-4 py-2">{o.name}</td>
                     <td className="px-4 py-2">{formatDateGT(o.next_due_date)}</td>
                     <td className="px-4 py-2">{formatCurrency(o.amount_minor, o.currency)}</td>
@@ -94,15 +94,15 @@ export default async function ObligationsPage() {
       </div>
 
       <div>
-        <h2 className="mb-2 text-sm font-medium text-slate-500">Proximas ocurrencias (60 dias)</h2>
+        <h2 className="mb-2 text-sm font-medium text-[var(--ds-neutral-500)]">Proximas ocurrencias (60 dias)</h2>
         {occurrences.length === 0 ? (
           <Card>
-            <p className="text-sm text-slate-600">No hay ocurrencias proximas.</p>
+            <p className="text-sm text-[var(--ds-neutral-600)]">No hay ocurrencias proximas.</p>
           </Card>
         ) : (
-          <div className="overflow-x-auto rounded-lg border border-slate-200">
+          <div className="overflow-x-auto rounded-lg border border-[var(--ds-neutral-200)]">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-left text-xs uppercase text-slate-500">
+              <thead className="bg-[var(--ds-neutral-50)] text-left text-xs uppercase text-[var(--ds-neutral-500)]">
                 <tr>
                   <th className="px-4 py-2">Obligacion</th>
                   <th className="px-4 py-2">Vence</th>
@@ -115,7 +115,7 @@ export default async function ObligationsPage() {
                 {occurrences.map((occ) => {
                   const obligation = obligationsById.get(occ.recurring_obligation_id);
                   return (
-                    <tr key={occ.id} className="border-t border-slate-100">
+                    <tr key={occ.id} className="border-t border-[var(--ds-neutral-100)]">
                       <td className="px-4 py-2">{obligation?.name ?? 'Obligacion'}</td>
                       <td className="px-4 py-2">{formatDateGT(occ.due_date)}</td>
                       <td className="px-4 py-2">{formatCurrency(occ.expected_amount_minor, obligation?.currency ?? 'GTQ')}</td>

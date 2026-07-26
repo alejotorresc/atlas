@@ -188,7 +188,7 @@ function TransactionFields({ type, accounts, cards, incomeCategories, expenseCat
             ))}
           </Select>
         </div>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-[var(--ds-neutral-500)]">
           Esto disminuira el saldo de la cuenta origen y aumentara el de la cuenta destino por el mismo monto. No se
           contabiliza como ingreso ni gasto.
         </p>
@@ -222,7 +222,7 @@ function TransactionFields({ type, accounts, cards, incomeCategories, expenseCat
             ))}
           </Select>
         </div>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-[var(--ds-neutral-500)]">
           Esto disminuira el saldo de la cuenta origen y el saldo de la tarjeta. No se contabiliza como gasto nuevo.
         </p>
       </ActionForm>

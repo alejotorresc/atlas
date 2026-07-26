@@ -2,6 +2,8 @@
 
 import { ReactNode, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { X } from 'lucide-react';
+import { Icon } from '@/components/design-system/Icon';
 
 export function Dialog({
   open,
@@ -30,16 +32,21 @@ export function Dialog({
       ref={ref}
       onClose={onClose}
       onCancel={onClose}
-      className="w-full max-w-lg rounded-lg border border-slate-200 p-0 backdrop:bg-slate-900/40"
+      className="w-full max-w-lg rounded-[var(--ds-radius-xl)] border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)] p-0 shadow-[var(--ds-shadow-lg)] backdrop:bg-[var(--ds-neutral-900)]/40"
       aria-labelledby="dialog-title"
     >
-      <div className="p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 id="dialog-title" className="text-base font-semibold">
+      <div className="p-[24px]">
+        <div className="mb-[16px] flex items-center justify-between">
+          <h2 id="dialog-title" className="text-[20px] font-medium text-[var(--ds-neutral-900)]">
             {title}
           </h2>
-          <button type="button" onClick={onClose} aria-label="Cerrar" className="text-slate-400 hover:text-slate-700">
-            ✕
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Cerrar"
+            className="text-[var(--ds-neutral-400)] transition-colors duration-[var(--ds-duration-fast)] hover:text-[var(--ds-neutral-700)]"
+          >
+            <Icon icon={X} size="sm" />
           </button>
         </div>
         {children}

@@ -48,20 +48,20 @@ export default async function AlertsPage({ searchParams }: { searchParams: Promi
       </div>
 
       <form method="get" className="flex flex-wrap gap-3">
-        <select name="severity" defaultValue={severity ?? ''} className="rounded-md border border-slate-300 px-2 py-1.5 text-sm">
+        <select name="severity" defaultValue={severity ?? ''} className="rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm">
           <option value="">Todas las severidades</option>
           <option value="info">Info</option>
           <option value="warning">Advertencia</option>
           <option value="urgent">Urgente</option>
         </select>
-        <button type="submit" className="rounded-md border border-slate-300 px-3 py-1.5 text-sm">
+        <button type="submit" className="rounded-md border border-[var(--ds-neutral-300)] px-3 py-1.5 text-sm">
           Filtrar
         </button>
       </form>
 
       {alerts.length === 0 ? (
         <Card>
-          <p className="text-sm text-slate-600">No hay alertas para mostrar.</p>
+          <p className="text-sm text-[var(--ds-neutral-600)]">No hay alertas para mostrar.</p>
         </Card>
       ) : (
         <ul className="space-y-2">
@@ -77,10 +77,10 @@ export default async function AlertsPage({ searchParams }: { searchParams: Promi
                         <Badge tone={SEVERITY_TONE[a.severity]}>{a.severity}</Badge>
                         {!a.read_at && <Badge tone="info">No leida</Badge>}
                       </div>
-                      <p className="mt-1 text-sm text-slate-600">{a.message}</p>
-                      <p className="mt-1 text-xs text-slate-400">{formatDateGT(a.effective_date)}</p>
+                      <p className="mt-1 text-sm text-[var(--ds-neutral-600)]">{a.message}</p>
+                      <p className="mt-1 text-xs text-[var(--ds-neutral-400)]">{formatDateGT(a.effective_date)}</p>
                       {href && (
-                        <Link href={href} className="mt-1 inline-block text-xs text-slate-600 underline">
+                        <Link href={href} className="mt-1 inline-block text-xs text-[var(--ds-neutral-600)] underline">
                           Ver detalle
                         </Link>
                       )}

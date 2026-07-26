@@ -6,13 +6,13 @@ export default function LoginPage() {
     <div>
       <h1 className="mb-4 text-lg font-semibold">Iniciar sesion</h1>
       <LoginForm />
-      <div className="mt-4 flex flex-col gap-1 text-sm text-slate-600">
-        <Link href="/forgot-password" className="underline hover:text-slate-900">
+      <div className="mt-4 flex flex-col gap-1 text-sm text-[var(--ds-neutral-600)]">
+        <Link href="/forgot-password" className="underline hover:text-[var(--ds-neutral-900)]">
           Olvidaste tu contrasena?
         </Link>
         <span>
           No tienes cuenta?{' '}
-          <Link href="/signup" className="underline hover:text-slate-900">
+          <Link href="/signup" className="underline hover:text-[var(--ds-neutral-900)]">
             Registrate
           </Link>
         </span>

@@ -39,23 +39,23 @@ export default async function AccountsPage() {
 
       {active.length === 0 ? (
         <Card>
-          <p className="text-sm text-slate-600">Aun no tienes cuentas. Crea la primera para empezar a registrar movimientos.</p>
+          <p className="text-sm text-[var(--ds-neutral-600)]">Aun no tienes cuentas. Crea la primera para empezar a registrar movimientos.</p>
         </Card>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {active.map((account) => (
             <Link key={account.id} href={`/accounts/${account.id}`}>
-              <Card className="h-full hover:border-slate-400">
+              <Card className="h-full hover:border-[var(--ds-neutral-400)]">
                 <div className="flex items-start justify-between">
                   <div>
                     <p className="font-medium">{account.name}</p>
-                    <p className="text-xs text-slate-500">{account.institution_name ?? 'Sin institucion'}</p>
+                    <p className="text-xs text-[var(--ds-neutral-500)]">{account.institution_name ?? 'Sin institucion'}</p>
                   </div>
                   <Badge>{ACCOUNT_TYPE_LABELS[account.account_type]}</Badge>
                 </div>
                 <p className="mt-3 text-lg font-semibold">{formatCurrency(account.current_balance_minor, account.currency)}</p>
                 {!account.include_in_available_balance && (
-                  <p className="mt-1 text-xs text-slate-500">No incluida en saldo disponible</p>
+                  <p className="mt-1 text-xs text-[var(--ds-neutral-500)]">No incluida en saldo disponible</p>
                 )}
               </Card>
             </Link>
@@ -65,12 +65,12 @@ export default async function AccountsPage() {
 
       {archived.length > 0 && (
         <div>
-          <h2 className="mb-2 text-sm font-medium text-slate-500">Cuentas archivadas</h2>
+          <h2 className="mb-2 text-sm font-medium text-[var(--ds-neutral-500)]">Cuentas archivadas</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {archived.map((account) => (
               <Card key={account.id} className="opacity-60">
                 <p className="font-medium">{account.name}</p>
-                <p className="text-sm text-slate-500">{formatCurrency(account.current_balance_minor, account.currency)}</p>
+                <p className="text-sm text-[var(--ds-neutral-500)]">{formatCurrency(account.current_balance_minor, account.currency)}</p>
               </Card>
             ))}
           </div>

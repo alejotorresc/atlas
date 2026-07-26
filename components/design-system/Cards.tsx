@@ -156,7 +156,7 @@ export function BudgetCard({
           className="h-[8px] rounded-[var(--ds-radius-pill)] transition-[width] duration-[var(--ds-duration-base)]"
           style={{
             width: `${pct * 100}%`,
-            backgroundColor: exceeded ? 'var(--ds-color-danger)' : warning ? 'var(--ds-color-warning)' : 'var(--ds-color-accent)',
+            backgroundColor: exceeded ? 'var(--ds-color-danger)' : warning ? 'var(--ds-color-warning)' : 'var(--ds-color-success)',
           }}
         />
       </div>

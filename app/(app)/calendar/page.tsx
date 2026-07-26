@@ -64,13 +64,13 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-xl font-semibold capitalize">{monthLabel(currentMonth + '-01')}</h1>
         <div className="flex gap-2 text-sm">
-          <Link href={`/calendar?month=${adjacentMonth(month, -1)}&view=${view ?? ''}`} className="rounded-md border border-slate-300 px-3 py-1.5">
+          <Link href={`/calendar?month=${adjacentMonth(month, -1)}&view=${view ?? ''}`} className="rounded-md border border-[var(--ds-neutral-300)] px-3 py-1.5">
             ← Anterior
           </Link>
-          <Link href={`/calendar?month=${adjacentMonth(month, 1)}&view=${view ?? ''}`} className="rounded-md border border-slate-300 px-3 py-1.5">
+          <Link href={`/calendar?month=${adjacentMonth(month, 1)}&view=${view ?? ''}`} className="rounded-md border border-[var(--ds-neutral-300)] px-3 py-1.5">
             Siguiente →
           </Link>
-          <Link href={`/calendar?month=${currentMonth}&view=${isAgenda ? '' : 'agenda'}`} className="rounded-md border border-slate-300 px-3 py-1.5">
+          <Link href={`/calendar?month=${currentMonth}&view=${isAgenda ? '' : 'agenda'}`} className="rounded-md border border-[var(--ds-neutral-300)] px-3 py-1.5">
             {isAgenda ? 'Ver mes' : 'Ver agenda'}
           </Link>
         </div>
@@ -78,28 +78,28 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
 
       {!isAgenda ? (
         <div className="overflow-x-auto">
-          <div className="grid min-w-[640px] grid-cols-7 gap-px rounded-lg border border-slate-200 bg-slate-200 text-xs">
+          <div className="grid min-w-[640px] grid-cols-7 gap-px rounded-lg border border-[var(--ds-neutral-200)] bg-[var(--ds-neutral-200)] text-xs">
             {['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'].map((d) => (
-              <div key={d} className="bg-slate-50 px-2 py-1 text-center font-medium text-slate-500">
+              <div key={d} className="bg-[var(--ds-neutral-50)] px-2 py-1 text-center font-medium text-[var(--ds-neutral-500)]">
                 {d}
               </div>
             ))}
             {Array.from({ length: leadingBlank }).map((_, i) => (
-              <div key={`blank-${i}`} className="min-h-24 bg-white" />
+              <div key={`blank-${i}`} className="min-h-24 bg-[var(--ds-color-surface)]" />
             ))}
             {days.map((day) => {
               const iso = day.toISOString().slice(0, 10);
               const dayEvents = eventsByDate.get(iso) ?? [];
               return (
-                <div key={iso} className="min-h-24 bg-white p-1">
-                  <p className="text-right text-slate-400">{day.getUTCDate()}</p>
+                <div key={iso} className="min-h-24 bg-[var(--ds-color-surface)] p-1">
+                  <p className="text-right text-[var(--ds-neutral-400)]">{day.getUTCDate()}</p>
                   <div className="space-y-0.5">
                     {dayEvents.slice(0, 3).map((ev) => (
-                      <div key={ev.id} className="truncate rounded bg-slate-100 px-1 py-0.5" title={ev.title}>
+                      <div key={ev.id} className="truncate rounded bg-[var(--ds-neutral-100)] px-1 py-0.5" title={ev.title}>
                         {ev.title}
                       </div>
                     ))}
-                    {dayEvents.length > 3 && <p className="text-slate-400">+{dayEvents.length - 3} mas</p>}
+                    {dayEvents.length > 3 && <p className="text-[var(--ds-neutral-400)]">+{dayEvents.length - 3} mas</p>}
                   </div>
                 </div>
               );
@@ -107,9 +107,9 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
           </div>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-slate-200">
+        <div className="overflow-x-auto rounded-lg border border-[var(--ds-neutral-200)]">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-xs uppercase text-slate-500">
+            <thead className="bg-[var(--ds-neutral-50)] text-left text-xs uppercase text-[var(--ds-neutral-500)]">
               <tr>
                 <th className="px-4 py-2">Fecha</th>
                 <th className="px-4 py-2">Evento</th>
@@ -120,13 +120,13 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
             <tbody>
               {events.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-4 py-8 text-center text-slate-500">
+                  <td colSpan={4} className="px-4 py-8 text-center text-[var(--ds-neutral-500)]">
                     No hay eventos este mes.
                   </td>
                 </tr>
               )}
               {events.map((ev) => (
-                <tr key={ev.id} className="border-t border-slate-100">
+                <tr key={ev.id} className="border-t border-[var(--ds-neutral-100)]">
                   <td className="px-4 py-2">{formatDateGT(ev.date)}</td>
                   <td className="px-4 py-2">{ev.title}</td>
                   <td className="px-4 py-2">

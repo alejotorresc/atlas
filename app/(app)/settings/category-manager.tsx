@@ -32,7 +32,7 @@ export function CategoryManager({ categories }: { categories: Category[] }) {
     <div>
       <Button onClick={() => setCreateOpen(true)}>Nueva categoria</Button>
 
-      <ul className="mt-4 divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white">
+      <ul className="mt-4 divide-y divide-[var(--ds-neutral-100)] rounded-lg border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)]">
         {categories.map((c) => (
           <li key={c.id} className="flex items-center justify-between px-4 py-2 text-sm">
             <div className="flex items-center gap-2">
@@ -43,10 +43,10 @@ export function CategoryManager({ categories }: { categories: Category[] }) {
             </div>
             {!c.is_system && (
               <div className="flex gap-2">
-                <button type="button" className="text-xs text-slate-600 underline" onClick={() => setEditing(c)}>
+                <button type="button" className="text-xs text-[var(--ds-neutral-600)] underline" onClick={() => setEditing(c)}>
                   Editar
                 </button>
-                <button type="button" className="text-xs text-red-600 underline" disabled={pending} onClick={() => handleArchive(c)}>
+                <button type="button" className="text-xs text-[var(--ds-color-danger)] underline" disabled={pending} onClick={() => handleArchive(c)}>
                   Archivar/eliminar
                 </button>
               </div>

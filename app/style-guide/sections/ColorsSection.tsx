@@ -18,16 +18,20 @@ export function ColorsSection() {
     <Section
       id="colors"
       title="Color"
-      description="Desaturated and warm throughout. No pure black, no pure white, no saturated 'app' colors. Every color below carries a specific meaning — see usage rules underneath."
+      description="Mostly monochromatic: roughly 90% neutral, 8% the one brand color, 2% semantic. There is exactly one vibrant color in the entire product — everything else is neutral or restrained semantic color. No gradients, no glassmorphism."
     >
       <SubSection title="Brand">
         <div className="grid grid-cols-2 gap-[12px] sm:grid-cols-3">
-          <Swatch name="Primary — Deep Teal" hex={colors.primary.DEFAULT} />
-          <Swatch name="Secondary — Soft Aqua" hex={colors.secondary.DEFAULT} />
-          <Swatch name="Accent — Lime" hex={colors.accent.DEFAULT} />
+          <Swatch name="Primary — the one brand color" hex={colors.primary.DEFAULT} />
           <Swatch name="Background — Warm White" hex={colors.background} />
-          <Swatch name="Surface" hex={colors.surface} />
+          <Swatch name="Surface — White" hex={colors.surface} />
         </div>
+        <p className="mt-[12px] text-[13px] text-[var(--ds-neutral-600)]">
+          Precision, engineering, focus, clarity — that is what the brand color communicates. It is never used to
+          mean &quot;success&quot; (success has its own color below), and there is no second accent hue: where an
+          earlier design used a secondary or accent color, that role is now filled by the neutral scale or by
+          success itself.
+        </p>
       </SubSection>
 
       <SubSection title="Semantic">

@@ -53,16 +53,16 @@ export function OnboardingWizard() {
 
   return (
     <div>
-      <ol className="mb-6 flex gap-2 text-xs text-slate-500" aria-label="Progreso">
+      <ol className="mb-6 flex gap-2 text-xs text-[var(--ds-neutral-500)]" aria-label="Progreso">
         {STEPS.map((label, i) => (
-          <li key={label} className={i === step ? 'font-semibold text-slate-900' : ''}>
+          <li key={label} className={i === step ? 'font-semibold text-[var(--ds-neutral-900)]' : ''}>
             {i + 1}. {label}
           </li>
         ))}
       </ol>
 
       {error && (
-        <p role="alert" className="mb-4 text-sm text-red-600">
+        <p role="alert" className="mb-4 text-sm text-[var(--ds-color-danger)]">
           {error}
         </p>
       )}
@@ -212,7 +212,7 @@ export function OnboardingWizard() {
       {step === 4 && (
         <div className="space-y-4">
           <h2 className="text-base font-semibold">Todo listo</h2>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-[var(--ds-neutral-600)]">
             Creamos categorias en espanol por defecto y guardamos tu informacion inicial. Puedes ajustar todo despues
             desde Configuracion.
           </p>

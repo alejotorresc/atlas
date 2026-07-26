@@ -37,15 +37,15 @@ export function ResetPasswordForm() {
   }, [searchParams]);
 
   if (sessionReady === 'checking') {
-    return <p className="text-sm text-slate-500">Verificando enlace...</p>;
+    return <p className="text-sm text-[var(--ds-neutral-500)]">Verificando enlace...</p>;
   }
 
   if (sessionReady === 'invalid') {
-    return <p role="alert" className="text-sm text-red-600">Este enlace de recuperacion no es valido o ya expiro.</p>;
+    return <p role="alert" className="text-sm text-[var(--ds-color-danger)]">Este enlace de recuperacion no es valido o ya expiro.</p>;
   }
 
   if (state.success) {
-    return <p role="status" className="text-sm text-green-700">Tu contrasena fue actualizada. Ya puedes iniciar sesion.</p>;
+    return <p role="status" className="text-sm text-[var(--ds-color-success)]">Tu contrasena fue actualizada. Ya puedes iniciar sesion.</p>;
   }
 
   return (
@@ -59,7 +59,7 @@ export function ResetPasswordForm() {
         <Input id="confirmPassword" name="confirmPassword" type="password" autoComplete="new-password" required />
       </div>
       {state.error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-sm text-[var(--ds-color-danger)]">
           {state.error}
         </p>
       )}

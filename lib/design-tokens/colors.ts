@@ -1,35 +1,27 @@
 /**
  * ATLAS color tokens — the single source of truth for every color used in
  * the product. Never hardcode a hex value in a component; reference a
- * token (directly, or via the CSS custom properties in
- * app/style-guide/design-system.css which mirror this file).
+ * token (directly, or via the CSS custom properties in app/globals.css,
+ * which mirror this file at :root — the same variables power both the
+ * application and /style-guide).
  *
- * Palette intent: calm, warm-neutral, desaturated. No pure black, no pure
- * white, no saturated "app" colors. Financial data should never compete
- * visually with the numbers it represents.
+ * Palette philosophy: the interface is mostly monochromatic. Approximate
+ * balance across a real screen: 90% neutral, 8% the single brand color,
+ * 2% semantic color. There is exactly ONE vibrant color in the product —
+ * everything else is a warm-neutral scale plus the (already restrained)
+ * semantic set. No gradients, no glassmorphism, no second accent hue.
  */
 
 export const colors = {
   primary: {
-    DEFAULT: '#14453F', // Deep Teal — primary actions, active nav, brand marks
-    hover: '#0F3630',
-    pressed: '#0B2924',
-    subtle: '#E4EFEC', // tinted backgrounds behind primary content (badges, selected rows)
-    border: '#BFD8D2',
+    DEFAULT: '#2E5BFF', // the one vibrant brand color — precision, engineering, focus, clarity
+    hover: '#2447D1',
+    pressed: '#1B379E',
+    subtle: '#EAEFFF', // tinted backgrounds behind primary content (badges, selected rows)
+    border: '#C7D4FF',
   },
-  secondary: {
-    DEFAULT: '#8FC7C2', // Soft Aqua — secondary emphasis, chart series, illustrative accents
-    hover: '#7DB8B2',
-    subtle: '#EAF6F4',
-  },
-  accent: {
-    DEFAULT: '#B8CB7E', // Lime — sparing use: positive highlights, small callouts, progress fills
-    hover: '#A8BC6C',
-    subtle: '#F2F5E7',
-  },
-  background: '#FAF8F4', // Warm White — page background
-  surface: '#FFFDF9', // Surface — cards, sheets, dialogs (one step "up" from background)
-  surfaceRaised: '#FFFFFF', // rare: the single most-elevated surface (e.g. a popover over a dialog)
+  background: '#FAF8F4', // Warm White — page canvas
+  surface: '#FFFFFF', // White — cards, sheets, dialogs
   success: {
     DEFAULT: '#3F7D58',
     subtle: '#E7F1EA',
@@ -43,8 +35,8 @@ export const colors = {
     subtle: '#F7E9E7',
   },
   info: {
-    DEFAULT: '#3E6FA6',
-    subtle: '#E8EFF6',
+    DEFAULT: '#5B6472', // deliberately a muted slate, not another blue — the brand color owns "vibrant"
+    subtle: '#EDEEF1',
   },
   neutral: {
     50: '#FAF9F7',
@@ -67,29 +59,18 @@ export const colors = {
  */
 export const colorUsageRules = [
   {
-    token: 'primary',
+    token: 'primary (the one brand color)',
     allowed: [
       'Primary buttons and their focus/hover states',
-      'Active navigation item',
-      'Selected states (selected account, selected date)',
-      'Key numeric emphasis (e.g. the safe-to-spend headline figure)',
+      'Active navigation item, selected states (selected account, selected date)',
+      'Key numeric emphasis — at most one focal figure per screen (e.g. the safe-to-spend headline)',
+      'Progress fills and chart emphasis where a single precise highlight is the point',
     ],
     disallowed: [
-      'Large background fills (a full-teal page reads as a banking app, not ATLAS)',
+      'Large background fills — a full-color page reads as a banking app, not ATLAS',
       'Body text color',
-      'Destructive actions — use danger instead',
-    ],
-  },
-  {
-    token: 'accent (Lime)',
-    allowed: [
-      'Small positive highlights: a budget under control, a goal on pace',
-      'Progress bar fill on a light track',
-      'Sparingly, as a single accent dot/badge — never as a large surface',
-    ],
-    disallowed: [
-      'Buttons (too low-contrast for text, reads as a status color not an action color)',
-      'Anything that needs to feel neutral or serious (never on danger/urgent content)',
+      'Success states — never use the brand color to mean "good," that is success\'s job',
+      'More than one saturated color per screen — if something else wants to be vibrant, make it neutral instead',
     ],
   },
   {
@@ -99,18 +80,20 @@ export const colorUsageRules = [
       'Chart series that represent income/expense/neutral when a semantic meaning is needed',
     ],
     disallowed: [
-      'Decorative use — these four colors carry meaning and must stay reserved for it',
+      'Decorative use — these colors carry meaning and must stay reserved for it (this is the 2% of a screen, not 20%)',
       'Two of them adjacent at full saturation on a large surface (pick one focal status per view)',
+      'info as a second brand-like accent — it is intentionally desaturated so the one brand color stays singular',
     ],
   },
   {
-    token: 'neutral scale',
+    token: 'neutral scale (the 90%)',
     allowed: [
       '900/800: primary text on light surfaces',
       '600/700: secondary text, captions, disabled labels',
       '400/500: borders on interactive elements, placeholder text',
       '200/300: dividers, resting borders, table row separators',
       '50/100: subtle section backgrounds, hover states on surfaces',
+      'Nearly everything on nearly every screen — the neutral scale, not color, should be doing most of the work',
     ],
     disallowed: [
       'neutral.900 as a full-bleed background (use it for text only — it is warm-black, not a surface color)',

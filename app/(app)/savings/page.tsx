@@ -33,7 +33,7 @@ export default async function SavingsPage() {
 
       {active.length === 0 ? (
         <Card>
-          <p className="text-sm text-slate-600">Aun no tienes metas de ahorro activas.</p>
+          <p className="text-sm text-[var(--ds-neutral-600)]">Aun no tienes metas de ahorro activas.</p>
         </Card>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -45,24 +45,24 @@ export default async function SavingsPage() {
 
             return (
               <Link key={goal.id} href={`/savings/${goal.id}`}>
-                <Card className="h-full hover:border-slate-400">
+                <Card className="h-full hover:border-[var(--ds-neutral-400)]">
                   <div className="flex items-start justify-between">
                     <p className="font-medium">{goal.name}</p>
                     <Badge tone={goal.priority === 'high' ? 'danger' : goal.priority === 'medium' ? 'warning' : 'neutral'}>
                       {goal.priority}
                     </Badge>
                   </div>
-                  <p className="mt-2 text-sm text-slate-600">
+                  <p className="mt-2 text-sm text-[var(--ds-neutral-600)]">
                     {formatCurrency(goal.current_amount_minor, goal.currency)} de {formatCurrency(goal.target_amount_minor, goal.currency)}
                   </p>
-                  <div className="mt-2 h-2 w-full rounded-full bg-slate-100">
-                    <div className="h-2 rounded-full bg-slate-900" style={{ width: `${progress * 100}%` }} />
+                  <div className="mt-2 h-2 w-full rounded-full bg-[var(--ds-neutral-100)]">
+                    <div className="h-2 rounded-full bg-[var(--ds-color-primary)]" style={{ width: `${progress * 100}%` }} />
                   </div>
                   {goal.target_date && (
-                    <p className="mt-2 text-xs text-slate-500">Meta: {formatDateGT(goal.target_date)}</p>
+                    <p className="mt-2 text-xs text-[var(--ds-neutral-500)]">Meta: {formatDateGT(goal.target_date)}</p>
                   )}
                   {pace && (
-                    <p className="mt-1 text-xs text-slate-500">
+                    <p className="mt-1 text-xs text-[var(--ds-neutral-500)]">
                       Sugerido: {formatCurrency(pace.suggestedMonthlyContributionMinor, goal.currency)}/mes ·{' '}
                       <Badge tone={pace.status === 'behind' ? 'danger' : pace.status === 'ahead' ? 'success' : 'info'}>
                         {pace.status}
@@ -78,13 +78,13 @@ export default async function SavingsPage() {
 
       {completedOrPaused.length > 0 && (
         <div>
-          <h2 className="mb-2 text-sm font-medium text-slate-500">Completadas / pausadas / canceladas</h2>
+          <h2 className="mb-2 text-sm font-medium text-[var(--ds-neutral-500)]">Completadas / pausadas / canceladas</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {completedOrPaused.map((goal) => (
               <Link key={goal.id} href={`/savings/${goal.id}`}>
                 <Card className="opacity-70 hover:opacity-100">
                   <p className="font-medium">{goal.name}</p>
-                  <p className="text-sm text-slate-500">{formatCurrency(goal.current_amount_minor, goal.currency)}</p>
+                  <p className="text-sm text-[var(--ds-neutral-500)]">{formatCurrency(goal.current_amount_minor, goal.currency)}</p>
                   <Badge tone="neutral">{goal.status}</Badge>
                 </Card>
               </Link>

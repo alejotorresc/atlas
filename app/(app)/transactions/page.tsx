@@ -74,14 +74,14 @@ export default async function TransactionsPage({
         />
       </div>
 
-      <form className="grid grid-cols-2 gap-3 rounded-lg border border-slate-200 bg-white p-4 sm:grid-cols-4 lg:grid-cols-6" method="get">
+      <form className="grid grid-cols-2 gap-3 rounded-lg border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)] p-4 sm:grid-cols-4 lg:grid-cols-6" method="get">
         <div>
-          <label className="mb-1 block text-xs font-medium text-slate-600">Mes</label>
-          <input type="month" name="month" defaultValue={month} className="w-full rounded-md border border-slate-300 px-2 py-1.5 text-sm" />
+          <label className="mb-1 block text-xs font-medium text-[var(--ds-neutral-600)]">Mes</label>
+          <input type="month" name="month" defaultValue={month} className="w-full rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm" />
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-slate-600">Tipo</label>
-          <select name="type" defaultValue={params.type ?? ''} className="w-full rounded-md border border-slate-300 px-2 py-1.5 text-sm">
+          <label className="mb-1 block text-xs font-medium text-[var(--ds-neutral-600)]">Tipo</label>
+          <select name="type" defaultValue={params.type ?? ''} className="w-full rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm">
             <option value="">Todos</option>
             {Object.entries(TYPE_LABELS).map(([value, label]) => (
               <option key={value} value={value}>
@@ -91,8 +91,8 @@ export default async function TransactionsPage({
           </select>
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-slate-600">Cuenta</label>
-          <select name="accountId" defaultValue={params.accountId ?? ''} className="w-full rounded-md border border-slate-300 px-2 py-1.5 text-sm">
+          <label className="mb-1 block text-xs font-medium text-[var(--ds-neutral-600)]">Cuenta</label>
+          <select name="accountId" defaultValue={params.accountId ?? ''} className="w-full rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm">
             <option value="">Todas</option>
             {accounts.map((a) => (
               <option key={a.id} value={a.id}>
@@ -102,8 +102,8 @@ export default async function TransactionsPage({
           </select>
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-slate-600">Tarjeta</label>
-          <select name="creditCardId" defaultValue={params.creditCardId ?? ''} className="w-full rounded-md border border-slate-300 px-2 py-1.5 text-sm">
+          <label className="mb-1 block text-xs font-medium text-[var(--ds-neutral-600)]">Tarjeta</label>
+          <select name="creditCardId" defaultValue={params.creditCardId ?? ''} className="w-full rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm">
             <option value="">Todas</option>
             {cards.map((c) => (
               <option key={c.id} value={c.id}>
@@ -113,8 +113,8 @@ export default async function TransactionsPage({
           </select>
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-slate-600">Estado</label>
-          <select name="status" defaultValue={params.status ?? ''} className="w-full rounded-md border border-slate-300 px-2 py-1.5 text-sm">
+          <label className="mb-1 block text-xs font-medium text-[var(--ds-neutral-600)]">Estado</label>
+          <select name="status" defaultValue={params.status ?? ''} className="w-full rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm">
             <option value="">Todos</option>
             <option value="cleared">Confirmado</option>
             <option value="pending">Pendiente</option>
@@ -122,34 +122,34 @@ export default async function TransactionsPage({
           </select>
         </div>
         <div>
-          <label className="mb-1 block text-xs font-medium text-slate-600">Buscar</label>
-          <input type="text" name="q" defaultValue={params.q ?? ''} placeholder="Descripcion o comercio" className="w-full rounded-md border border-slate-300 px-2 py-1.5 text-sm" />
+          <label className="mb-1 block text-xs font-medium text-[var(--ds-neutral-600)]">Buscar</label>
+          <input type="text" name="q" defaultValue={params.q ?? ''} placeholder="Descripcion o comercio" className="w-full rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm" />
         </div>
         <div className="col-span-2 sm:col-span-4 lg:col-span-6">
-          <button type="submit" className="rounded-md bg-slate-900 px-4 py-1.5 text-sm font-medium text-white">
+          <button type="submit" className="rounded-md bg-[var(--ds-color-primary)] px-4 py-1.5 text-sm font-medium text-white">
             Filtrar
           </button>
         </div>
       </form>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-        <div className="rounded-lg border border-slate-200 bg-white p-4">
-          <p className="text-xs text-slate-500">Ingresos (pagina actual)</p>
-          <p className="text-lg font-semibold text-green-700">{formatCurrency(totalIncome)}</p>
+        <div className="rounded-lg border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)] p-4">
+          <p className="text-xs text-[var(--ds-neutral-500)]">Ingresos (pagina actual)</p>
+          <p className="text-lg font-semibold text-[var(--ds-color-success)]">{formatCurrency(totalIncome)}</p>
         </div>
-        <div className="rounded-lg border border-slate-200 bg-white p-4">
-          <p className="text-xs text-slate-500">Gastos (pagina actual)</p>
-          <p className="text-lg font-semibold text-red-700">{formatCurrency(totalExpense)}</p>
+        <div className="rounded-lg border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)] p-4">
+          <p className="text-xs text-[var(--ds-neutral-500)]">Gastos (pagina actual)</p>
+          <p className="text-lg font-semibold text-[var(--ds-color-danger)]">{formatCurrency(totalExpense)}</p>
         </div>
-        <div className="rounded-lg border border-slate-200 bg-white p-4">
-          <p className="text-xs text-slate-500">Total de resultados</p>
+        <div className="rounded-lg border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)] p-4">
+          <p className="text-xs text-[var(--ds-neutral-500)]">Total de resultados</p>
           <p className="text-lg font-semibold">{total}</p>
         </div>
       </div>
 
-      <div className="overflow-x-auto rounded-lg border border-slate-200">
+      <div className="overflow-x-auto rounded-lg border border-[var(--ds-neutral-200)]">
         <table className="w-full text-sm">
-          <thead className="bg-slate-50 text-left text-xs uppercase text-slate-500">
+          <thead className="bg-[var(--ds-neutral-50)] text-left text-xs uppercase text-[var(--ds-neutral-500)]">
             <tr>
               <th className="px-4 py-2">Fecha</th>
               <th className="px-4 py-2">Descripcion</th>
@@ -162,17 +162,17 @@ export default async function TransactionsPage({
           <tbody>
             {transactions.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-slate-500">
+                <td colSpan={6} className="px-4 py-8 text-center text-[var(--ds-neutral-500)]">
                   No hay movimientos con estos filtros.
                 </td>
               </tr>
             )}
             {transactions.map((t) => (
-              <tr key={t.id} className="border-t border-slate-100">
+              <tr key={t.id} className="border-t border-[var(--ds-neutral-100)]">
                 <td className="px-4 py-2">{formatDateGT(t.transaction_date)}</td>
                 <td className="px-4 py-2">
                   {t.description}
-                  {t.merchant ? <span className="text-slate-400"> · {t.merchant}</span> : null}
+                  {t.merchant ? <span className="text-[var(--ds-neutral-400)]"> · {t.merchant}</span> : null}
                 </td>
                 <td className="px-4 py-2">{TYPE_LABELS[t.transaction_type]}</td>
                 <td className="px-4 py-2">

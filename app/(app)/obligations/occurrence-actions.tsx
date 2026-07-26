@@ -34,7 +34,7 @@ export function OccurrenceActions({
   }
 
   if (occurrence.status === 'paid' || occurrence.status === 'skipped') {
-    return <span className="text-xs text-slate-400">—</span>;
+    return <span className="text-xs text-[var(--ds-neutral-400)]">—</span>;
   }
 
   return (

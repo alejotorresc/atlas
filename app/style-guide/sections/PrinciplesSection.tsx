@@ -4,9 +4,21 @@ const CONFUSIONS = [
   { a: 'Minimal', b: 'Empty' },
   { a: 'Beautiful', b: 'Usable' },
   { a: 'Clean', b: 'Hidden' },
+  { a: 'Industrial', b: 'Cold' },
+  { a: 'Vibrant', b: 'Colorful' },
 ];
 
-const VISUAL_FEEL = ['Intentional', 'Calm', 'Organized', 'Predictable', 'Balanced', 'Focused'];
+const VISUAL_FEEL = [
+  'Modern',
+  'Editorial',
+  'Industrial',
+  'Intentional',
+  'Quiet',
+  'Premium',
+  'Highly legible',
+  'Efficient',
+  'Timeless',
+];
 const NOT_LIST = ['Corporate', 'Banking software', 'Enterprise dashboard', 'Crypto', 'Gaming', 'Fintech startup', 'Material Design clone'];
 const REFERENCE_LIST = ['Wealth', 'Apple', 'Copilot Money', 'Monarch Money'];
 
@@ -141,7 +153,7 @@ export function PrinciplesSection() {
         <div className="rounded-[var(--ds-radius-lg)] bg-[var(--ds-neutral-900)] p-[24px] text-center">
           <p className="text-[20px] font-medium text-white">Does this reduce cognitive effort?</p>
           <p className="mt-[8px] text-[13px] text-[var(--ds-neutral-300)]">If the answer is no, do not implement it.</p>
-          <p className="mt-[16px] text-[15px] text-[var(--ds-color-accent)]">
+          <p className="mt-[16px] text-[15px] text-[var(--ds-neutral-300)]">
             ATLAS should never impress through visual effects. ATLAS should impress through clarity.
           </p>
         </div>

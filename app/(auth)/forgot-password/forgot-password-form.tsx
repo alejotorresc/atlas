@@ -15,7 +15,7 @@ export function ForgotPasswordForm() {
 
   if (state.success) {
     return (
-      <p role="status" className="text-sm text-slate-700">
+      <p role="status" className="text-sm text-[var(--ds-neutral-700)]">
         Si el correo existe, enviamos instrucciones para restablecer tu contrasena.
       </p>
     );
@@ -28,7 +28,7 @@ export function ForgotPasswordForm() {
         <Input id="email" name="email" type="email" autoComplete="email" required />
       </div>
       {state.error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-sm text-[var(--ds-color-danger)]">
           {state.error}
         </p>
       )}

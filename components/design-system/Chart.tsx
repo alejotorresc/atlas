@@ -59,7 +59,7 @@ export function CalmBarChart({
           }}
         />
         <Bar dataKey={primaryKey} fill="var(--ds-color-primary)" radius={[4, 4, 0, 0]} maxBarSize={20} />
-        <Bar dataKey={secondaryKey} fill="var(--ds-color-secondary)" radius={[4, 4, 0, 0]} maxBarSize={20} />
+        <Bar dataKey={secondaryKey} fill="var(--ds-neutral-300)" radius={[4, 4, 0, 0]} maxBarSize={20} />
       </BarChart>
     </ResponsiveContainer>
   );

@@ -31,8 +31,11 @@ export function NavLinks({ className, onNavigate }: { className?: string; onNavi
                 onClick={onNavigate}
                 aria-current={active ? 'page' : undefined}
                 className={cn(
-                  'block rounded-md px-3 py-2 text-sm font-medium',
-                  active ? 'bg-slate-900 text-white' : 'text-slate-700 hover:bg-slate-100',
+                  'block rounded-[var(--ds-radius-md)] px-[12px] py-[8px] text-[13px] font-medium',
+                  'transition-colors duration-[var(--ds-duration-fast)] ease-[var(--ds-ease-standard)]',
+                  active
+                    ? 'bg-[var(--ds-color-primary)] text-white'
+                    : 'text-[var(--ds-neutral-700)] hover:bg-[var(--ds-neutral-100)]',
                 )}
               >
                 {link.label}

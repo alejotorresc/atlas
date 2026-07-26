@@ -29,7 +29,7 @@ export default async function CardDetailPage({ params }: { params: Promise<{ id:
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-semibold">{card.name}</h1>
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-[var(--ds-neutral-500)]">
           {card.institution_name ?? 'Sin institucion'}
           {card.last_four ? ` · ****${card.last_four}` : ''}
         </p>
@@ -54,7 +54,7 @@ export default async function CardDetailPage({ params }: { params: Promise<{ id:
         </Card>
       </div>
 
-      <div className="flex gap-6 text-sm text-slate-600">
+      <div className="flex gap-6 text-sm text-[var(--ds-neutral-600)]">
         <span>Proximo corte: {formatDateGT(nextStatement.toISOString().slice(0, 10))}</span>
         <span>Proximo pago: {formatDateGT(nextPayment.toISOString().slice(0, 10))}</span>
       </div>
@@ -62,10 +62,10 @@ export default async function CardDetailPage({ params }: { params: Promise<{ id:
       <CardDetailActions card={card} accounts={activeAccounts} />
 
       <div>
-        <h2 className="mb-2 text-sm font-medium text-slate-500">Movimientos recientes</h2>
-        <div className="overflow-x-auto rounded-lg border border-slate-200">
+        <h2 className="mb-2 text-sm font-medium text-[var(--ds-neutral-500)]">Movimientos recientes</h2>
+        <div className="overflow-x-auto rounded-lg border border-[var(--ds-neutral-200)]">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-xs uppercase text-slate-500">
+            <thead className="bg-[var(--ds-neutral-50)] text-left text-xs uppercase text-[var(--ds-neutral-500)]">
               <tr>
                 <th className="px-4 py-2">Fecha</th>
                 <th className="px-4 py-2">Descripcion</th>
@@ -76,13 +76,13 @@ export default async function CardDetailPage({ params }: { params: Promise<{ id:
             <tbody>
               {transactions.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-4 py-6 text-center text-slate-500">
+                  <td colSpan={4} className="px-4 py-6 text-center text-[var(--ds-neutral-500)]">
                     Sin movimientos todavia.
                   </td>
                 </tr>
               )}
               {transactions.map((t) => (
-                <tr key={t.id} className="border-t border-slate-100">
+                <tr key={t.id} className="border-t border-[var(--ds-neutral-100)]">
                   <td className="px-4 py-2">{formatDateGT(t.transaction_date)}</td>
                   <td className="px-4 py-2">{t.description}</td>
                   <td className="px-4 py-2">{t.transaction_type}</td>

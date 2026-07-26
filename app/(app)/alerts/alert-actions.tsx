@@ -61,7 +61,7 @@ export function AlertRowActions({ alertId, isRead }: { alertId: string; isRead: 
               router.refresh();
             })
           }
-          className="text-xs text-slate-600 underline"
+          className="text-xs text-[var(--ds-neutral-600)] underline"
         >
           Marcar leida
         </button>
@@ -75,7 +75,7 @@ export function AlertRowActions({ alertId, isRead }: { alertId: string; isRead: 
             router.refresh();
           })
         }
-        className="text-xs text-red-600 underline"
+        className="text-xs text-[var(--ds-color-danger)] underline"
       >
         Descartar
       </button>

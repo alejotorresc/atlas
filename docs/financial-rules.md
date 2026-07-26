@@ -144,6 +144,25 @@ authenticates with a personal API token instead:
   the app doesn't break if it isn't configured yet — the route itself
   returns a clear 500 if it's missing when actually called.
 
+**Gotcha (caught in review before this shipped):** Supabase grants
+`EXECUTE` on every newly created function directly to `anon` and
+`authenticated` via a schema-level default privilege — `revoke ... from
+public` does **not** remove those grants, only an explicit `revoke ...
+from anon, authenticated` does. This doesn't matter for the ordinary
+`auth.uid()`-checked functions in `0003_functions.sql` (a stray grant is
+harmless when the function's own ownership check still blocks anything
+that isn't the caller's own data), but it is a real vulnerability for any
+function — like `create_expense_for_token` — that trusts an explicit
+`p_user_id` parameter instead of checking `auth.uid()`. Any new
+service-role-only function must explicitly revoke from `anon` and
+`authenticated`, not just `public`, and that should be verified after
+applying the migration with:
+```sql
+select routine_name, grantee, privilege_type
+from information_schema.role_routine_grants
+where routine_name = '<function_name>';
+```
+
 ## Recurrence assumptions
 
 - Supported frequencies: weekly, biweekly, monthly, quarterly, yearly.

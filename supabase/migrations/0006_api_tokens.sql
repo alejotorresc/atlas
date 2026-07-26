@@ -74,9 +74,16 @@ begin
 end;
 $$ language plpgsql security definer set search_path = public;
 
+-- Supabase grants EXECUTE on every new function directly to `anon` and
+-- `authenticated` via a schema-level default privilege — revoking from
+-- `public` alone does NOT remove those. This function trusts p_user_id as
+-- given (there's no auth.uid() session to check it against), so leaving
+-- it callable by `authenticated` would let any logged-in user create
+-- transactions on behalf of any other user by simply passing their id.
+-- Revoke explicitly from both roles, not just `public`.
 revoke execute on function
   create_expense_for_token(uuid, uuid, uuid, bigint, text, date, text, text, uuid)
-from public;
+from public, anon, authenticated;
 
 grant execute on function
   create_expense_for_token(uuid, uuid, uuid, bigint, text, date, text, text, uuid)

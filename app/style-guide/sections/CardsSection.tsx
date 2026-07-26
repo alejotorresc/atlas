@@ -1,4 +1,4 @@
-import { Section, SubSection } from './SectionShell';
+import { Section, SubSection, RuleList, Rule } from './SectionShell';
 import {
   MetricCard,
   SummaryCard,
@@ -14,6 +14,16 @@ import {
 export function CardsSection() {
   return (
     <Section id="cards" title="Cards" description="Reusable card patterns — every screen should compose from these rather than inventing new card layouts.">
+      <SubSection title="Card design rules">
+        <RuleList>
+          <Rule>A card is a meaningful information group, not a floating widget — it should answer exactly one question.</Rule>
+          <Rule>Avoid cards inside cards.</Rule>
+          <Rule>Avoid dividers inside a card unless they separate genuinely distinct groups (e.g. SummaryCard&apos;s breakdown rows).</Rule>
+          <Rule>Avoid visual noise — a card with nothing to say should not exist on the screen.</Rule>
+          <Rule>Prefer lists and cards over tables. Reach for a table (see Movimientos) only when row-by-row comparison across many columns is the primary task.</Rule>
+        </RuleList>
+      </SubSection>
+
       <SubSection title="Metric & summary">
         <div className="grid gap-[16px] sm:grid-cols-2">
           <MetricCard label="Puedes gastar" amountMinor={423000} helperText="Estimado basado en tus datos" />

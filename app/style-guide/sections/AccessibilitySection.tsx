@@ -39,6 +39,11 @@ export function AccessibilitySection() {
           <Rule>Loading states set aria-busy rather than only showing a spinner.</Rule>
         </RuleList>
       </SubSection>
+
+      <SubSection title="Ordering principle">
+        <p className="text-[15px] font-medium text-[var(--ds-neutral-900)]">Readable before beautiful. Accessible before clever. Simple before impressive.</p>
+        <p className="mt-[8px] text-[13px] text-[var(--ds-neutral-600)]">The interface never sacrifices usability for aesthetics.</p>
+      </SubSection>
     </Section>
   );
 }

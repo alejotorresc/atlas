@@ -1,10 +1,18 @@
-import { Section, SubSection, Example } from './SectionShell';
+import { Section, SubSection, Example, RuleList, Rule } from './SectionShell';
 import { duration, easing, motionPresets } from '@/lib/design-tokens/motion';
 import { Toast } from '@/components/design-system/Toast';
 
 export function MotionSection() {
   return (
     <Section id="motion" title="Motion" description="Subtle, fast, purposeful. Motion confirms that something happened — it never entertains. Nothing bounces or overshoots.">
+      <SubSection title="Purpose, not decoration">
+        <RuleList>
+          <Rule>Motion exists only to improve understanding — never animate purely for decoration.</Rule>
+          <Rule>Every animation communicates one of: continuity (a sheet sliding from the edge it will return to), state change (a checkbox filling in), focus (a dialog scaling in from its trigger), or completion (a toast confirming an action).</Rule>
+          <Rule>Success feedback stays subtle — never celebrate a simple action (see Success in Writing).</Rule>
+        </RuleList>
+      </SubSection>
+
       <SubSection title="Durations">
         <div className="grid grid-cols-2 gap-[12px] sm:grid-cols-4">
           {Object.entries(duration).map(([name, ms]) => (

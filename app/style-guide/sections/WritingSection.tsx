@@ -1,4 +1,10 @@
-import { Section, SubSection } from './SectionShell';
+import { Wallet } from 'lucide-react';
+import { Section, SubSection, Example, RuleList, Rule } from './SectionShell';
+import { CardEmptyState } from '@/components/design-system/Card';
+import { Icon } from '@/components/design-system/Icon';
+import { Button } from '@/components/design-system/Button';
+import { AlertCard } from '@/components/design-system/Cards';
+import { Toast } from '@/components/design-system/Toast';
 
 const LANGUAGE_PAIRS = [
   { avoid: 'Saldo disponible calculado', prefer: 'Puedes gastar' },
@@ -53,6 +59,40 @@ export function WritingSection() {
           Never: alarming (&quot;PRESUPUESTO EXCEDIDO&quot;), robotic (&quot;Error 400: solicitud invalida&quot;), or
           corporate (&quot;Estimado usuario, le informamos que...&quot;).
         </p>
+      </SubSection>
+
+      <SubSection title="Empty states">
+        <p className="mb-[16px] text-[13px] text-[var(--ds-neutral-600)]">
+          Every empty state answers two questions: why is this empty, and what should I do? Never simply display
+          &quot;No data.&quot;
+        </p>
+        <Example>
+          <CardEmptyState
+            icon={<Icon icon={Wallet} size="lg" />}
+            title="Sin cuentas todavia"
+            description="Crea tu primera cuenta para empezar a ver tu panorama financiero."
+            action={<Button size="sm">Crear cuenta</Button>}
+          />
+        </Example>
+      </SubSection>
+
+      <SubSection title="Errors">
+        <RuleList>
+          <Rule>Never blame the user (&quot;Ingresaste un monto invalido&quot; → &quot;El monto debe ser mayor a cero&quot;).</Rule>
+          <Rule>Explain what happened, why, and how to fix it — in that order, in one short sentence when possible.</Rule>
+        </RuleList>
+        <Example className="mt-[16px]">
+          <AlertCard tone="danger" title="No se pudo registrar el pago" message="El monto excede el saldo disponible en la cuenta origen. Ajusta el monto o confirma que deseas continuar." />
+        </Example>
+      </SubSection>
+
+      <SubSection title="Success">
+        <p className="mb-[16px] text-[13px] text-[var(--ds-neutral-600)]">
+          Success feedback is subtle. Never celebrate a simple action — the interface stays calm and professional.
+        </p>
+        <Example>
+          <Toast tone="success" message="Movimiento registrado" />
+        </Example>
       </SubSection>
     </Section>
   );

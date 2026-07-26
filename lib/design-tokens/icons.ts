@@ -17,10 +17,12 @@ export const iconSizes = {
 } as const;
 
 export const iconRules = [
+  'Icons support recognition — they never replace text. Every important icon has a visible label or an aria-label.',
   'Always outline style — Lucide is outline-only by default, never substitute a filled variant.',
   'Never mix in icons from another library, an emoji, or a custom SVG unless Lucide genuinely lacks the concept.',
   `Stroke width is fixed at ${iconStrokeWidth} everywhere — do not vary it per icon.`,
   'Give icons room to breathe: minimum 8px of padding between an icon and adjacent text/edges unless explicitly building a dense table.',
+  'One icon per concept — avoid decorative icons and avoid icon overload (an icon on every list item that doesn\'t need one adds noise, not clarity).',
   'Icons are functional, not decorative — every icon either labels an action/entity or is marked aria-hidden if purely reinforcing adjacent text.',
 ] as const;
 

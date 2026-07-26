@@ -1,4 +1,4 @@
-import { Section, SubSection, Example } from './SectionShell';
+import { Section, SubSection, Example, RuleList, Rule } from './SectionShell';
 import { FormField } from '@/components/design-system/FormField';
 import { Input, CurrencyInput, SearchInput, PasswordInput, Textarea, Select } from '@/components/design-system/Input';
 import { Checkbox, Radio, Switch } from '@/components/design-system/Toggle';
@@ -6,7 +6,18 @@ import { SegmentedControlDemo } from './forms-demo';
 
 export function FormsSection() {
   return (
-    <Section id="forms" title="Forms" description="Every input type used across ATLAS, built on one shared visual language.">
+    <Section id="forms" title="Forms" description="Every input type used across ATLAS, built on one shared visual language. Forms should feel effortless, not like paperwork.">
+      <SubSection title="Rules">
+        <RuleList>
+          <Rule>Minimize required fields — every field is a small tax on the user&apos;s attention.</Rule>
+          <Rule>Use sensible defaults (today&apos;s date, the last-used account, the current month) instead of asking.</Rule>
+          <Rule>Autofocus the first field when a form&apos;s sole purpose is data entry (e.g. a dialog that just opened).</Rule>
+          <Rule>Use the correct mobile keyboard for the data — inputMode=&quot;decimal&quot; for money, type=&quot;email&quot; for email, never a generic text keyboard for numbers.</Rule>
+          <Rule>Never make the user think about formatting — accept &quot;1500&quot; or &quot;1,500.00&quot; and normalize it, don&apos;t reject it.</Rule>
+          <Rule>Prefer inline validation (see the error example below) over a modal or toast error after submit.</Rule>
+        </RuleList>
+      </SubSection>
+
       <div className="grid gap-[24px] sm:grid-cols-2">
         <FormField htmlFor="sg-text" label="Texto">
           <Input id="sg-text" placeholder="Nombre de la cuenta" />

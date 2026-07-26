@@ -1,10 +1,17 @@
 'use client';
 
-import { ReactNode, useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
-import { Icon } from '@/components/design-system/Icon';
+import type { ReactNode } from 'react';
+import { Modal } from '@/components/design-system/Modal';
 
+/**
+ * Re-skinned onto the same Modal primitive as the transaction form (blur
+ * backdrop, scale+fade open/close animation, subtle radius/shadow) so
+ * every dialog in the app shares one visual language — not just the one
+ * that got a full rebuild. Keeps the original simple API (a single
+ * scrollable body, no pinned footer) so none of its ~10 existing
+ * consumers need to change; the submit button lives with its form as
+ * before.
+ */
 export function Dialog({
   open,
   onClose,
@@ -16,42 +23,9 @@ export function Dialog({
   title: string;
   children: ReactNode;
 }) {
-  const ref = useRef<HTMLDialogElement>(null);
-
-  useEffect(() => {
-    const dialog = ref.current;
-    if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
-    if (!open && dialog.open) dialog.close();
-  }, [open]);
-
-  if (typeof document === 'undefined') return null;
-
-  return createPortal(
-    <dialog
-      ref={ref}
-      onClose={onClose}
-      onCancel={onClose}
-      className="w-full max-w-lg rounded-[var(--ds-radius-xl)] border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)] p-0 shadow-[var(--ds-shadow-lg)] backdrop:bg-[var(--ds-neutral-900)]/40"
-      aria-labelledby="dialog-title"
-    >
-      <div className="p-[24px]">
-        <div className="mb-[16px] flex items-center justify-between">
-          <h2 id="dialog-title" className="text-[20px] font-medium text-[var(--ds-neutral-900)]">
-            {title}
-          </h2>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Cerrar"
-            className="text-[var(--ds-neutral-400)] transition-colors duration-[var(--ds-duration-fast)] hover:text-[var(--ds-neutral-700)]"
-          >
-            <Icon icon={X} size="sm" />
-          </button>
-        </div>
-        {children}
-      </div>
-    </dialog>,
-    document.body,
+  return (
+    <Modal open={open} onOpenChange={(next) => !next && onClose()} title={title}>
+      <div className="pb-[24px] pt-[8px]">{children}</div>
+    </Modal>
   );
 }

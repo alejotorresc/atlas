@@ -7,6 +7,8 @@ import { Dialog } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { DatePicker } from '@/components/ui/date-picker';
 import { ActionForm, type FormActionResult } from '@/components/forms/action-form';
 import { archiveCard, payCard, updateCard } from '@/features/cards/actions';
 import { todayISO } from '@/lib/dates/format';
@@ -50,14 +52,13 @@ export function CardDetailActions({ card, accounts }: { card: CreditCard; accoun
         <ActionForm action={handlePay} onSuccess={() => setPayOpen(false)} submitLabel="Pagar">
           <div>
             <Label htmlFor="source_account_id">Cuenta origen</Label>
-            <Select id="source_account_id" name="source_account_id" required>
-              <option value="">Selecciona una cuenta</option>
-              {accounts.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name}
-                </option>
-              ))}
-            </Select>
+            <Select
+              id="source_account_id"
+              name="source_account_id"
+              required
+              placeholder="Selecciona una cuenta"
+              options={accounts.map((a) => ({ value: a.id, label: a.name }))}
+            />
           </div>
           <div>
             <Label htmlFor="pay-amount">Monto</Label>
@@ -65,19 +66,14 @@ export function CardDetailActions({ card, accounts }: { card: CreditCard; accoun
           </div>
           <div>
             <Label htmlFor="pay-date">Fecha</Label>
-            <Input id="pay-date" name="transaction_date" type="date" defaultValue={todayISO()} required />
+            <DatePicker id="pay-date" name="transaction_date" defaultValue={todayISO()} required />
           </div>
           <div>
             <Label htmlFor="pay-desc">Descripcion</Label>
             <Input id="pay-desc" name="description" defaultValue="Pago de tarjeta" required />
           </div>
-          <div className="flex items-center gap-2">
-            <input
-              id="confirm-exceeds"
-              type="checkbox"
-              checked={confirmExceeds}
-              onChange={(e) => setConfirmExceeds(e.target.checked)}
-            />
+          <div className="flex items-center gap-[8px]">
+            <Checkbox id="confirm-exceeds" checked={confirmExceeds} onCheckedChange={(v) => setConfirmExceeds(v === true)} />
             <Label htmlFor="confirm-exceeds" className="mb-0">
               Confirmo el monto aunque exceda el saldo disponible o de la tarjeta
             </Label>

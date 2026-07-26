@@ -1,7 +1,9 @@
 import { Section, SubSection, Example, RuleList, Rule } from './SectionShell';
 import { FormField } from '@/components/design-system/FormField';
-import { Input, CurrencyInput, SearchInput, PasswordInput, Textarea, Select } from '@/components/design-system/Input';
-import { Checkbox, Radio, Switch } from '@/components/design-system/Toggle';
+import { Input, CurrencyInput, SearchInput, PasswordInput, Textarea } from '@/components/design-system/Input';
+import { Select } from '@/components/design-system/Select';
+import { DatePicker } from '@/components/design-system/DatePicker';
+import { Checkbox, RadioGroup, RadioGroupItem, Switch } from '@/components/design-system/Checkbox';
 import { SegmentedControlDemo } from './forms-demo';
 
 export function FormsSection() {
@@ -15,6 +17,7 @@ export function FormsSection() {
           <Rule>Use the correct mobile keyboard for the data — inputMode=&quot;decimal&quot; for money, type=&quot;email&quot; for email, never a generic text keyboard for numbers.</Rule>
           <Rule>Never make the user think about formatting — accept &quot;1500&quot; or &quot;1,500.00&quot; and normalize it, don&apos;t reject it.</Rule>
           <Rule>Prefer inline validation (see the error example below) over a modal or toast error after submit.</Rule>
+          <Rule>No native browser chrome — select, date picker, checkbox, and radio are all custom-built so the whole product shares one design language instead of falling back to OS defaults.</Rule>
         </RuleList>
       </SubSection>
 
@@ -32,20 +35,21 @@ export function FormsSection() {
           <SearchInput id="sg-search" placeholder="Descripcion o comercio" />
         </FormField>
         <FormField htmlFor="sg-date" label="Fecha">
-          <Input id="sg-date" type="date" />
+          <DatePicker id="sg-date" />
         </FormField>
         <FormField htmlFor="sg-password" label="Contrasena">
           <PasswordInput id="sg-password" placeholder="********" />
         </FormField>
         <FormField htmlFor="sg-select" label="Categoria">
-          <Select id="sg-select" defaultValue="">
-            <option value="" disabled>
-              Selecciona una categoria
-            </option>
-            <option>Alimentacion</option>
-            <option>Transporte</option>
-            <option>Vivienda</option>
-          </Select>
+          <Select
+            id="sg-select"
+            placeholder="Selecciona una categoria"
+            options={[
+              { value: 'alimentacion', label: 'Alimentacion' },
+              { value: 'transporte', label: 'Transporte' },
+              { value: 'vivienda', label: 'Vivienda' },
+            ]}
+          />
         </FormField>
         <FormField htmlFor="sg-error" label="Con error" error="Este campo es requerido">
           <Input id="sg-error" aria-invalid placeholder="Descripcion" />
@@ -61,12 +65,14 @@ export function FormsSection() {
           <label className="flex items-center gap-[8px] text-[15px] text-[var(--ds-neutral-900)]">
             <Checkbox defaultChecked /> Incluir en saldo disponible
           </label>
-          <label className="flex items-center gap-[8px] text-[15px] text-[var(--ds-neutral-900)]">
-            <Radio name="sg-radio-demo" defaultChecked /> Cuenta
-          </label>
-          <label className="flex items-center gap-[8px] text-[15px] text-[var(--ds-neutral-900)]">
-            <Radio name="sg-radio-demo" /> Tarjeta
-          </label>
+          <RadioGroup defaultValue="account" className="flex items-center gap-[16px]">
+            <label className="flex items-center gap-[8px] text-[15px] text-[var(--ds-neutral-900)]">
+              <RadioGroupItem value="account" /> Cuenta
+            </label>
+            <label className="flex items-center gap-[8px] text-[15px] text-[var(--ds-neutral-900)]">
+              <RadioGroupItem value="card" /> Tarjeta
+            </label>
+          </RadioGroup>
           <label className="flex items-center gap-[12px] text-[15px] text-[var(--ds-neutral-900)]">
             Notificaciones <Switch defaultChecked />
           </label>

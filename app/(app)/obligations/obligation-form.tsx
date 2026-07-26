@@ -7,27 +7,33 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
+import { DatePicker } from '@/components/ui/date-picker';
 import { createObligation } from '@/features/obligations/actions';
 import { todayISO } from '@/lib/dates/format';
 import type { Account, Category, CreditCard } from '@/types/database';
 
 const OBLIGATION_TYPES = [
-  ['bill', 'Servicio'],
-  ['subscription', 'Suscripcion'],
-  ['rent', 'Renta'],
-  ['loan', 'Prestamo'],
-  ['insurance', 'Seguro'],
-  ['card_payment', 'Pago de tarjeta'],
-  ['savings', 'Ahorro'],
-  ['other', 'Otro'],
+  { value: 'bill', label: 'Servicio' },
+  { value: 'subscription', label: 'Suscripcion' },
+  { value: 'rent', label: 'Renta' },
+  { value: 'loan', label: 'Prestamo' },
+  { value: 'insurance', label: 'Seguro' },
+  { value: 'card_payment', label: 'Pago de tarjeta' },
+  { value: 'savings', label: 'Ahorro' },
+  { value: 'other', label: 'Otro' },
+] as const;
+
+const AMOUNT_TYPES = [
+  { value: 'fixed', label: 'Fijo' },
+  { value: 'estimated', label: 'Estimado' },
 ] as const;
 
 const FREQUENCIES = [
-  ['weekly', 'Semanal'],
-  ['biweekly', 'Quincenal'],
-  ['monthly', 'Mensual'],
-  ['quarterly', 'Trimestral'],
-  ['yearly', 'Anual'],
+  { value: 'weekly', label: 'Semanal' },
+  { value: 'biweekly', label: 'Quincenal' },
+  { value: 'monthly', label: 'Mensual' },
+  { value: 'quarterly', label: 'Trimestral' },
+  { value: 'yearly', label: 'Anual' },
 ] as const;
 
 export function NewObligationButton({
@@ -52,13 +58,7 @@ export function NewObligationButton({
           </div>
           <div>
             <Label htmlFor="obl-type">Tipo</Label>
-            <Select id="obl-type" name="obligation_type" defaultValue="bill">
-              {OBLIGATION_TYPES.map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </Select>
+            <Select id="obl-type" name="obligation_type" defaultValue="bill" options={[...OBLIGATION_TYPES]} />
           </div>
           <div>
             <Label htmlFor="obl-amount">Monto</Label>
@@ -66,61 +66,46 @@ export function NewObligationButton({
           </div>
           <div>
             <Label htmlFor="obl-amount-type">Tipo de monto</Label>
-            <Select id="obl-amount-type" name="amount_type" defaultValue="fixed">
-              <option value="fixed">Fijo</option>
-              <option value="estimated">Estimado</option>
-            </Select>
+            <Select id="obl-amount-type" name="amount_type" defaultValue="fixed" options={[...AMOUNT_TYPES]} />
           </div>
           <div>
             <Label htmlFor="obl-frequency">Frecuencia</Label>
-            <Select id="obl-frequency" name="frequency" defaultValue="monthly">
-              {FREQUENCIES.map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </Select>
+            <Select id="obl-frequency" name="frequency" defaultValue="monthly" options={[...FREQUENCIES]} />
           </div>
           <div>
             <Label htmlFor="obl-next-due">Proxima fecha de vencimiento</Label>
-            <Input id="obl-next-due" name="next_due_date" type="date" defaultValue={todayISO()} required />
+            <DatePicker id="obl-next-due" name="next_due_date" defaultValue={todayISO()} required />
           </div>
           <div>
             <Label htmlFor="obl-end-date">Fecha de fin (opcional)</Label>
-            <Input id="obl-end-date" name="end_date" type="date" />
+            <DatePicker id="obl-end-date" name="end_date" placeholder="Sin fecha de fin" />
           </div>
           <div>
             <Label htmlFor="obl-account">Cuenta de pago (opcional)</Label>
-            <Select id="obl-account" name="account_id">
-              <option value="">Ninguna</option>
-              {accounts.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name}
-                </option>
-              ))}
-            </Select>
+            <Select
+              id="obl-account"
+              name="account_id"
+              placeholder="Ninguna"
+              options={[{ value: '', label: 'Ninguna' }, ...accounts.map((a) => ({ value: a.id, label: a.name }))]}
+            />
           </div>
           <div>
             <Label htmlFor="obl-card">Tarjeta de pago (opcional)</Label>
-            <Select id="obl-card" name="credit_card_id">
-              <option value="">Ninguna</option>
-              {cards.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </Select>
+            <Select
+              id="obl-card"
+              name="credit_card_id"
+              placeholder="Ninguna"
+              options={[{ value: '', label: 'Ninguna' }, ...cards.map((c) => ({ value: c.id, label: c.name }))]}
+            />
           </div>
           <div>
             <Label htmlFor="obl-category">Categoria (opcional)</Label>
-            <Select id="obl-category" name="category_id">
-              <option value="">Ninguna</option>
-              {categories.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </Select>
+            <Select
+              id="obl-category"
+              name="category_id"
+              placeholder="Ninguna"
+              options={[{ value: '', label: 'Ninguna' }, ...categories.map((c) => ({ value: c.id, label: c.name }))]}
+            />
           </div>
           <div>
             <Label htmlFor="obl-reminder">Dias de recordatorio antes</Label>

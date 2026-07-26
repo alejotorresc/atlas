@@ -4,6 +4,7 @@ import { listAlerts } from '@/features/alerts/queries';
 import { formatDateGT } from '@/lib/dates/format';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Select } from '@/components/ui/select';
 import { AlertRowActions, MarkAllReadButton, RefreshAlertsButton } from './alert-actions';
 import type { AlertSeverity } from '@/types/database';
 
@@ -51,17 +52,19 @@ export default async function AlertsPage({ searchParams }: { searchParams: Promi
         </div>
       </section>
 
-      <form method="get" className="flex flex-wrap gap-[8px]">
-        <select
+      <form method="get" className="flex flex-wrap items-center gap-[8px]">
+        <Select
           name="severity"
           defaultValue={severity ?? ''}
-          className="rounded-[var(--ds-radius-md)] border border-[var(--ds-neutral-300)] px-[8px] py-[6px] text-[13px]"
-        >
-          <option value="">Todas las severidades</option>
-          <option value="info">Info</option>
-          <option value="warning">Advertencia</option>
-          <option value="urgent">Urgente</option>
-        </select>
+          placeholder="Todas las severidades"
+          className="w-auto min-w-[200px]"
+          options={[
+            { value: '', label: 'Todas las severidades' },
+            { value: 'info', label: 'Info' },
+            { value: 'warning', label: 'Advertencia' },
+            { value: 'urgent', label: 'Urgente' },
+          ]}
+        />
         <button type="submit" className="rounded-[var(--ds-radius-md)] border border-[var(--ds-neutral-300)] px-[12px] py-[6px] text-[13px]">
           Filtrar
         </button>

@@ -6,6 +6,7 @@ import { ActionForm } from '@/components/forms/action-form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Button } from '@/components/ui/button';
 import { todayISO } from '@/lib/dates/format';
 import {
@@ -44,6 +45,8 @@ const TYPE_LABELS: Record<TxType, string> = {
   adjustment: 'Ajuste de saldo',
 };
 
+const TYPE_OPTIONS = Object.entries(TYPE_LABELS).map(([value, label]) => ({ value, label }));
+
 interface Props {
   accounts: Account[];
   cards: CreditCard[];
@@ -63,13 +66,7 @@ export function NewTransactionButton(props: Props) {
       <Dialog open={open} onClose={() => setOpen(false)} title="Registrar movimiento">
         <div className="mb-4">
           <Label htmlFor="tx-type">Tipo de movimiento</Label>
-          <Select id="tx-type" value={type} onChange={(e) => setType(e.target.value as TxType)}>
-            {Object.entries(TYPE_LABELS).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </Select>
+          <Select id="tx-type" value={type} onValueChange={(v) => setType(v as TxType)} options={TYPE_OPTIONS} />
         </div>
         <TransactionFields type={type} {...props} onDone={() => setOpen(false)} />
       </Dialog>
@@ -78,6 +75,10 @@ export function NewTransactionButton(props: Props) {
 }
 
 function TransactionFields({ type, accounts, cards, incomeCategories, expenseCategories, savingsGoals, onDone }: Props & { type: TxType; onDone: () => void }) {
+  const accountOptions = accounts.map((a) => ({ value: a.id, label: a.name }));
+  const cardOptions = cards.map((c) => ({ value: c.id, label: c.name }));
+  const goalOptions = savingsGoals.map((g) => ({ value: g.id, label: g.name }));
+
   const common = (
     <>
       <div>
@@ -86,7 +87,7 @@ function TransactionFields({ type, accounts, cards, incomeCategories, expenseCat
       </div>
       <div>
         <Label htmlFor="tx-date">Fecha</Label>
-        <Input id="tx-date" name="transaction_date" type="date" defaultValue={todayISO()} required />
+        <DatePicker id="tx-date" name="transaction_date" defaultValue={todayISO()} required />
       </div>
       <div>
         <Label htmlFor="tx-desc">Descripcion</Label>
@@ -94,10 +95,15 @@ function TransactionFields({ type, accounts, cards, incomeCategories, expenseCat
       </div>
       <div>
         <Label htmlFor="tx-status">Estado</Label>
-        <Select id="tx-status" name="status" defaultValue="cleared">
-          <option value="cleared">Confirmado</option>
-          <option value="pending">Pendiente</option>
-        </Select>
+        <Select
+          id="tx-status"
+          name="status"
+          defaultValue="cleared"
+          options={[
+            { value: 'cleared', label: 'Confirmado' },
+            { value: 'pending', label: 'Pendiente' },
+          ]}
+        />
       </div>
     </>
   );
@@ -108,14 +114,7 @@ function TransactionFields({ type, accounts, cards, incomeCategories, expenseCat
         {common}
         <div>
           <Label htmlFor="tx-account">Cuenta</Label>
-          <Select id="tx-account" name="account_id" required>
-            <option value="">Selecciona una cuenta</option>
-            {accounts.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.name}
-              </option>
-            ))}
-          </Select>
+          <Select id="tx-account" name="account_id" required placeholder="Selecciona una cuenta" options={accountOptions} />
         </div>
         <CategorySelect categories={incomeCategories} />
       </ActionForm>
@@ -128,14 +127,7 @@ function TransactionFields({ type, accounts, cards, incomeCategories, expenseCat
         {common}
         <div>
           <Label htmlFor="tx-account">Cuenta</Label>
-          <Select id="tx-account" name="account_id" required>
-            <option value="">Selecciona una cuenta</option>
-            {accounts.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.name}
-              </option>
-            ))}
-          </Select>
+          <Select id="tx-account" name="account_id" required placeholder="Selecciona una cuenta" options={accountOptions} />
         </div>
         <CategorySelect categories={expenseCategories} />
       </ActionForm>
@@ -148,14 +140,7 @@ function TransactionFields({ type, accounts, cards, incomeCategories, expenseCat
         {common}
         <div>
           <Label htmlFor="tx-card">Tarjeta</Label>
-          <Select id="tx-card" name="credit_card_id" required>
-            <option value="">Selecciona una tarjeta</option>
-            {cards.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </Select>
+          <Select id="tx-card" name="credit_card_id" required placeholder="Selecciona una tarjeta" options={cardOptions} />
         </div>
         <CategorySelect categories={expenseCategories} />
       </ActionForm>
@@ -168,25 +153,11 @@ function TransactionFields({ type, accounts, cards, incomeCategories, expenseCat
         {common}
         <div>
           <Label htmlFor="tx-src">Cuenta origen</Label>
-          <Select id="tx-src" name="source_account_id" required>
-            <option value="">Selecciona una cuenta</option>
-            {accounts.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.name}
-              </option>
-            ))}
-          </Select>
+          <Select id="tx-src" name="source_account_id" required placeholder="Selecciona una cuenta" options={accountOptions} />
         </div>
         <div>
           <Label htmlFor="tx-dst">Cuenta destino</Label>
-          <Select id="tx-dst" name="destination_account_id" required>
-            <option value="">Selecciona una cuenta</option>
-            {accounts.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.name}
-              </option>
-            ))}
-          </Select>
+          <Select id="tx-dst" name="destination_account_id" required placeholder="Selecciona una cuenta" options={accountOptions} />
         </div>
         <p className="text-xs text-[var(--ds-neutral-500)]">
           Esto disminuira el saldo de la cuenta origen y aumentara el de la cuenta destino por el mismo monto. No se
@@ -202,25 +173,11 @@ function TransactionFields({ type, accounts, cards, incomeCategories, expenseCat
         {common}
         <div>
           <Label htmlFor="tx-pay-src">Cuenta origen</Label>
-          <Select id="tx-pay-src" name="source_account_id" required>
-            <option value="">Selecciona una cuenta</option>
-            {accounts.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.name}
-              </option>
-            ))}
-          </Select>
+          <Select id="tx-pay-src" name="source_account_id" required placeholder="Selecciona una cuenta" options={accountOptions} />
         </div>
         <div>
           <Label htmlFor="tx-pay-card">Tarjeta</Label>
-          <Select id="tx-pay-card" name="credit_card_id" required>
-            <option value="">Selecciona una tarjeta</option>
-            {cards.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </Select>
+          <Select id="tx-pay-card" name="credit_card_id" required placeholder="Selecciona una tarjeta" options={cardOptions} />
         </div>
         <p className="text-xs text-[var(--ds-neutral-500)]">
           Esto disminuira el saldo de la cuenta origen y el saldo de la tarjeta. No se contabiliza como gasto nuevo.
@@ -235,25 +192,16 @@ function TransactionFields({ type, accounts, cards, incomeCategories, expenseCat
         {common}
         <div>
           <Label htmlFor="tx-goal">Meta de ahorro</Label>
-          <Select id="tx-goal" name="savings_goal_id" required>
-            <option value="">Selecciona una meta</option>
-            {savingsGoals.map((g) => (
-              <option key={g.id} value={g.id}>
-                {g.name}
-              </option>
-            ))}
-          </Select>
+          <Select id="tx-goal" name="savings_goal_id" required placeholder="Selecciona una meta" options={goalOptions} />
         </div>
         <div>
           <Label htmlFor="tx-source-account">Cuenta origen (opcional)</Label>
-          <Select id="tx-source-account" name="source_account_id">
-            <option value="">Sin cuenta</option>
-            {accounts.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.name}
-              </option>
-            ))}
-          </Select>
+          <Select
+            id="tx-source-account"
+            name="source_account_id"
+            placeholder="Sin cuenta"
+            options={[{ value: '', label: 'Sin cuenta' }, ...accountOptions]}
+          />
         </div>
       </ActionForm>
     );
@@ -265,25 +213,16 @@ function TransactionFields({ type, accounts, cards, incomeCategories, expenseCat
         {common}
         <div>
           <Label htmlFor="tx-goal">Meta de ahorro</Label>
-          <Select id="tx-goal" name="savings_goal_id" required>
-            <option value="">Selecciona una meta</option>
-            {savingsGoals.map((g) => (
-              <option key={g.id} value={g.id}>
-                {g.name}
-              </option>
-            ))}
-          </Select>
+          <Select id="tx-goal" name="savings_goal_id" required placeholder="Selecciona una meta" options={goalOptions} />
         </div>
         <div>
           <Label htmlFor="tx-dest-account">Cuenta destino (opcional)</Label>
-          <Select id="tx-dest-account" name="destination_account_id">
-            <option value="">Sin cuenta</option>
-            {accounts.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.name}
-              </option>
-            ))}
-          </Select>
+          <Select
+            id="tx-dest-account"
+            name="destination_account_id"
+            placeholder="Sin cuenta"
+            options={[{ value: '', label: 'Sin cuenta' }, ...accountOptions]}
+          />
         </div>
       </ActionForm>
     );
@@ -295,25 +234,16 @@ function TransactionFields({ type, accounts, cards, incomeCategories, expenseCat
         {common}
         <div>
           <Label htmlFor="tx-refund-account">Cuenta (si aplica)</Label>
-          <Select id="tx-refund-account" name="account_id">
-            <option value="">Ninguna</option>
-            {accounts.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.name}
-              </option>
-            ))}
-          </Select>
+          <Select
+            id="tx-refund-account"
+            name="account_id"
+            placeholder="Ninguna"
+            options={[{ value: '', label: 'Ninguna' }, ...accountOptions]}
+          />
         </div>
         <div>
           <Label htmlFor="tx-refund-card">Tarjeta (si aplica)</Label>
-          <Select id="tx-refund-card" name="credit_card_id">
-            <option value="">Ninguna</option>
-            {cards.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </Select>
+          <Select id="tx-refund-card" name="credit_card_id" placeholder="Ninguna" options={[{ value: '', label: 'Ninguna' }, ...cardOptions]} />
         </div>
         <CategorySelect categories={expenseCategories} />
       </ActionForm>
@@ -325,25 +255,11 @@ function TransactionFields({ type, accounts, cards, incomeCategories, expenseCat
     <ActionForm action={createAdjustment} onSuccess={onDone} submitLabel="Ajustar">
       <div>
         <Label htmlFor="adj-tx-account">Cuenta (o deja vacio y elige tarjeta)</Label>
-        <Select id="adj-tx-account" name="account_id">
-          <option value="">Ninguna</option>
-          {accounts.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.name}
-            </option>
-          ))}
-        </Select>
+        <Select id="adj-tx-account" name="account_id" placeholder="Ninguna" options={[{ value: '', label: 'Ninguna' }, ...accountOptions]} />
       </div>
       <div>
         <Label htmlFor="adj-tx-card">Tarjeta</Label>
-        <Select id="adj-tx-card" name="credit_card_id">
-          <option value="">Ninguna</option>
-          {cards.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </Select>
+        <Select id="adj-tx-card" name="credit_card_id" placeholder="Ninguna" options={[{ value: '', label: 'Ninguna' }, ...cardOptions]} />
       </div>
       <div>
         <Label htmlFor="adj-new-balance">Nuevo saldo</Label>
@@ -351,7 +267,7 @@ function TransactionFields({ type, accounts, cards, incomeCategories, expenseCat
       </div>
       <div>
         <Label htmlFor="adj-date">Fecha</Label>
-        <Input id="adj-date" name="transaction_date" type="date" defaultValue={todayISO()} required />
+        <DatePicker id="adj-date" name="transaction_date" defaultValue={todayISO()} required />
       </div>
       <div>
         <Label htmlFor="adj-desc">Motivo</Label>
@@ -365,14 +281,12 @@ function CategorySelect({ categories }: { categories: Category[] }) {
   return (
     <div>
       <Label htmlFor="tx-category">Categoria</Label>
-      <Select id="tx-category" name="category_id">
-        <option value="">Sin categoria</option>
-        {categories.map((c) => (
-          <option key={c.id} value={c.id}>
-            {c.name}
-          </option>
-        ))}
-      </Select>
+      <Select
+        id="tx-category"
+        name="category_id"
+        placeholder="Sin categoria"
+        options={[{ value: '', label: 'Sin categoria' }, ...categories.map((c) => ({ value: c.id, label: c.name }))]}
+      />
     </div>
   );
 }

@@ -4,6 +4,7 @@ import { formatCurrency } from '@/lib/finance/money';
 import { firstDayOfMonthISO } from '@/lib/dates/format';
 import { Card } from '@/components/ui/card';
 import { NumericDisplay } from '@/components/design-system/NumericDisplay';
+import { MonthPicker } from '@/components/ui/date-picker';
 import {
   ExpenseComparisonChart,
   ExpenseDistributionChart,
@@ -48,12 +49,7 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
         )}
         <div className="mt-[20px] flex flex-wrap items-center gap-[12px]">
           <form method="get" className="flex items-center gap-[8px]">
-            <input
-              type="month"
-              name="month"
-              defaultValue={month}
-              className="rounded-[var(--ds-radius-md)] border border-[var(--ds-neutral-300)] px-[8px] py-[6px] text-[13px]"
-            />
+            <MonthPicker name="month" defaultValue={month} />
             <button type="submit" className="rounded-[var(--ds-radius-md)] border border-[var(--ds-neutral-300)] px-[12px] py-[6px] text-[13px]">
               Ver mes
             </button>

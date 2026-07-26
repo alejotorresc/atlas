@@ -63,11 +63,16 @@ export function CategoryManager({ categories }: { categories: Category[] }) {
           </div>
           <div>
             <Label htmlFor="cat-type">Tipo</Label>
-            <Select id="cat-type" name="category_type" defaultValue="expense">
-              <option value="income">Ingreso</option>
-              <option value="expense">Gasto</option>
-              <option value="savings">Ahorro</option>
-            </Select>
+            <Select
+              id="cat-type"
+              name="category_type"
+              defaultValue="expense"
+              options={[
+                { value: 'income', label: 'Ingreso' },
+                { value: 'expense', label: 'Gasto' },
+                { value: 'savings', label: 'Ahorro' },
+              ]}
+            />
           </div>
         </ActionForm>
       </Dialog>
@@ -81,11 +86,16 @@ export function CategoryManager({ categories }: { categories: Category[] }) {
             </div>
             <div>
               <Label htmlFor="edit-cat-type">Tipo</Label>
-              <Select id="edit-cat-type" name="category_type" defaultValue={editing.category_type}>
-                <option value="income">Ingreso</option>
-                <option value="expense">Gasto</option>
-                <option value="savings">Ahorro</option>
-              </Select>
+              <Select
+                id="edit-cat-type"
+                name="category_type"
+                defaultValue={editing.category_type}
+                options={[
+                  { value: 'income', label: 'Ingreso' },
+                  { value: 'expense', label: 'Gasto' },
+                  { value: 'savings', label: 'Ahorro' },
+                ]}
+              />
             </div>
           </ActionForm>
         )}

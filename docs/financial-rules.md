@@ -116,6 +116,34 @@ deuda" (`/cards/overview`) is rule-based and deterministic — computed by
   card's last due date. See the module's tests for the exact priority
   order.
 
+## External API access (Shortcuts integration)
+
+`POST /api/shortcuts/expense` lets an external client (currently: an iOS
+Shortcut) register an expense without the normal cookie session. It
+authenticates with a personal API token instead:
+
+- Tokens are generated from Settings → Integraciones
+  (`features/api-tokens/actions.ts::createApiToken`), shown once in
+  plaintext, and stored only as a SHA-256 hash
+  (`lib/security/api-tokens.ts`). Revoking sets `revoked_at`; revoked
+  tokens are rejected immediately.
+- The route authenticates by hashing the incoming `Authorization: Bearer`
+  token and looking it up via a **service-role** Supabase client
+  (`lib/supabase/admin.ts`) — RLS doesn't apply to that client, since
+  there's no `auth.uid()` session to key off of outside the cookie flow.
+- Because the route runs with elevated privileges, the mutation itself
+  goes through a dedicated SQL function, `create_expense_for_token`
+  (`0006_api_tokens.sql`), which takes an explicit `p_user_id` (looked up
+  from the validated token, never from client input) instead of relying
+  on `auth.uid()`. This function's `EXECUTE` privilege is granted **only**
+  to `service_role` — not `authenticated`, not `public` — so it can never
+  be invoked directly from a browser even by a logged-in user; the API
+  route holding the service role key (server-only, never shipped to the
+  client) is the only caller.
+- `SUPABASE_SERVICE_ROLE_KEY` is optional in `lib/env.ts` so the rest of
+  the app doesn't break if it isn't configured yet — the route itself
+  returns a clear 500 if it's missing when actually called.
+
 ## Recurrence assumptions
 
 - Supported frequencies: weekly, biweekly, monthly, quarterly, yearly.

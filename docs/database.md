@@ -20,6 +20,7 @@ applied in filename order.
 | `budgets` | Per category per month (`month` normalized to the 1st). Unique on `(user_id, category_id, month)`. |
 | `alerts` | Deterministic, deduplicated via a unique `(user_id, deduplication_key)` constraint — see financial-rules.md. |
 | `monthly_snapshots` | Reserved for future month-close rollups; not yet populated by application code in this MVP (reports compute on the fly instead — see build-status). |
+| `api_tokens` | Personal access tokens for external integrations (iOS Shortcuts). Only `token_hash` (SHA-256) is stored — the plaintext token is shown once at creation and never persisted. Added in `0006_api_tokens.sql`; see financial-rules.md for the security model. |
 
 All tables use `uuid` primary keys (`gen_random_uuid()`), a `user_id`
 foreign key to `auth.users`, and `created_at`/`updated_at` (auto-maintained

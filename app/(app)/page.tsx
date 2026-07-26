@@ -11,6 +11,7 @@ import { Icon } from '@/components/design-system/Icon';
 import { NumericDisplay } from '@/components/design-system/NumericDisplay';
 import { AccountCard, AlertCard, BudgetCard, CalendarEventCard, SavingsCard, TransactionCard } from '@/components/design-system/Cards';
 import { StaggerList, StaggerItem } from '@/components/design-system/Stagger';
+import { Workspace, ContextSection } from '@/components/layout/workspace';
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -50,136 +51,135 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="space-y-[56px]">
-      {/* Hero */}
-      <section>
-        <p className="text-[13px] font-medium text-[var(--ds-neutral-500)]">Disponible para gastar</p>
-        <div className="mt-[8px]">
-          <NumericDisplay amountMinor={data.safeToSpend.safeToSpendMinor} size="display" tone={isNegative ? 'negative' : 'neutral'} />
-        </div>
-        <p className="mt-[12px] max-w-[46ch] text-[15px] text-[var(--ds-neutral-600)]">{statusLine}</p>
-        <div className="mt-[20px] flex items-center gap-[12px]">
-          <Link href="/transactions?new=1">
-            <Button variant="primary">Registrar movimiento</Button>
-          </Link>
-          {(isNegative || hasUrgentAlert) && (
-            <Link href="/alerts" className="text-[13px] font-medium text-[var(--ds-color-primary)]">
-              Ver que requiere atencion →
-            </Link>
-          )}
-        </div>
-      </section>
-
-      {/* Upcoming commitments */}
-      <section>
-        <SectionHeader title="Proximos compromisos" href="/calendar" />
-        {data.activeAlerts.length === 0 && !data.nextCommitment ? (
-          <EmptyRow text="No tienes compromisos proximos registrados." />
-        ) : (
-          <div className="space-y-[8px]">
-            {data.nextCommitment && (
-              <CalendarEventCard
-                date={formatDateGT(data.nextCommitment.dueDate)}
-                title={data.nextCommitment.name}
-                amountMinor={data.nextCommitment.amountMinor}
-              />
-            )}
-            {data.activeAlerts.slice(0, 3).map((a) => (
-              <AlertCard
-                key={a.id}
-                tone={a.severity === 'urgent' ? 'danger' : a.severity === 'warning' ? 'warning' : 'info'}
-                title={a.title}
-                message={a.message}
-              />
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* Recent activity */}
-      <section>
-        <SectionHeader title="Actividad reciente" href="/transactions" />
-        {data.recentTransactions.length === 0 ? (
-          <EmptyRow text="Sin movimientos todavia." />
-        ) : (
-          <StaggerList className="space-y-[8px]">
-            {data.recentTransactions.slice(0, 5).map((t) => {
-              const type =
-                t.transaction_type === 'income' || t.transaction_type === 'refund' || t.transaction_type === 'savings_withdrawal'
-                  ? 'income'
-                  : t.transaction_type === 'transfer' || t.transaction_type === 'credit_card_payment'
-                    ? 'transfer'
-                    : 'expense';
-              return (
-                <StaggerItem key={t.id}>
-                  <TransactionCard
-                    type={type}
-                    description={t.description}
-                    date={formatDateGT(t.transaction_date)}
-                    amountMinor={t.amount_minor}
-                    currency={t.currency}
+    <Workspace
+      context={
+        <>
+          <ContextSection title="Proximos compromisos">
+            {data.activeAlerts.length === 0 && !data.nextCommitment ? (
+              <EmptyRow text="No tienes compromisos proximos." />
+            ) : (
+              <div className="space-y-[8px]">
+                {data.nextCommitment && (
+                  <CalendarEventCard
+                    date={formatDateGT(data.nextCommitment.dueDate)}
+                    title={data.nextCommitment.name}
+                    amountMinor={data.nextCommitment.amountMinor}
                   />
-                </StaggerItem>
-              );
-            })}
-          </StaggerList>
-        )}
-      </section>
+                )}
+                {data.activeAlerts.slice(0, 3).map((a) => (
+                  <AlertCard
+                    key={a.id}
+                    tone={a.severity === 'urgent' ? 'danger' : a.severity === 'warning' ? 'warning' : 'info'}
+                    title={a.title}
+                    message={a.message}
+                  />
+                ))}
+              </div>
+            )}
+          </ContextSection>
 
-      {/* Accounts */}
-      <section>
-        <SectionHeader title="Cuentas" href="/accounts" />
-        <StaggerList className="grid gap-[12px] sm:grid-cols-2 lg:grid-cols-3">
-          {data.accounts.map((a) => (
-            <StaggerItem key={a.id}>
-              <Link href={`/accounts/${a.id}`}>
-                <AccountCard name={a.name} institution={a.institution_name ?? ''} balanceMinor={a.current_balance_minor} currency={a.currency} />
+          <ContextSection title="Progreso del mes">
+            <div className="space-y-[12px]">
+              {data.budgetsCloseToLimit.length === 0 && data.savingsGoals.length === 0 ? (
+                <EmptyRow text="No hay presupuestos ni metas este mes." />
+              ) : (
+                <>
+                  {data.budgetsCloseToLimit.slice(0, 3).map(({ budget, categoryName, spentMinor }) => (
+                    <BudgetCard key={budget.id} category={categoryName} spentMinor={spentMinor} budgetMinor={budget.budget_amount_minor} />
+                  ))}
+                  {data.savingsGoals.slice(0, 2).map((g) => (
+                    <SavingsCard
+                      key={g.id}
+                      name={g.name}
+                      currentMinor={g.current_amount_minor}
+                      targetMinor={g.target_amount_minor}
+                      currency={g.currency}
+                      paceLabel={`${(savingsProgressRatio(g.current_amount_minor, g.target_amount_minor) * 100).toFixed(0)}% alcanzado`}
+                    />
+                  ))}
+                </>
+              )}
+            </div>
+          </ContextSection>
+        </>
+      }
+    >
+      <div className="space-y-[56px]">
+        {/* Hero */}
+        <section>
+          <p className="text-[13px] font-medium text-[var(--ds-neutral-500)]">Disponible para gastar</p>
+          <div className="mt-[8px]">
+            <NumericDisplay amountMinor={data.safeToSpend.safeToSpendMinor} size="display" tone={isNegative ? 'negative' : 'neutral'} />
+          </div>
+          <p className="mt-[12px] max-w-[46ch] text-[15px] text-[var(--ds-neutral-600)]">{statusLine}</p>
+          <div className="mt-[20px] flex items-center gap-[12px]">
+            <Link href="/transactions?new=1">
+              <Button variant="primary">Registrar movimiento</Button>
+            </Link>
+            {(isNegative || hasUrgentAlert) && (
+              <Link href="/alerts" className="text-[13px] font-medium text-[var(--ds-color-primary)]">
+                Ver que requiere atencion →
               </Link>
-            </StaggerItem>
-          ))}
-        </StaggerList>
-      </section>
+            )}
+          </div>
+        </section>
 
-      {/* Monthly progress */}
-      <section>
-        <SectionHeader title="Progreso del mes" href="/budgets" />
-        <div className="grid gap-[12px] sm:grid-cols-2">
-          {data.budgetsCloseToLimit.length === 0 ? (
-            <EmptyRow text="No hay presupuestos definidos este mes." />
+        {/* Recent activity */}
+        <section>
+          <SectionHeader title="Actividad reciente" href="/transactions" />
+          {data.recentTransactions.length === 0 ? (
+            <EmptyRow text="Sin movimientos todavia." />
           ) : (
-            data.budgetsCloseToLimit.slice(0, 4).map(({ budget, categoryName, spentMinor }) => (
-              <BudgetCard
-                key={budget.id}
-                category={categoryName}
-                spentMinor={spentMinor}
-                budgetMinor={budget.budget_amount_minor}
-              />
-            ))
+            <StaggerList className="space-y-[8px]">
+              {data.recentTransactions.slice(0, 5).map((t) => {
+                const type =
+                  t.transaction_type === 'income' || t.transaction_type === 'refund' || t.transaction_type === 'savings_withdrawal'
+                    ? 'income'
+                    : t.transaction_type === 'transfer' || t.transaction_type === 'credit_card_payment'
+                      ? 'transfer'
+                      : 'expense';
+                return (
+                  <StaggerItem key={t.id}>
+                    <TransactionCard
+                      type={type}
+                      description={t.description}
+                      date={formatDateGT(t.transaction_date)}
+                      amountMinor={t.amount_minor}
+                      currency={t.currency}
+                    />
+                  </StaggerItem>
+                );
+              })}
+            </StaggerList>
           )}
-          {data.savingsGoals.slice(0, 2).map((g) => (
-            <SavingsCard
-              key={g.id}
-              name={g.name}
-              currentMinor={g.current_amount_minor}
-              targetMinor={g.target_amount_minor}
-              currency={g.currency}
-              paceLabel={`${(savingsProgressRatio(g.current_amount_minor, g.target_amount_minor) * 100).toFixed(0)}% alcanzado`}
-            />
-          ))}
-        </div>
-      </section>
+        </section>
 
-      {/* Reports */}
-      <section>
-        <Link
-          href="/reports"
-          className="flex items-center justify-between rounded-[var(--ds-radius-lg)] border border-[var(--ds-neutral-100)] px-[20px] py-[16px] text-[15px] text-[var(--ds-neutral-700)] hover:bg-[var(--ds-neutral-50)]"
-        >
-          Ver reportes y tendencias del mes
-          <Icon icon={ArrowRight} size="sm" className="text-[var(--ds-neutral-400)]" />
-        </Link>
-      </section>
-    </div>
+        {/* Accounts */}
+        <section>
+          <SectionHeader title="Cuentas" href="/accounts" />
+          <StaggerList className="grid gap-[12px] sm:grid-cols-2">
+            {data.accounts.map((a) => (
+              <StaggerItem key={a.id}>
+                <Link href={`/accounts/${a.id}`}>
+                  <AccountCard name={a.name} institution={a.institution_name ?? ''} balanceMinor={a.current_balance_minor} currency={a.currency} />
+                </Link>
+              </StaggerItem>
+            ))}
+          </StaggerList>
+        </section>
+
+        {/* Reports */}
+        <section>
+          <Link
+            href="/reports"
+            className="flex items-center justify-between rounded-[var(--ds-radius-lg)] border border-[var(--ds-neutral-100)] px-[20px] py-[16px] text-[15px] text-[var(--ds-neutral-700)] hover:bg-[var(--ds-neutral-50)]"
+          >
+            Ver reportes y tendencias del mes
+            <Icon icon={ArrowRight} size="sm" className="text-[var(--ds-neutral-400)]" />
+          </Link>
+        </section>
+      </div>
+    </Workspace>
   );
 }
 

@@ -41,7 +41,7 @@ export default async function BudgetsPage({ searchParams }: { searchParams: Prom
   return (
     <div className="space-y-[40px]">
       <section>
-        <h1 className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)] capitalize">
+        <h1 className="font-display text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)] capitalize">
           Presupuestos — {monthLabel(month)}
         </h1>
         {budgets.length > 0 && (
@@ -78,7 +78,7 @@ export default async function BudgetsPage({ searchParams }: { searchParams: Prom
           <p className="text-[15px] text-[var(--ds-neutral-600)]">Aun no has asignado presupuestos para este mes.</p>
         ) : (
           <>
-            <h2 className="mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">DETALLE POR CATEGORIA</h2>
+            <h2 className="mb-[12px] font-display text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">DETALLE POR CATEGORIA</h2>
             <div className="overflow-x-auto rounded-[var(--ds-radius-lg)] border border-[var(--ds-neutral-100)]">
               <table className="w-full text-[13px]">
                 <thead className="text-left text-[12px] uppercase tracking-[0.02em] text-[var(--ds-neutral-500)]">

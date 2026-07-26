@@ -22,7 +22,7 @@ export default async function SavingsPage() {
   return (
     <div className="space-y-[40px]">
       <section>
-        <h1 className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Ahorros</h1>
+        <h1 className="font-display text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Ahorros</h1>
         <p className="mt-[8px] text-[13px] font-medium text-[var(--ds-neutral-500)]">Total ahorrado</p>
         <div className="mt-[4px]">
           <NumericDisplay amountMinor={totalSaved} size="display" />
@@ -66,7 +66,7 @@ export default async function SavingsPage() {
 
       {completedOrPaused.length > 0 && (
         <section>
-          <h2 className="mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">
+          <h2 className="mb-[12px] font-display text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">
             COMPLETADAS / PAUSADAS / CANCELADAS
           </h2>
           <div className="grid gap-[12px] sm:grid-cols-2 lg:grid-cols-3">

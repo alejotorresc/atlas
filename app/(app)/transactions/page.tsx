@@ -66,7 +66,7 @@ export default async function TransactionsPage({
   return (
     <div className="space-y-[32px]">
       <section>
-        <h1 className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Actividad</h1>
+        <h1 className="font-display text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Actividad</h1>
         <p className="mt-[8px] text-[13px] font-medium text-[var(--ds-neutral-500)]">Flujo neto (pagina actual)</p>
         <div className="mt-[4px]">
           <NumericDisplay amountMinor={net} size="display" tone={net < 0 ? 'negative' : 'neutral'} />

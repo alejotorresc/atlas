@@ -113,8 +113,12 @@
   --ds-neutral-800: #3c3c3c;
   --ds-neutral-900: #282828;
 
-  /* typography */
-  --ds-font-sans: "GT Pressura Extended", Arial, Helvetica, sans-serif;
+  /* typography — GT Pressura Extended is a display face: hero numbers,
+   * headlines, navigation, buttons, section titles. Everything read at
+   * length (paragraphs, forms, tables, lists) uses the body stack instead
+   * so long-form text stays comfortable. Mono stays a rare accent. */
+  --ds-font-display: "GT Pressura Extended", Arial, Helvetica, sans-serif;
+  --ds-font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --ds-font-mono-accent: "GT Pressura Mono", ui-monospace, monospace;
 
   /* spacing */
@@ -129,11 +133,11 @@
   --ds-space-64: 64px;
 
   /* radius — subtle: enough to soften, never enough to become a visual element */
-  --ds-radius-sm: 4px;
-  --ds-radius-md: 6px;
-  --ds-radius-lg: 8px;
-  --ds-radius-xl: 10px;
-  --ds-radius-2xl: 14px;
+  --ds-radius-sm: 6px;
+  --ds-radius-md: 10px;
+  --ds-radius-lg: 12px;
+  --ds-radius-xl: 14px;
+  --ds-radius-2xl: 18px;
   --ds-radius-pill: 9999px;
 
   /* shadows — almost invisible; prefer whitespace over elevation */
@@ -156,14 +160,21 @@
 @theme inline {
   --color-background: var(--ds-color-background);
   --color-foreground: var(--ds-neutral-900);
-  --font-sans: var(--ds-font-sans);
+  --font-sans: var(--ds-font-body);
+  --font-display: var(--ds-font-display);
   --font-mono-accent: var(--ds-font-mono-accent);
 }
 
 body {
   background: var(--ds-color-background);
   color: var(--ds-neutral-900);
-  font-family: var(--ds-font-sans);
+  font-family: var(--ds-font-body);
+}
+
+/* Apply to hero numbers, headlines, navigation, buttons, section titles —
+   never to paragraphs, forms, tables, or long-form copy. */
+.font-display {
+  font-family: var(--ds-font-display);
 }
 
 ::selection {

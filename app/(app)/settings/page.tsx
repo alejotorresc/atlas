@@ -15,29 +15,29 @@ export default async function SettingsPage() {
 
   return (
     <div className="space-y-[40px]">
-      <h1 className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Configuracion</h1>
+      <h1 className="font-display text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Configuracion</h1>
 
       <section id="perfil">
-        <h2 className="mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">PERFIL</h2>
+        <h2 className="mb-[12px] font-display text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">PERFIL</h2>
         <Card>
           <ProfileForm profile={profile} />
         </Card>
       </section>
 
       <section>
-        <h2 className="mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">CATEGORIAS</h2>
+        <h2 className="mb-[12px] font-display text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">CATEGORIAS</h2>
         <CategoryManager categories={categories} />
       </section>
 
       <section>
-        <h2 className="mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">PREFERENCIAS FINANCIERAS</h2>
+        <h2 className="mb-[12px] font-display text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">PREFERENCIAS FINANCIERAS</h2>
         <Card>
           <PreferencesForm profile={profile} />
         </Card>
       </section>
 
       <section>
-        <h2 className="mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">DATOS</h2>
+        <h2 className="mb-[12px] font-display text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">DATOS</h2>
         <Card className="space-y-[12px]">
           <div>
             <p className="text-[15px] font-medium text-[var(--ds-neutral-900)]">Exportar movimientos</p>

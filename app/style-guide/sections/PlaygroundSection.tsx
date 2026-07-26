@@ -22,7 +22,7 @@ export function PlaygroundSection() {
       <div className="rounded-[var(--ds-radius-xl)] border border-[var(--ds-neutral-200)] bg-[var(--ds-color-background)] p-[24px]">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Inicio</p>
+            <p className="font-display text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Inicio</p>
             <Badge tone="success">Todo bajo control</Badge>
           </div>
           <Button>Registrar movimiento</Button>

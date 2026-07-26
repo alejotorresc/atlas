@@ -4,7 +4,7 @@ import { SignupForm } from './signup-form';
 export default function SignupPage() {
   return (
     <div>
-      <h1 className="mb-4 text-lg font-semibold">Crear cuenta</h1>
+      <h1 className="font-display mb-[16px] text-[20px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Crear cuenta</h1>
       <SignupForm />
       <div className="mt-4 text-sm text-[var(--ds-neutral-600)]">
         Ya tienes cuenta?{' '}

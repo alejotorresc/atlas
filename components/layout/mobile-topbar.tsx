@@ -13,7 +13,7 @@ export function MobileTopbar({ unreadAlertsCount }: { unreadAlertsCount: number 
   return (
     <div className="md:hidden">
       <header className="flex items-center justify-between border-b border-[var(--ds-neutral-100)] bg-[var(--ds-color-surface)] px-[16px] py-[12px]">
-        <Link href="/" className="text-[17px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">
+        <Link href="/" className="font-display text-[17px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">
           ATLAS
         </Link>
         <button
@@ -36,7 +36,7 @@ export function MobileTopbar({ unreadAlertsCount }: { unreadAlertsCount: number 
             className="relative flex h-full w-[280px] flex-col gap-[24px] bg-[var(--ds-color-surface)] px-[16px] py-[16px] shadow-[var(--ds-shadow-lg)]"
           >
             <div className="flex items-center justify-between">
-              <span className="text-[17px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">ATLAS</span>
+              <span className="font-display text-[17px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">ATLAS</span>
               <button
                 type="button"
                 aria-label="Cerrar navegacion"

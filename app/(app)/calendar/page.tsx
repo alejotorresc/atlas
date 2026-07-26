@@ -5,6 +5,7 @@ import { listCalendarEvents, type CalendarEventType } from '@/features/calendar/
 import { formatCurrency } from '@/lib/finance/money';
 import { formatDateGT, monthLabel } from '@/lib/dates/format';
 import { Badge } from '@/components/ui/badge';
+import { buttonVariants } from '@/components/design-system/Button';
 
 const TYPE_LABELS: Record<CalendarEventType, string> = {
   obligation: 'Obligacion',
@@ -73,19 +74,19 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
         <div className="mt-[20px] flex flex-wrap gap-[8px] text-[13px]">
           <Link
             href={`/calendar?month=${adjacentMonth(month, -1)}&view=${view ?? ''}`}
-            className="rounded-[var(--ds-radius-md)] border border-[var(--ds-neutral-200)] px-[12px] py-[6px] text-[var(--ds-neutral-700)]"
+            className={buttonVariants({ variant: 'secondary', size: 'sm' })}
           >
             ← Anterior
           </Link>
           <Link
             href={`/calendar?month=${adjacentMonth(month, 1)}&view=${view ?? ''}`}
-            className="rounded-[var(--ds-radius-md)] border border-[var(--ds-neutral-200)] px-[12px] py-[6px] text-[var(--ds-neutral-700)]"
+            className={buttonVariants({ variant: 'secondary', size: 'sm' })}
           >
             Siguiente →
           </Link>
           <Link
             href={`/calendar?month=${currentMonth}&view=${isAgenda ? '' : 'agenda'}`}
-            className="rounded-[var(--ds-radius-md)] border border-[var(--ds-neutral-200)] px-[12px] py-[6px] text-[var(--ds-neutral-700)]"
+            className={buttonVariants({ variant: 'secondary', size: 'sm' })}
           >
             {isAgenda ? 'Ver mes' : 'Ver agenda'}
           </Link>

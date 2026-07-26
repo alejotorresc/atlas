@@ -9,9 +9,9 @@ applied in filename order.
 |---|---|
 | `profiles` | 1:1 with `auth.users`. Display name, currency/locale/timezone, onboarding flag, financial preferences (obligation horizon, whether pending expenses affect safe-to-spend). |
 | `accounts` | Checking/savings/cash/digital-wallet/investment/other. `current_balance_minor` is the live balance, `opening_balance_minor` is the starting point. `include_in_available_balance` controls whether it counts toward liquid balance. |
-| `credit_cards` | Never stores full card numbers or CVV — only `last_four` (regex-constrained to 4 digits). Statement/payment days 1–31. |
+| `credit_cards` | Never stores full card numbers or CVV — only `last_four` (regex-constrained to 4 digits). Statement/payment days 1–31. `0005_debt_intelligence.sql` adds the interest engine fields (`interest_calculation_method`, `interest_free_days`, `minimum_payment_percentage`, `late_fee_minor`, `annual_fee_minor`, `in_payment_agreement`) used by the debt-analysis feature — see financial-rules.md. |
 | `categories` | `user_id` nullable for protected system defaults (`is_system = true`); otherwise owned. Income/expense/savings type. |
-| `transactions` | The single ledger for all 8 transaction types. Check constraints enforce: transfers require distinct source/destination accounts, card payments require both an account and a card, expenses require an account or a card. |
+| `transactions` | The single ledger for all 8 transaction types. Check constraints enforce: transfers require distinct source/destination accounts, card payments require both an account and a card, expenses require an account or a card. `interest_portion_minor`/`principal_portion_minor` (added in `0005`) are populated only for `credit_card_payment` rows — the estimated interest/principal split shown in the payment-breakdown UI. |
 | `installment_plans` | Credit-card installment purchases; referenced by `transactions.installment_plan_id` (not yet surfaced in a dedicated screen beyond the card detail's installments section — see build-status). |
 | `recurring_obligations` | The recurrence *rule* (bills, subscriptions, rent, etc.) — not individual due dates. |
 | `obligation_occurrences` | Individual scheduled instances of a rule. Unique on `(recurring_obligation_id, due_date)` to make generation idempotent. |

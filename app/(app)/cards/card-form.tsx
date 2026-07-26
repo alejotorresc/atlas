@@ -6,6 +6,7 @@ import { ActionForm } from '@/components/forms/action-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select } from '@/components/ui/select';
 import { createCard } from '@/features/cards/actions';
 
 export function NewCardButton() {
@@ -44,6 +45,24 @@ export function NewCardButton() {
             <div>
               <Label htmlFor="card-due">Dia de pago</Label>
               <Input id="card-due" name="payment_due_day" type="number" min={1} max={31} defaultValue={15} required />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="card-apr">Tasa de interes anual (APR %)</Label>
+              <Input id="card-apr" name="annual_interest_rate" placeholder="24.99" />
+            </div>
+            <div>
+              <Label htmlFor="card-method">Metodo de calculo de interes</Label>
+              <Select
+                id="card-method"
+                name="interest_calculation_method"
+                defaultValue="statement_balance"
+                options={[
+                  { value: 'statement_balance', label: 'Saldo de estado de cuenta' },
+                  { value: 'average_daily_balance', label: 'Promedio diario (aproximado)' },
+                ]}
+              />
             </div>
           </div>
         </ActionForm>

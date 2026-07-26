@@ -42,6 +42,7 @@ export type AlertType =
   | 'savings_goal_behind'
   | 'savings_goal_reached';
 export type AlertSeverity = 'info' | 'warning' | 'urgent';
+export type InterestCalcMethod = 'statement_balance' | 'average_daily_balance';
 
 export type Profile = {
   id: string;
@@ -86,6 +87,12 @@ export type CreditCard = {
   minimum_payment_minor: number | null;
   annual_interest_rate: number | null;
   default_payment_account_id: string | null;
+  interest_calculation_method: InterestCalcMethod;
+  interest_free_days: number;
+  minimum_payment_percentage: number | null;
+  late_fee_minor: number;
+  annual_fee_minor: number;
+  in_payment_agreement: boolean;
   is_archived: boolean;
   created_at: string;
   updated_at: string;
@@ -122,6 +129,8 @@ export type Transaction = {
   status: TransactionStatus;
   notes: string | null;
   reversed_transaction_id: string | null;
+  interest_portion_minor: number | null;
+  principal_portion_minor: number | null;
   created_at: string;
   updated_at: string;
 }
@@ -331,6 +340,8 @@ export type Database = {
           p_transaction_date: string;
           p_description: string;
           p_status: TransactionStatus;
+          p_interest_portion_minor?: number | null;
+          p_principal_portion_minor?: number | null;
         },
         string
       >;

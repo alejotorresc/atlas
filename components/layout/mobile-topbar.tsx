@@ -1,14 +1,41 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
+import { Menu, Search, X } from 'lucide-react';
 import { logout } from '@/app/(auth)/actions';
 import { SidebarNav } from './sidebar-nav';
 import { Icon } from '@/components/design-system/Icon';
 
-export function MobileTopbar({ unreadAlertsCount }: { unreadAlertsCount: number }) {
+export function MobileTopbar({
+  unreadAlertsCount,
+  onSearchClick,
+}: {
+  unreadAlertsCount: number;
+  onSearchClick?: () => void;
+}) {
   const [open, setOpen] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    closeButtonRef.current?.focus();
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [open]);
 
   return (
     <div className="md:hidden">
@@ -16,20 +43,30 @@ export function MobileTopbar({ unreadAlertsCount }: { unreadAlertsCount: number 
         <Link href="/" className="font-display text-[17px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">
           ATLAS
         </Link>
-        <button
-          type="button"
-          aria-expanded={open}
-          aria-controls="mobile-nav-panel"
-          aria-label="Abrir navegacion"
-          onClick={() => setOpen(true)}
-          className="flex h-[40px] w-[40px] items-center justify-center rounded-[var(--ds-radius-md)] text-[var(--ds-neutral-600)]"
-        >
-          <Icon icon={Menu} />
-        </button>
+        <div className="flex items-center gap-[4px]">
+          <button
+            type="button"
+            aria-label="Buscar"
+            onClick={onSearchClick}
+            className="flex h-[40px] w-[40px] items-center justify-center rounded-[var(--ds-radius-md)] text-[var(--ds-neutral-600)]"
+          >
+            <Icon icon={Search} />
+          </button>
+          <button
+            type="button"
+            aria-expanded={open}
+            aria-controls="mobile-nav-panel"
+            aria-label="Abrir navegacion"
+            onClick={() => setOpen(true)}
+            className="flex h-[40px] w-[40px] items-center justify-center rounded-[var(--ds-radius-md)] text-[var(--ds-neutral-600)]"
+          >
+            <Icon icon={Menu} />
+          </button>
+        </div>
       </header>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex">
+        <div className="fixed inset-0 z-50 flex" role="dialog" aria-modal="true" aria-label="Navegacion">
           <div className="absolute inset-0 bg-black/20" onClick={() => setOpen(false)} aria-hidden="true" />
           <div
             id="mobile-nav-panel"
@@ -38,6 +75,7 @@ export function MobileTopbar({ unreadAlertsCount }: { unreadAlertsCount: number 
             <div className="flex items-center justify-between">
               <span className="font-display text-[17px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">ATLAS</span>
               <button
+                ref={closeButtonRef}
                 type="button"
                 aria-label="Cerrar navegacion"
                 onClick={() => setOpen(false)}

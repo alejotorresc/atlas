@@ -17,3 +17,5 @@ export * from './Tooltip';
 export * from './CommandPalette';
 export * from './Modal';
 export * from './Combobox';
+export * from './Meter';
+export * from './AnimatedNumber';

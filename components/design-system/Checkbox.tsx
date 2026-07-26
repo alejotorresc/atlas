@@ -18,7 +18,9 @@ export function Checkbox({ className, ...props }: CheckboxPrimitive.CheckboxProp
   return (
     <CheckboxPrimitive.Root
       className={cn(
-        'flex h-[20px] w-[20px] shrink-0 items-center justify-center rounded-[var(--ds-radius-sm)] border border-[var(--ds-neutral-300)] bg-[var(--ds-color-surface)]',
+        'relative flex h-[20px] w-[20px] shrink-0 items-center justify-center rounded-[var(--ds-radius-sm)] border border-[var(--ds-neutral-300)] bg-[var(--ds-color-surface)]',
+        // Extends the tap target to ~44px without growing the visible box, matching the design system's touch-target minimum.
+        'before:absolute before:h-[44px] before:w-[44px]',
         'transition-colors duration-[var(--ds-duration-instant)] ease-[var(--ds-ease-standard)]',
         'data-[state=checked]:border-[var(--ds-color-primary)] data-[state=checked]:bg-[var(--ds-color-primary)]',
         'focus-visible:outline-none focus-visible:shadow-[var(--ds-shadow-focus)]',

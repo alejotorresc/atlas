@@ -1,33 +1,60 @@
 @import "tailwindcss";
 
+/*
+ * GT Pressura Extended is the official ATLAS typeface — used for ~95% of
+ * the interface (headings, navigation, buttons, forms, cards, financial
+ * values, body text). See lib/design-tokens/typography.ts.
+ */
 @font-face {
-  font-family: "GT Pressura";
-  src: url("/fonts/GT-Pressura-LCGV-Standard-Regular.ttf") format("truetype");
+  font-family: "GT Pressura Extended";
+  src: url("/fonts/GT-Pressura-LCGV-Extended-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "GT Pressura";
-  src: url("/fonts/GT-Pressura-LCGV-Standard-Regular-Italic.ttf") format("truetype");
+  font-family: "GT Pressura Extended";
+  src: url("/fonts/GT-Pressura-LCGV-Extended-Regular-Italic.ttf") format("truetype");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "GT Pressura";
-  src: url("/fonts/GT-Pressura-LCGV-Standard-Medium.ttf") format("truetype");
+  font-family: "GT Pressura Extended";
+  src: url("/fonts/GT-Pressura-LCGV-Extended-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "GT Pressura";
-  src: url("/fonts/GT-Pressura-LCGV-Standard-Bold.ttf") format("truetype");
+  font-family: "GT Pressura Extended";
+  src: url("/fonts/GT-Pressura-LCGV-Extended-Bold.ttf") format("truetype");
   font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
+ * GT Pressura Mono is a rare (~5%) editorial accent — transaction IDs,
+ * timestamps, version numbers, technical metadata. Never body text,
+ * headings, buttons, or large financial values. See the "GT Pressura
+ * Mono" subsection under Typography in /style-guide for the full rules.
+ */
+@font-face {
+  font-family: "GT Pressura Mono";
+  src: url("/fonts/GT-Pressura-LCGV-Mono-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "GT Pressura Mono";
+  src: url("/fonts/GT-Pressura-LCGV-Mono-Medium.ttf") format("truetype");
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
@@ -35,13 +62,15 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --font-sans: "GT Pressura", Arial, Helvetica, sans-serif;
+  --font-sans: "GT Pressura Extended", Arial, Helvetica, sans-serif;
+  --font-mono-accent: "GT Pressura Mono", ui-monospace, monospace;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
+  --font-mono-accent: var(--font-mono-accent);
 }
 
 @media (prefers-color-scheme: dark) {

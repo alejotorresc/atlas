@@ -3,6 +3,8 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { env } from '@/lib/env';
 
 const AUTH_ROUTES = ['/login', '/signup', '/forgot-password', '/reset-password'];
+// Internal documentation, not part of the authenticated product — no session required.
+const PUBLIC_ROUTES = ['/style-guide'];
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -26,6 +28,11 @@ export async function updateSession(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
   const isAuthRoute = AUTH_ROUTES.some((route) => pathname.startsWith(route));
+  const isPublicRoute = PUBLIC_ROUTES.some((route) => pathname.startsWith(route));
+
+  if (isPublicRoute) {
+    return response;
+  }
 
   if (!user && !isAuthRoute) {
     const url = request.nextUrl.clone();

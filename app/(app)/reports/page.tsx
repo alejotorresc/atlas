@@ -3,6 +3,8 @@ import { getCardUtilizationReport, getExpenseDistribution, getMonthlySummaries }
 import { formatCurrency } from '@/lib/finance/money';
 import { firstDayOfMonthISO } from '@/lib/dates/format';
 import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/design-system/Button';
 import { NumericDisplay } from '@/components/design-system/NumericDisplay';
 import { MonthPicker } from '@/components/ui/date-picker';
 import {
@@ -48,16 +50,13 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
           </>
         )}
         <div className="mt-[20px] flex flex-wrap items-center gap-[12px]">
-          <form method="get" className="flex items-center gap-[8px]">
+          <form method="get" className="flex flex-wrap items-center gap-[8px]">
             <MonthPicker name="month" defaultValue={month} />
-            <button type="submit" className="rounded-[var(--ds-radius-md)] border border-[var(--ds-neutral-300)] px-[12px] py-[6px] text-[13px]">
+            <Button type="submit" variant="secondary" size="sm">
               Ver mes
-            </button>
+            </Button>
           </form>
-          <a
-            href={exportHref}
-            className="rounded-[var(--ds-radius-md)] bg-[var(--ds-color-primary)] px-[12px] py-[6px] text-[13px] font-medium text-white"
-          >
+          <a href={exportHref} className={buttonVariants({ variant: 'primary', size: 'sm' })}>
             Exportar CSV
           </a>
         </div>

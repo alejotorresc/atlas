@@ -8,6 +8,8 @@ import { formatCurrency } from '@/lib/finance/money';
 import { formatDateGT } from '@/lib/dates/format';
 import { Badge } from '@/components/ui/badge';
 import { Select } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { MonthPicker } from '@/components/ui/date-picker';
 import { NumericDisplay } from '@/components/design-system/NumericDisplay';
 import { NewTransactionButton } from './transaction-form';
@@ -89,7 +91,7 @@ export default async function TransactionsPage({
         </div>
       </section>
 
-      <form className="grid grid-cols-2 gap-[12px] rounded-[var(--ds-radius-lg)] border border-[var(--ds-neutral-100)] p-[16px] sm:grid-cols-4 lg:grid-cols-6" method="get">
+      <form className="grid grid-cols-1 gap-[12px] rounded-[var(--ds-radius-lg)] border border-[var(--ds-neutral-100)] p-[16px] sm:grid-cols-2 lg:grid-cols-6" method="get">
         <div>
           <label className="mb-1 block text-xs font-medium text-[var(--ds-neutral-600)]">Mes</label>
           <MonthPicker name="month" defaultValue={month} />
@@ -137,12 +139,10 @@ export default async function TransactionsPage({
         </div>
         <div>
           <label className="mb-1 block text-xs font-medium text-[var(--ds-neutral-600)]">Buscar</label>
-          <input type="text" name="q" defaultValue={params.q ?? ''} placeholder="Descripcion o comercio" className="w-full rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm" />
+          <Input type="text" name="q" defaultValue={params.q ?? ''} placeholder="Descripcion o comercio" />
         </div>
-        <div className="col-span-2 sm:col-span-4 lg:col-span-6">
-          <button type="submit" className="rounded-md bg-[var(--ds-color-primary)] px-4 py-1.5 text-sm font-medium text-white">
-            Filtrar
-          </button>
+        <div className="sm:col-span-2 lg:col-span-6">
+          <Button type="submit">Filtrar</Button>
         </div>
       </form>
 

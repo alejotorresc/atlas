@@ -5,6 +5,7 @@ import { firstDayOfMonthISO, monthLabel } from '@/lib/dates/format';
 import { projectBudget } from '@/lib/finance/budgets';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
+import { buttonVariants } from '@/components/design-system/Button';
 import { NumericDisplay } from '@/components/design-system/NumericDisplay';
 import { BudgetCard } from '@/components/design-system/Cards';
 import { MonthPicker } from '@/components/ui/date-picker';
@@ -102,9 +103,9 @@ export default async function BudgetsPage({ searchParams }: { searchParams: Prom
           )}
           <div className="mt-[20px] flex flex-wrap items-center gap-[12px]">
             <BudgetActions month={monthKey} categories={categories} />
-            <form method="get" className="flex items-center gap-[8px]">
+            <form method="get" className="flex flex-wrap items-center gap-[8px]">
               <MonthPicker name="month" defaultValue={monthKey} />
-              <button type="submit" className="rounded-[var(--ds-radius-md)] border border-[var(--ds-neutral-300)] px-[12px] py-[6px] text-[13px]">
+              <button type="submit" className={buttonVariants({ variant: 'secondary', size: 'sm' })}>
                 Ver
               </button>
             </form>

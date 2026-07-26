@@ -50,39 +50,48 @@ export default async function ObligationsPage() {
   const activeAccounts = accounts.filter((a) => !a.is_archived);
   const activeCards = cards.filter((c) => !c.is_archived);
 
-  return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Obligaciones recurrentes</h1>
-        <NewObligationButton accounts={activeAccounts} cards={activeCards} categories={categories} />
-      </div>
+  const totalUpcoming60 = occurrences.reduce((s, o) => s + o.expected_amount_minor, 0);
 
-      <div>
-        <h2 className="mb-2 text-sm font-medium text-[var(--ds-neutral-500)]">Obligaciones activas</h2>
+  return (
+    <div className="space-y-[32px]">
+      <section>
+        <h1 className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Obligaciones recurrentes</h1>
+        <p className="mt-[8px] text-[15px] text-[var(--ds-neutral-600)]">
+          {occurrences.length === 0
+            ? 'No hay ocurrencias proximas en los siguientes 60 dias.'
+            : `${formatCurrency(totalUpcoming60)} en compromisos durante los proximos 60 dias.`}
+        </p>
+        <div className="mt-[20px]">
+          <NewObligationButton accounts={activeAccounts} cards={activeCards} categories={categories} />
+        </div>
+      </section>
+
+      <section>
+        <h2 className="mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">OBLIGACIONES ACTIVAS</h2>
         {obligations.length === 0 ? (
           <Card>
-            <p className="text-sm text-[var(--ds-neutral-600)]">Aun no tienes obligaciones registradas.</p>
+            <p className="text-[15px] text-[var(--ds-neutral-600)]">Aun no tienes obligaciones registradas.</p>
           </Card>
         ) : (
-          <div className="overflow-x-auto rounded-lg border border-[var(--ds-neutral-200)]">
-            <table className="w-full text-sm">
-              <thead className="bg-[var(--ds-neutral-50)] text-left text-xs uppercase text-[var(--ds-neutral-500)]">
+          <div className="overflow-x-auto rounded-[var(--ds-radius-lg)] border border-[var(--ds-neutral-100)]">
+            <table className="w-full text-[13px]">
+              <thead className="text-left text-[12px] uppercase tracking-[0.02em] text-[var(--ds-neutral-500)]">
                 <tr>
-                  <th className="px-4 py-2">Nombre</th>
-                  <th className="px-4 py-2">Proximo vencimiento</th>
-                  <th className="px-4 py-2">Monto</th>
-                  <th className="px-4 py-2">Frecuencia</th>
-                  <th className="px-4 py-2">Estado</th>
+                  <th className="px-[16px] py-[8px]">Nombre</th>
+                  <th className="px-[16px] py-[8px]">Proximo vencimiento</th>
+                  <th className="px-[16px] py-[8px]">Monto</th>
+                  <th className="px-[16px] py-[8px]">Frecuencia</th>
+                  <th className="px-[16px] py-[8px]">Estado</th>
                 </tr>
               </thead>
               <tbody>
                 {obligations.map((o) => (
                   <tr key={o.id} className="border-t border-[var(--ds-neutral-100)]">
-                    <td className="px-4 py-2">{o.name}</td>
-                    <td className="px-4 py-2">{formatDateGT(o.next_due_date)}</td>
-                    <td className="px-4 py-2">{formatCurrency(o.amount_minor, o.currency)}</td>
-                    <td className="px-4 py-2">{FREQUENCY_LABELS[o.frequency]}</td>
-                    <td className="px-4 py-2">
+                    <td className="px-[16px] py-[8px]">{o.name}</td>
+                    <td className="px-[16px] py-[8px]">{formatDateGT(o.next_due_date)}</td>
+                    <td className="px-[16px] py-[8px]">{formatCurrency(o.amount_minor, o.currency)}</td>
+                    <td className="px-[16px] py-[8px]">{FREQUENCY_LABELS[o.frequency]}</td>
+                    <td className="px-[16px] py-[8px]">
                       <Badge tone={o.is_active ? 'success' : 'neutral'}>{o.is_active ? 'Activa' : 'Pausada'}</Badge>
                     </td>
                   </tr>
@@ -91,24 +100,24 @@ export default async function ObligationsPage() {
             </table>
           </div>
         )}
-      </div>
+      </section>
 
-      <div>
-        <h2 className="mb-2 text-sm font-medium text-[var(--ds-neutral-500)]">Proximas ocurrencias (60 dias)</h2>
+      <section>
+        <h2 className="mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">PROXIMAS OCURRENCIAS (60 DIAS)</h2>
         {occurrences.length === 0 ? (
           <Card>
-            <p className="text-sm text-[var(--ds-neutral-600)]">No hay ocurrencias proximas.</p>
+            <p className="text-[15px] text-[var(--ds-neutral-600)]">No hay ocurrencias proximas.</p>
           </Card>
         ) : (
-          <div className="overflow-x-auto rounded-lg border border-[var(--ds-neutral-200)]">
-            <table className="w-full text-sm">
-              <thead className="bg-[var(--ds-neutral-50)] text-left text-xs uppercase text-[var(--ds-neutral-500)]">
+          <div className="overflow-x-auto rounded-[var(--ds-radius-lg)] border border-[var(--ds-neutral-100)]">
+            <table className="w-full text-[13px]">
+              <thead className="text-left text-[12px] uppercase tracking-[0.02em] text-[var(--ds-neutral-500)]">
                 <tr>
-                  <th className="px-4 py-2">Obligacion</th>
-                  <th className="px-4 py-2">Vence</th>
-                  <th className="px-4 py-2">Monto esperado</th>
-                  <th className="px-4 py-2">Estado</th>
-                  <th className="px-4 py-2">Accion</th>
+                  <th className="px-[16px] py-[8px]">Obligacion</th>
+                  <th className="px-[16px] py-[8px]">Vence</th>
+                  <th className="px-[16px] py-[8px]">Monto esperado</th>
+                  <th className="px-[16px] py-[8px]">Estado</th>
+                  <th className="px-[16px] py-[8px]">Accion</th>
                 </tr>
               </thead>
               <tbody>
@@ -116,13 +125,13 @@ export default async function ObligationsPage() {
                   const obligation = obligationsById.get(occ.recurring_obligation_id);
                   return (
                     <tr key={occ.id} className="border-t border-[var(--ds-neutral-100)]">
-                      <td className="px-4 py-2">{obligation?.name ?? 'Obligacion'}</td>
-                      <td className="px-4 py-2">{formatDateGT(occ.due_date)}</td>
-                      <td className="px-4 py-2">{formatCurrency(occ.expected_amount_minor, obligation?.currency ?? 'GTQ')}</td>
-                      <td className="px-4 py-2">
+                      <td className="px-[16px] py-[8px]">{obligation?.name ?? 'Obligacion'}</td>
+                      <td className="px-[16px] py-[8px]">{formatDateGT(occ.due_date)}</td>
+                      <td className="px-[16px] py-[8px]">{formatCurrency(occ.expected_amount_minor, obligation?.currency ?? 'GTQ')}</td>
+                      <td className="px-[16px] py-[8px]">
                         <Badge tone={STATUS_TONE[occ.status]}>{occ.status}</Badge>
                       </td>
-                      <td className="px-4 py-2">
+                      <td className="px-[16px] py-[8px]">
                         <OccurrenceActions occurrence={occ} accounts={activeAccounts} cards={activeCards} />
                       </td>
                     </tr>
@@ -132,7 +141,7 @@ export default async function ObligationsPage() {
             </table>
           </div>
         )}
-      </div>
+      </section>
     </div>
   );
 }

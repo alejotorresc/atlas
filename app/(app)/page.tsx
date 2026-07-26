@@ -1,15 +1,15 @@
 import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import { getCurrentUser } from '@/lib/supabase/server';
 import { getDashboardData } from '@/features/dashboard/queries';
 import { refreshAlerts } from '@/features/alerts/actions';
 import { formatDateGT } from '@/lib/dates/format';
 import { savingsProgressRatio } from '@/lib/finance/savings-pace';
 import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { SafeToSpendCard } from '@/components/finance/safe-to-spend-card';
-import { MetricCard, TransactionCard } from '@/components/design-system/Cards';
+import { Icon } from '@/components/design-system/Icon';
 import { NumericDisplay } from '@/components/design-system/NumericDisplay';
+import { AccountCard, AlertCard, BudgetCard, CalendarEventCard, SavingsCard, TransactionCard } from '@/components/design-system/Cards';
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -31,162 +31,169 @@ export default async function DashboardPage() {
     );
   }
 
+  const isNegative = data.safeToSpend.safeToSpendMinor < 0;
+  const hasUrgentAlert = data.activeAlerts.some((a) => a.severity === 'urgent');
+
+  let statusLine: string;
+  if (isNegative) {
+    statusLine = 'Tus compromisos superan lo disponible. Revisa tus obligaciones antes de gastar.';
+  } else if (hasUrgentAlert) {
+    statusLine = 'Hay algo que necesita tu atencion antes de seguir.';
+  } else if (data.nextCommitment) {
+    statusLine =
+      data.nextCommitment.daysUntil === 0
+        ? `Tu proximo compromiso vence hoy: ${data.nextCommitment.name}.`
+        : `Todo esta bajo control. Tu proximo compromiso es en ${data.nextCommitment.daysUntil} dias.`;
+  } else {
+    statusLine = 'Todo esta bajo control. No tienes compromisos proximos.';
+  }
+
   return (
-    <div className="space-y-[24px]">
-      <h1 className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Inicio</h1>
-
-      <SafeToSpendCard breakdown={data.safeToSpend} />
-
-      <div className="grid gap-[16px] sm:grid-cols-2 lg:grid-cols-4">
-        <MetricCard label="Saldo total en cuentas" amountMinor={data.liquidBalance} />
-        <MetricCard label="Deuda en tarjetas" amountMinor={data.creditCardDebt} />
-        <MetricCard label="Posicion neta" amountMinor={data.netPosition} />
-        <Card>
-          <p className="text-[13px] font-medium text-[var(--ds-neutral-500)]">Flujo neto del mes</p>
-          <div className="mt-[4px]">
-            <NumericDisplay amountMinor={data.monthNetCashFlow} size="numericDisplay" tone={data.monthNetCashFlow < 0 ? 'negative' : 'neutral'} />
-          </div>
-        </Card>
-        <MetricCard label="Ingresos del mes" amountMinor={data.monthIncome} />
-        <MetricCard label="Gastos del mes" amountMinor={data.monthExpenses} />
-        <Card>
-          <p className="text-[13px] font-medium text-[var(--ds-neutral-500)]">Proximo ingreso esperado</p>
-          <div className="mt-[4px]">
-            {data.nextExpectedIncome ? (
-              <NumericDisplay amountMinor={data.nextExpectedIncome.amount_minor} size="numericDisplay" />
-            ) : (
-              <p className="text-[28px] font-medium text-[var(--ds-neutral-400)]">Sin datos</p>
-            )}
-          </div>
-          {data.nextExpectedIncome && (
-            <p className="mt-[4px] text-[13px] text-[var(--ds-neutral-500)]">{formatDateGT(data.nextExpectedIncome.transaction_date)}</p>
-          )}
-        </Card>
-      </div>
-
-      <div>
-        <h2 className="mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">OBLIGACIONES POR VENCER</h2>
-        <div className="grid grid-cols-3 gap-[16px]">
-          <MetricCard label="7 dias" amountMinor={data.upcoming7} />
-          <MetricCard label="15 dias" amountMinor={data.upcoming15} />
-          <MetricCard label="30 dias" amountMinor={data.upcoming30} />
+    <div className="space-y-[56px]">
+      {/* Hero */}
+      <section>
+        <p className="text-[13px] font-medium text-[var(--ds-neutral-500)]">Disponible para gastar</p>
+        <div className="mt-[8px]">
+          <NumericDisplay amountMinor={data.safeToSpend.safeToSpendMinor} size="display" tone={isNegative ? 'negative' : 'neutral'} />
         </div>
-      </div>
-
-      <div className="grid gap-[24px] lg:grid-cols-2">
-        <div>
-          <div className="mb-[12px] flex items-center justify-between">
-            <h2 className="text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">MOVIMIENTOS RECIENTES</h2>
-            <Link href="/transactions" className="text-[13px] text-[var(--ds-neutral-500)] underline">
-              Ver todos
+        <p className="mt-[12px] max-w-[46ch] text-[15px] text-[var(--ds-neutral-600)]">{statusLine}</p>
+        <div className="mt-[20px] flex items-center gap-[12px]">
+          <Link href="/transactions?new=1">
+            <Button variant="primary">Registrar movimiento</Button>
+          </Link>
+          {(isNegative || hasUrgentAlert) && (
+            <Link href="/alerts" className="text-[13px] font-medium text-[var(--ds-color-primary)]">
+              Ver que requiere atencion →
             </Link>
+          )}
+        </div>
+      </section>
+
+      {/* Upcoming commitments */}
+      <section>
+        <SectionHeader title="Proximos compromisos" href="/calendar" />
+        {data.activeAlerts.length === 0 && !data.nextCommitment ? (
+          <EmptyRow text="No tienes compromisos proximos registrados." />
+        ) : (
+          <div className="space-y-[8px]">
+            {data.nextCommitment && (
+              <CalendarEventCard
+                date={formatDateGT(data.nextCommitment.dueDate)}
+                title={data.nextCommitment.name}
+                amountMinor={data.nextCommitment.amountMinor}
+              />
+            )}
+            {data.activeAlerts.slice(0, 3).map((a) => (
+              <AlertCard
+                key={a.id}
+                tone={a.severity === 'urgent' ? 'danger' : a.severity === 'warning' ? 'warning' : 'info'}
+                title={a.title}
+                message={a.message}
+              />
+            ))}
           </div>
-          {data.recentTransactions.length === 0 ? (
-            <Card>
-              <p className="text-[15px] text-[var(--ds-neutral-600)]">Sin movimientos todavia.</p>
-            </Card>
+        )}
+      </section>
+
+      {/* Recent activity */}
+      <section>
+        <SectionHeader title="Actividad reciente" href="/transactions" />
+        {data.recentTransactions.length === 0 ? (
+          <EmptyRow text="Sin movimientos todavia." />
+        ) : (
+          <div className="space-y-[8px]">
+            {data.recentTransactions.slice(0, 5).map((t) => {
+              const type =
+                t.transaction_type === 'income' || t.transaction_type === 'refund' || t.transaction_type === 'savings_withdrawal'
+                  ? 'income'
+                  : t.transaction_type === 'transfer' || t.transaction_type === 'credit_card_payment'
+                    ? 'transfer'
+                    : 'expense';
+              return (
+                <TransactionCard
+                  key={t.id}
+                  type={type}
+                  description={t.description}
+                  date={formatDateGT(t.transaction_date)}
+                  amountMinor={t.amount_minor}
+                  currency={t.currency}
+                />
+              );
+            })}
+          </div>
+        )}
+      </section>
+
+      {/* Accounts */}
+      <section>
+        <SectionHeader title="Cuentas" href="/accounts" />
+        <div className="grid gap-[12px] sm:grid-cols-2 lg:grid-cols-3">
+          {data.accounts.map((a) => (
+            <Link key={a.id} href={`/accounts/${a.id}`}>
+              <AccountCard name={a.name} institution={a.institution_name ?? ''} balanceMinor={a.current_balance_minor} currency={a.currency} />
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Monthly progress */}
+      <section>
+        <SectionHeader title="Progreso del mes" href="/budgets" />
+        <div className="grid gap-[12px] sm:grid-cols-2">
+          {data.budgetsCloseToLimit.length === 0 ? (
+            <EmptyRow text="No hay presupuestos definidos este mes." />
           ) : (
-            <div className="space-y-[8px]">
-              {data.recentTransactions.map((t) => {
-                const type =
-                  t.transaction_type === 'income' || t.transaction_type === 'refund' || t.transaction_type === 'savings_withdrawal'
-                    ? 'income'
-                    : t.transaction_type === 'transfer' || t.transaction_type === 'credit_card_payment'
-                      ? 'transfer'
-                      : 'expense';
-                return (
-                  <TransactionCard
-                    key={t.id}
-                    type={type}
-                    description={t.description}
-                    date={formatDateGT(t.transaction_date)}
-                    amountMinor={t.amount_minor}
-                    currency={t.currency}
-                  />
-                );
-              })}
-            </div>
+            data.budgetsCloseToLimit.slice(0, 4).map(({ budget, categoryName, spentMinor }) => (
+              <BudgetCard
+                key={budget.id}
+                category={categoryName}
+                spentMinor={spentMinor}
+                budgetMinor={budget.budget_amount_minor}
+              />
+            ))
           )}
+          {data.savingsGoals.slice(0, 2).map((g) => (
+            <SavingsCard
+              key={g.id}
+              name={g.name}
+              currentMinor={g.current_amount_minor}
+              targetMinor={g.target_amount_minor}
+              currency={g.currency}
+              paceLabel={`${(savingsProgressRatio(g.current_amount_minor, g.target_amount_minor) * 100).toFixed(0)}% alcanzado`}
+            />
+          ))}
         </div>
+      </section>
 
-        <div>
-          <div className="mb-[12px] flex items-center justify-between">
-            <h2 className="text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">ALERTAS ACTIVAS</h2>
-            <Link href="/alerts" className="text-[13px] text-[var(--ds-neutral-500)] underline">
-              Ver todas
-            </Link>
-          </div>
-          <Card>
-            {data.activeAlerts.length === 0 ? (
-              <p className="text-[15px] text-[var(--ds-neutral-600)]">No hay alertas activas.</p>
-            ) : (
-              <ul className="divide-y divide-[var(--ds-neutral-100)]">
-                {data.activeAlerts.map((a) => (
-                  <li key={a.id} className="py-[12px] first:pt-0 last:pb-0">
-                    <div className="flex items-center justify-between gap-[8px]">
-                      <p className="text-[15px] font-medium text-[var(--ds-neutral-900)]">{a.title}</p>
-                      <Badge tone={a.severity === 'urgent' ? 'danger' : a.severity === 'warning' ? 'warning' : 'info'}>{a.severity}</Badge>
-                    </div>
-                    <p className="mt-[4px] text-[13px] text-[var(--ds-neutral-500)]">{a.message}</p>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </Card>
-        </div>
-      </div>
-
-      <div className="grid gap-[24px] lg:grid-cols-2">
-        <div>
-          <div className="mb-[12px] flex items-center justify-between">
-            <h2 className="text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">PRESUPUESTOS CERCA DEL LIMITE</h2>
-            <Link href="/budgets" className="text-[13px] text-[var(--ds-neutral-500)] underline">
-              Ver todos
-            </Link>
-          </div>
-          <Card>
-            {data.budgetsCloseToLimit.length === 0 ? (
-              <p className="text-[15px] text-[var(--ds-neutral-600)]">No hay presupuestos definidos este mes.</p>
-            ) : (
-              <ul className="divide-y divide-[var(--ds-neutral-100)]">
-                {data.budgetsCloseToLimit.map(({ budget, categoryName, percentageUsed }) => (
-                  <li key={budget.id} className="flex items-center justify-between py-[8px] text-[15px] text-[var(--ds-neutral-900)] first:pt-0 last:pb-0">
-                    <span>{categoryName}</span>
-                    <span className="tabular-nums text-[var(--ds-neutral-600)]">{percentageUsed.toFixed(0)}%</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </Card>
-        </div>
-
-        <div>
-          <div className="mb-[12px] flex items-center justify-between">
-            <h2 className="text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">PROGRESO DE AHORROS</h2>
-            <Link href="/savings" className="text-[13px] text-[var(--ds-neutral-500)] underline">
-              Ver todos
-            </Link>
-          </div>
-          <Card>
-            {data.savingsGoals.length === 0 ? (
-              <p className="text-[15px] text-[var(--ds-neutral-600)]">No tienes metas de ahorro activas.</p>
-            ) : (
-              <ul className="divide-y divide-[var(--ds-neutral-100)]">
-                {data.savingsGoals.map((g) => (
-                  <li key={g.id} className="py-[8px] first:pt-0 last:pb-0">
-                    <div className="flex items-center justify-between text-[15px] text-[var(--ds-neutral-900)]">
-                      <span>{g.name}</span>
-                      <span className="tabular-nums text-[var(--ds-neutral-600)]">
-                        {(savingsProgressRatio(g.current_amount_minor, g.target_amount_minor) * 100).toFixed(0)}%
-                      </span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </Card>
-        </div>
-      </div>
+      {/* Reports */}
+      <section>
+        <Link
+          href="/reports"
+          className="flex items-center justify-between rounded-[var(--ds-radius-lg)] border border-[var(--ds-neutral-100)] px-[20px] py-[16px] text-[15px] text-[var(--ds-neutral-700)] hover:bg-[var(--ds-neutral-50)]"
+        >
+          Ver reportes y tendencias del mes
+          <Icon icon={ArrowRight} size="sm" className="text-[var(--ds-neutral-400)]" />
+        </Link>
+      </section>
     </div>
+  );
+}
+
+function SectionHeader({ title, href }: { title: string; href: string }) {
+  return (
+    <div className="mb-[12px] flex items-center justify-between">
+      <h2 className="text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">{title.toUpperCase()}</h2>
+      <Link href={href} className="text-[13px] text-[var(--ds-neutral-500)] hover:text-[var(--ds-color-primary)]">
+        Ver todo
+      </Link>
+    </div>
+  );
+}
+
+function EmptyRow({ text }: { text: string }) {
+  return (
+    <Card>
+      <p className="text-[15px] text-[var(--ds-neutral-600)]">{text}</p>
+    </Card>
   );
 }

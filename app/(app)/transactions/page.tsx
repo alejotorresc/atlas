@@ -7,6 +7,7 @@ import { listSavingsGoals } from '@/features/savings/queries';
 import { formatCurrency } from '@/lib/finance/money';
 import { formatDateGT } from '@/lib/dates/format';
 import { Badge } from '@/components/ui/badge';
+import { NumericDisplay } from '@/components/design-system/NumericDisplay';
 import { NewTransactionButton } from './transaction-form';
 import { CancelTransactionButton } from './transaction-row-actions';
 import type { TransactionStatus, TransactionType } from '@/types/database';
@@ -60,21 +61,33 @@ export default async function TransactionsPage({
       listSavingsGoals(user.id),
     ]);
 
-  return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="text-xl font-semibold">Movimientos</h1>
-        <NewTransactionButton
-          accounts={accounts.filter((a) => !a.is_archived)}
-          cards={cards.filter((c) => !c.is_archived)}
-          incomeCategories={incomeCategories}
-          expenseCategories={expenseCategories}
-          savingsGoals={savingsGoals.filter((g) => g.status === 'active')}
-          defaultOpen={params.new === '1'}
-        />
-      </div>
+  const net = totalIncome - totalExpense;
 
-      <form className="grid grid-cols-2 gap-3 rounded-lg border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)] p-4 sm:grid-cols-4 lg:grid-cols-6" method="get">
+  return (
+    <div className="space-y-[32px]">
+      <section>
+        <h1 className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Actividad</h1>
+        <p className="mt-[8px] text-[13px] font-medium text-[var(--ds-neutral-500)]">Flujo neto (pagina actual)</p>
+        <div className="mt-[4px]">
+          <NumericDisplay amountMinor={net} size="display" tone={net < 0 ? 'negative' : 'neutral'} />
+        </div>
+        <p className="mt-[8px] text-[15px] text-[var(--ds-neutral-600)]">
+          Ingresos <NumericDisplay amountMinor={totalIncome} size="small" className="inline" tone="positive" /> · Gastos{' '}
+          <NumericDisplay amountMinor={totalExpense} size="small" className="inline" tone="negative" /> · {total} resultados
+        </p>
+        <div className="mt-[20px]">
+          <NewTransactionButton
+            accounts={accounts.filter((a) => !a.is_archived)}
+            cards={cards.filter((c) => !c.is_archived)}
+            incomeCategories={incomeCategories}
+            expenseCategories={expenseCategories}
+            savingsGoals={savingsGoals.filter((g) => g.status === 'active')}
+            defaultOpen={params.new === '1'}
+          />
+        </div>
+      </section>
+
+      <form className="grid grid-cols-2 gap-[12px] rounded-[var(--ds-radius-lg)] border border-[var(--ds-neutral-100)] p-[16px] sm:grid-cols-4 lg:grid-cols-6" method="get">
         <div>
           <label className="mb-1 block text-xs font-medium text-[var(--ds-neutral-600)]">Mes</label>
           <input type="month" name="month" defaultValue={month} className="w-full rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm" />
@@ -132,54 +145,39 @@ export default async function TransactionsPage({
         </div>
       </form>
 
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-        <div className="rounded-lg border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)] p-4">
-          <p className="text-xs text-[var(--ds-neutral-500)]">Ingresos (pagina actual)</p>
-          <p className="text-lg font-semibold text-[var(--ds-color-success-text)]">{formatCurrency(totalIncome)}</p>
-        </div>
-        <div className="rounded-lg border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)] p-4">
-          <p className="text-xs text-[var(--ds-neutral-500)]">Gastos (pagina actual)</p>
-          <p className="text-lg font-semibold text-[var(--ds-color-danger-text)]">{formatCurrency(totalExpense)}</p>
-        </div>
-        <div className="rounded-lg border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)] p-4">
-          <p className="text-xs text-[var(--ds-neutral-500)]">Total de resultados</p>
-          <p className="text-lg font-semibold">{total}</p>
-        </div>
-      </div>
-
-      <div className="overflow-x-auto rounded-lg border border-[var(--ds-neutral-200)]">
-        <table className="w-full text-sm">
-          <thead className="bg-[var(--ds-neutral-50)] text-left text-xs uppercase text-[var(--ds-neutral-500)]">
+      <div className="overflow-x-auto rounded-[var(--ds-radius-lg)] border border-[var(--ds-neutral-100)]">
+        <table className="w-full text-[13px]">
+          <thead className="text-left text-[12px] uppercase tracking-[0.02em] text-[var(--ds-neutral-500)]">
             <tr>
-              <th className="px-4 py-2">Fecha</th>
-              <th className="px-4 py-2">Descripcion</th>
-              <th className="px-4 py-2">Tipo</th>
-              <th className="px-4 py-2">Estado</th>
-              <th className="px-4 py-2 text-right">Monto</th>
-              <th className="px-4 py-2" />
+              <th className="px-[16px] py-[8px]">Fecha</th>
+              <th className="px-[16px] py-[8px]">Descripcion</th>
+              <th className="px-[16px] py-[8px]">Tipo</th>
+              <th className="px-[16px] py-[8px]">Estado</th>
+              <th className="px-[16px] py-[8px] text-right">Monto</th>
+              <th className="px-[16px] py-[8px]" />
             </tr>
           </thead>
           <tbody>
             {transactions.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-[var(--ds-neutral-500)]">
+                <td colSpan={6} className="px-[16px] py-[32px] text-center text-[var(--ds-neutral-500)]">
                   No hay movimientos con estos filtros.
                 </td>
               </tr>
             )}
             {transactions.map((t) => (
               <tr key={t.id} className="border-t border-[var(--ds-neutral-100)]">
-                <td className="px-4 py-2">{formatDateGT(t.transaction_date)}</td>
-                <td className="px-4 py-2">
+                <td className="px-[16px] py-[8px]">{formatDateGT(t.transaction_date)}</td>
+                <td className="px-[16px] py-[8px]">
                   {t.description}
                   {t.merchant ? <span className="text-[var(--ds-neutral-400)]"> · {t.merchant}</span> : null}
                 </td>
-                <td className="px-4 py-2">{TYPE_LABELS[t.transaction_type]}</td>
-                <td className="px-4 py-2">
+                <td className="px-[16px] py-[8px]">{TYPE_LABELS[t.transaction_type]}</td>
+                <td className="px-[16px] py-[8px]">
                   <Badge tone={STATUS_TONE[t.status]}>{t.status}</Badge>
                 </td>
-                <td className="px-4 py-2 text-right">{formatCurrency(t.amount_minor, t.currency)}</td>
-                <td className="px-4 py-2 text-right">{t.status !== 'cancelled' && <CancelTransactionButton id={t.id} />}</td>
+                <td className="px-[16px] py-[8px] text-right">{formatCurrency(t.amount_minor, t.currency)}</td>
+                <td className="px-[16px] py-[8px] text-right">{t.status !== 'cancelled' && <CancelTransactionButton id={t.id} />}</td>
               </tr>
             ))}
           </tbody>

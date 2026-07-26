@@ -12,6 +12,7 @@ import {
   CreditCard,
   Landmark,
   PiggyBank,
+  Plus,
   SlidersHorizontal,
   Undo2,
   Wallet,
@@ -246,6 +247,31 @@ export function NewTransactionButton(props: Props) {
   return (
     <>
       <Button onClick={() => setOpen(true)}>Registrar movimiento</Button>
+      {open && <TransactionModal {...props} onClose={() => setOpen(false)} />}
+    </>
+  );
+}
+
+/**
+ * Floating action button present on every app page (rendered once from
+ * AppShell) so registering an expense never requires navigating to
+ * Actividad first. Opens the same modal as NewTransactionButton, defaulted
+ * to the expense type since that's the overwhelmingly common quick action.
+ */
+export function QuickExpenseButton(props: Omit<Props, 'defaultOpen'>) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <Button
+        variant="fab"
+        size="fab"
+        aria-label="Registrar gasto"
+        onClick={() => setOpen(true)}
+        className="fixed bottom-[20px] right-[20px] z-[120] md:bottom-[32px] md:right-[32px]"
+      >
+        <Icon icon={Plus} size="lg" />
+      </Button>
       {open && <TransactionModal {...props} onClose={() => setOpen(false)} />}
     </>
   );

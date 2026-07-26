@@ -8,9 +8,11 @@ import { cn } from '@/lib/utils';
 import { Icon } from '@/components/design-system/Icon';
 import { Tooltip } from '@/components/design-system/Tooltip';
 import { CommandPalette } from '@/components/design-system/CommandPalette';
+import { QuickExpenseButton } from '@/app/(app)/transactions/transaction-form';
 import { SidebarNav } from './sidebar-nav';
 import { MobileTopbar } from './mobile-topbar';
 import { PageTransition } from './page-transition';
+import type { Account, Category, CreditCard, SavingsGoal } from '@/types/database';
 
 const STORAGE_KEY = 'atlas-sidebar-expanded';
 
@@ -31,7 +33,23 @@ const sidebarStore = {
   },
 };
 
-export function AppShell({ unreadAlertsCount, children }: { unreadAlertsCount: number; children: React.ReactNode }) {
+interface QuickExpenseProps {
+  accounts: Account[];
+  cards: CreditCard[];
+  incomeCategories: Category[];
+  expenseCategories: Category[];
+  savingsGoals: SavingsGoal[];
+}
+
+export function AppShell({
+  unreadAlertsCount,
+  quickExpenseProps,
+  children,
+}: {
+  unreadAlertsCount: number;
+  quickExpenseProps: QuickExpenseProps;
+  children: React.ReactNode;
+}) {
   const expanded = useSyncExternalStore(sidebarStore.subscribe, sidebarStore.getSnapshot, sidebarStore.getServerSnapshot);
   const hydrated = useSyncExternalStore(
     () => () => {},
@@ -125,6 +143,8 @@ export function AppShell({ unreadAlertsCount, children }: { unreadAlertsCount: n
           <PageTransition>{children}</PageTransition>
         </main>
       </div>
+
+      <QuickExpenseButton {...quickExpenseProps} />
     </div>
   );
 }

@@ -12,6 +12,7 @@ import { NumericDisplay } from '@/components/design-system/NumericDisplay';
 import { AccountCard, AlertCard, BudgetCard, CalendarEventCard, SavingsCard, TransactionCard } from '@/components/design-system/Cards';
 import { StaggerList, StaggerItem } from '@/components/design-system/Stagger';
 import { Workspace, ContextSection } from '@/components/layout/workspace';
+import { ACCOUNT_TYPE_LABELS } from '@/components/finance/account-type-labels';
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -161,7 +162,13 @@ export default async function DashboardPage() {
             {data.accounts.map((a) => (
               <StaggerItem key={a.id}>
                 <Link href={`/accounts/${a.id}`}>
-                  <AccountCard name={a.name} institution={a.institution_name ?? ''} balanceMinor={a.current_balance_minor} currency={a.currency} />
+                  <AccountCard
+                    name={a.name}
+                    institution={a.institution_name ?? ''}
+                    balanceMinor={a.current_balance_minor}
+                    currency={a.currency}
+                    typeLabel={ACCOUNT_TYPE_LABELS[a.account_type]}
+                  />
                 </Link>
               </StaggerItem>
             ))}

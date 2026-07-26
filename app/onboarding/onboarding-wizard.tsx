@@ -13,6 +13,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { DatePicker } from '@/components/ui/date-picker';
 
 const STEPS = ['Perfil', 'Cuenta', 'Tarjeta', 'Ingreso', 'Listo'] as const;
 
@@ -104,21 +106,26 @@ export function OnboardingWizard() {
           </div>
           <div>
             <Label htmlFor="account_type">Tipo</Label>
-            <Select id="account_type" name="account_type" defaultValue="checking">
-              <option value="checking">Monetaria</option>
-              <option value="savings">Ahorro</option>
-              <option value="cash">Efectivo</option>
-              <option value="digital_wallet">Billetera digital</option>
-              <option value="investment">Inversion</option>
-              <option value="other">Otro</option>
-            </Select>
+            <Select
+              id="account_type"
+              name="account_type"
+              defaultValue="checking"
+              options={[
+                { value: 'checking', label: 'Monetaria' },
+                { value: 'savings', label: 'Ahorro' },
+                { value: 'cash', label: 'Efectivo' },
+                { value: 'digital_wallet', label: 'Billetera digital' },
+                { value: 'investment', label: 'Inversion' },
+                { value: 'other', label: 'Otro' },
+              ]}
+            />
           </div>
           <div>
             <Label htmlFor="opening_balance">Saldo inicial</Label>
             <Input id="opening_balance" name="opening_balance" defaultValue="0.00" required />
           </div>
-          <div className="flex items-center gap-2">
-            <input id="include_in_available_balance" name="include_in_available_balance" type="checkbox" defaultChecked />
+          <div className="flex items-center gap-[8px]">
+            <Checkbox id="include_in_available_balance" name="include_in_available_balance" defaultChecked />
             <Label htmlFor="include_in_available_balance" className="mb-0">
               Incluir en saldo disponible
             </Label>
@@ -186,17 +193,22 @@ export function OnboardingWizard() {
           </div>
           <div>
             <Label htmlFor="next_due_date">Proxima fecha esperada</Label>
-            <Input id="next_due_date" name="next_due_date" type="date" />
+            <DatePicker id="next_due_date" name="next_due_date" placeholder="Selecciona una fecha" />
           </div>
           <div>
             <Label htmlFor="frequency">Frecuencia</Label>
-            <Select id="frequency" name="frequency" defaultValue="monthly">
-              <option value="weekly">Semanal</option>
-              <option value="biweekly">Quincenal</option>
-              <option value="monthly">Mensual</option>
-              <option value="quarterly">Trimestral</option>
-              <option value="yearly">Anual</option>
-            </Select>
+            <Select
+              id="frequency"
+              name="frequency"
+              defaultValue="monthly"
+              options={[
+                { value: 'weekly', label: 'Semanal' },
+                { value: 'biweekly', label: 'Quincenal' },
+                { value: 'monthly', label: 'Mensual' },
+                { value: 'quarterly', label: 'Trimestral' },
+                { value: 'yearly', label: 'Anual' },
+              ]}
+            />
           </div>
           <div className="flex gap-2">
             <Button type="submit" disabled={pending}>

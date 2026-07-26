@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
+import { DatePicker } from '@/components/ui/date-picker';
 import { markOccurrencePaid, skipOccurrence } from '@/features/obligations/actions';
 import { formatMinorUnits } from '@/lib/finance/money';
 import { todayISO } from '@/lib/dates/format';
@@ -54,29 +55,25 @@ export function OccurrenceActions({
           </div>
           <div>
             <Label htmlFor="occ-date">Fecha de pago</Label>
-            <Input id="occ-date" name="transaction_date" type="date" defaultValue={todayISO()} required />
+            <DatePicker id="occ-date" name="transaction_date" defaultValue={todayISO()} required />
           </div>
           <div>
             <Label htmlFor="occ-account">Cuenta de pago</Label>
-            <Select id="occ-account" name="account_id">
-              <option value="">Ninguna</option>
-              {accounts.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name}
-                </option>
-              ))}
-            </Select>
+            <Select
+              id="occ-account"
+              name="account_id"
+              placeholder="Ninguna"
+              options={[{ value: '', label: 'Ninguna' }, ...accounts.map((a) => ({ value: a.id, label: a.name }))]}
+            />
           </div>
           <div>
             <Label htmlFor="occ-card">O tarjeta de pago</Label>
-            <Select id="occ-card" name="credit_card_id">
-              <option value="">Ninguna</option>
-              {cards.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </Select>
+            <Select
+              id="occ-card"
+              name="credit_card_id"
+              placeholder="Ninguna"
+              options={[{ value: '', label: 'Ninguna' }, ...cards.map((c) => ({ value: c.id, label: c.name }))]}
+            />
           </div>
         </ActionForm>
       </Dialog>

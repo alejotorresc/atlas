@@ -7,6 +7,8 @@ import { listSavingsGoals } from '@/features/savings/queries';
 import { formatCurrency } from '@/lib/finance/money';
 import { formatDateGT } from '@/lib/dates/format';
 import { Badge } from '@/components/ui/badge';
+import { Select } from '@/components/ui/select';
+import { MonthPicker } from '@/components/ui/date-picker';
 import { NumericDisplay } from '@/components/design-system/NumericDisplay';
 import { NewTransactionButton } from './transaction-form';
 import { CancelTransactionButton } from './transaction-row-actions';
@@ -90,49 +92,48 @@ export default async function TransactionsPage({
       <form className="grid grid-cols-2 gap-[12px] rounded-[var(--ds-radius-lg)] border border-[var(--ds-neutral-100)] p-[16px] sm:grid-cols-4 lg:grid-cols-6" method="get">
         <div>
           <label className="mb-1 block text-xs font-medium text-[var(--ds-neutral-600)]">Mes</label>
-          <input type="month" name="month" defaultValue={month} className="w-full rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm" />
+          <MonthPicker name="month" defaultValue={month} />
         </div>
         <div>
           <label className="mb-1 block text-xs font-medium text-[var(--ds-neutral-600)]">Tipo</label>
-          <select name="type" defaultValue={params.type ?? ''} className="w-full rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm">
-            <option value="">Todos</option>
-            {Object.entries(TYPE_LABELS).map(([value, label]) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
+          <Select
+            name="type"
+            defaultValue={params.type ?? ''}
+            placeholder="Todos"
+            options={[{ value: '', label: 'Todos' }, ...Object.entries(TYPE_LABELS).map(([value, label]) => ({ value, label }))]}
+          />
         </div>
         <div>
           <label className="mb-1 block text-xs font-medium text-[var(--ds-neutral-600)]">Cuenta</label>
-          <select name="accountId" defaultValue={params.accountId ?? ''} className="w-full rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm">
-            <option value="">Todas</option>
-            {accounts.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.name}
-              </option>
-            ))}
-          </select>
+          <Select
+            name="accountId"
+            defaultValue={params.accountId ?? ''}
+            placeholder="Todas"
+            options={[{ value: '', label: 'Todas' }, ...accounts.map((a) => ({ value: a.id, label: a.name }))]}
+          />
         </div>
         <div>
           <label className="mb-1 block text-xs font-medium text-[var(--ds-neutral-600)]">Tarjeta</label>
-          <select name="creditCardId" defaultValue={params.creditCardId ?? ''} className="w-full rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm">
-            <option value="">Todas</option>
-            {cards.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </select>
+          <Select
+            name="creditCardId"
+            defaultValue={params.creditCardId ?? ''}
+            placeholder="Todas"
+            options={[{ value: '', label: 'Todas' }, ...cards.map((c) => ({ value: c.id, label: c.name }))]}
+          />
         </div>
         <div>
           <label className="mb-1 block text-xs font-medium text-[var(--ds-neutral-600)]">Estado</label>
-          <select name="status" defaultValue={params.status ?? ''} className="w-full rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm">
-            <option value="">Todos</option>
-            <option value="cleared">Confirmado</option>
-            <option value="pending">Pendiente</option>
-            <option value="cancelled">Cancelado</option>
-          </select>
+          <Select
+            name="status"
+            defaultValue={params.status ?? ''}
+            placeholder="Todos"
+            options={[
+              { value: '', label: 'Todos' },
+              { value: 'cleared', label: 'Confirmado' },
+              { value: 'pending', label: 'Pendiente' },
+              { value: 'cancelled', label: 'Cancelado' },
+            ]}
+          />
         </div>
         <div>
           <label className="mb-1 block text-xs font-medium text-[var(--ds-neutral-600)]">Buscar</label>

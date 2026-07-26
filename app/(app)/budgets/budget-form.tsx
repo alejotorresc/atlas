@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 import { copyPreviousMonthBudgets, upsertBudget } from '@/features/budgets/actions';
 import type { Category } from '@/types/database';
 
@@ -34,21 +35,20 @@ export function BudgetActions({ month, categories }: { month: string; categories
           <input type="hidden" name="month" value={month} />
           <div>
             <Label htmlFor="budget-category">Categoria</Label>
-            <Select id="budget-category" name="category_id" required>
-              <option value="">Selecciona una categoria</option>
-              {categories.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </Select>
+            <Select
+              id="budget-category"
+              name="category_id"
+              required
+              placeholder="Selecciona una categoria"
+              options={categories.map((c) => ({ value: c.id, label: c.name }))}
+            />
           </div>
           <div>
             <Label htmlFor="budget-amount">Monto asignado</Label>
             <Input id="budget-amount" name="budget_amount" required />
           </div>
-          <div className="flex items-center gap-2">
-            <input id="budget-rollover" name="rollover_enabled" type="checkbox" />
+          <div className="flex items-center gap-[8px]">
+            <Checkbox id="budget-rollover" name="rollover_enabled" />
             <Label htmlFor="budget-rollover" className="mb-0">
               Permitir arrastre al siguiente mes
             </Label>

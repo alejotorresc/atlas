@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { DatePicker } from '@/components/ui/date-picker';
 import { createSavingsContribution, createSavingsWithdrawal } from '@/features/transactions/actions';
 import { setSavingsGoalStatus, updateSavingsGoal } from '@/features/savings/actions';
 import { todayISO } from '@/lib/dates/format';
@@ -72,7 +74,7 @@ export function GoalDetailActions({ goal, accounts }: { goal: SavingsGoal; accou
           </div>
           <div>
             <Label htmlFor="contrib-date">Fecha</Label>
-            <Input id="contrib-date" name="transaction_date" type="date" defaultValue={todayISO()} required />
+            <DatePicker id="contrib-date" name="transaction_date" defaultValue={todayISO()} required />
           </div>
           <div>
             <Label htmlFor="contrib-desc">Descripcion</Label>
@@ -80,14 +82,12 @@ export function GoalDetailActions({ goal, accounts }: { goal: SavingsGoal; accou
           </div>
           <div>
             <Label htmlFor="contrib-account">Cuenta origen (opcional)</Label>
-            <Select id="contrib-account" name="source_account_id">
-              <option value="">Sin cuenta</option>
-              {accounts.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name}
-                </option>
-              ))}
-            </Select>
+            <Select
+              id="contrib-account"
+              name="source_account_id"
+              placeholder="Sin cuenta"
+              options={[{ value: '', label: 'Sin cuenta' }, ...accounts.map((a) => ({ value: a.id, label: a.name }))]}
+            />
           </div>
         </ActionForm>
       </Dialog>
@@ -100,7 +100,7 @@ export function GoalDetailActions({ goal, accounts }: { goal: SavingsGoal; accou
           </div>
           <div>
             <Label htmlFor="withdraw-date">Fecha</Label>
-            <Input id="withdraw-date" name="transaction_date" type="date" defaultValue={todayISO()} required />
+            <DatePicker id="withdraw-date" name="transaction_date" defaultValue={todayISO()} required />
           </div>
           <div>
             <Label htmlFor="withdraw-desc">Descripcion</Label>
@@ -108,14 +108,12 @@ export function GoalDetailActions({ goal, accounts }: { goal: SavingsGoal; accou
           </div>
           <div>
             <Label htmlFor="withdraw-account">Cuenta destino (opcional)</Label>
-            <Select id="withdraw-account" name="destination_account_id">
-              <option value="">Sin cuenta</option>
-              {accounts.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name}
-                </option>
-              ))}
-            </Select>
+            <Select
+              id="withdraw-account"
+              name="destination_account_id"
+              placeholder="Sin cuenta"
+              options={[{ value: '', label: 'Sin cuenta' }, ...accounts.map((a) => ({ value: a.id, label: a.name }))]}
+            />
           </div>
         </ActionForm>
       </Dialog>
@@ -132,23 +130,23 @@ export function GoalDetailActions({ goal, accounts }: { goal: SavingsGoal; accou
           </div>
           <div>
             <Label htmlFor="edit-goal-date">Fecha objetivo</Label>
-            <Input id="edit-goal-date" name="target_date" type="date" defaultValue={goal.target_date ?? ''} />
+            <DatePicker id="edit-goal-date" name="target_date" defaultValue={goal.target_date ?? undefined} placeholder="Sin fecha objetivo" />
           </div>
           <div>
             <Label htmlFor="edit-goal-priority">Prioridad</Label>
-            <Select id="edit-goal-priority" name="priority" defaultValue={goal.priority}>
-              <option value="low">Baja</option>
-              <option value="medium">Media</option>
-              <option value="high">Alta</option>
-            </Select>
-          </div>
-          <div className="flex items-center gap-2">
-            <input
-              id="edit-goal-exclude"
-              name="exclude_from_available_balance"
-              type="checkbox"
-              defaultChecked={goal.exclude_from_available_balance}
+            <Select
+              id="edit-goal-priority"
+              name="priority"
+              defaultValue={goal.priority}
+              options={[
+                { value: 'low', label: 'Baja' },
+                { value: 'medium', label: 'Media' },
+                { value: 'high', label: 'Alta' },
+              ]}
             />
+          </div>
+          <div className="flex items-center gap-[8px]">
+            <Checkbox id="edit-goal-exclude" name="exclude_from_available_balance" defaultChecked={goal.exclude_from_available_balance} />
             <Label htmlFor="edit-goal-exclude" className="mb-0">
               Excluir del saldo disponible
             </Label>

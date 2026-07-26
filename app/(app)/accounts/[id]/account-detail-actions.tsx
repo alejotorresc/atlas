@@ -7,18 +7,20 @@ import { Dialog } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { DatePicker } from '@/components/ui/date-picker';
 import { ActionForm } from '@/components/forms/action-form';
 import { archiveAccount, adjustAccountBalance, updateAccount } from '@/features/accounts/actions';
 import { todayISO } from '@/lib/dates/format';
 import type { Account } from '@/types/database';
 
 const ACCOUNT_TYPES = [
-  ['checking', 'Monetaria'],
-  ['savings', 'Ahorro'],
-  ['cash', 'Efectivo'],
-  ['digital_wallet', 'Billetera digital'],
-  ['investment', 'Inversion'],
-  ['other', 'Otro'],
+  { value: 'checking', label: 'Monetaria' },
+  { value: 'savings', label: 'Ahorro' },
+  { value: 'cash', label: 'Efectivo' },
+  { value: 'digital_wallet', label: 'Billetera digital' },
+  { value: 'investment', label: 'Inversion' },
+  { value: 'other', label: 'Otro' },
 ] as const;
 
 export function AccountDetailActions({ account }: { account: Account }) {
@@ -56,21 +58,10 @@ export function AccountDetailActions({ account }: { account: Account }) {
           </div>
           <div>
             <Label htmlFor="edit-type">Tipo</Label>
-            <Select id="edit-type" name="account_type" defaultValue={account.account_type}>
-              {ACCOUNT_TYPES.map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </Select>
+            <Select id="edit-type" name="account_type" options={[...ACCOUNT_TYPES]} defaultValue={account.account_type} />
           </div>
-          <div className="flex items-center gap-2">
-            <input
-              id="edit-include"
-              name="include_in_available_balance"
-              type="checkbox"
-              defaultChecked={account.include_in_available_balance}
-            />
+          <div className="flex items-center gap-[8px]">
+            <Checkbox id="edit-include" name="include_in_available_balance" defaultChecked={account.include_in_available_balance} />
             <Label htmlFor="edit-include" className="mb-0">
               Incluir en saldo disponible
             </Label>
@@ -86,7 +77,7 @@ export function AccountDetailActions({ account }: { account: Account }) {
           </div>
           <div>
             <Label htmlFor="adj-date">Fecha</Label>
-            <Input id="adj-date" name="transaction_date" type="date" defaultValue={todayISO()} required />
+            <DatePicker id="adj-date" name="transaction_date" defaultValue={todayISO()} required />
           </div>
           <div>
             <Label htmlFor="adj-desc">Motivo del ajuste</Label>

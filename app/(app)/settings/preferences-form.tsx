@@ -3,6 +3,7 @@
 import { ActionForm } from '@/components/forms/action-form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { updateFinancialPreferences } from '@/features/profile/actions';
 import type { Profile } from '@/types/database';
 
@@ -21,13 +22,8 @@ export function PreferencesForm({ profile }: { profile: Profile }) {
           required
         />
       </div>
-      <div className="flex items-center gap-2">
-        <input
-          id="pref-pending"
-          name="pending_affects_safe_to_spend"
-          type="checkbox"
-          defaultChecked={profile.pending_affects_safe_to_spend}
-        />
+      <div className="flex items-center gap-[8px]">
+        <Checkbox id="pref-pending" name="pending_affects_safe_to_spend" defaultChecked={profile.pending_affects_safe_to_spend} />
         <Label htmlFor="pref-pending" className="mb-0">
           Los gastos pendientes afectan el estimado de &quot;puedes gastar&quot;
         </Label>

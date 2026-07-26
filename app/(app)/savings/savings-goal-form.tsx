@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { DatePicker } from '@/components/ui/date-picker';
 import { createSavingsGoal } from '@/features/savings/actions';
 import type { Account } from '@/types/database';
 
@@ -28,29 +30,32 @@ export function NewSavingsGoalButton({ accounts }: { accounts: Account[] }) {
           </div>
           <div>
             <Label htmlFor="goal-date">Fecha objetivo (opcional)</Label>
-            <Input id="goal-date" name="target_date" type="date" />
+            <DatePicker id="goal-date" name="target_date" placeholder="Sin fecha objetivo" />
           </div>
           <div>
             <Label htmlFor="goal-account">Cuenta vinculada (opcional)</Label>
-            <Select id="goal-account" name="linked_account_id">
-              <option value="">Ninguna</option>
-              {accounts.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name}
-                </option>
-              ))}
-            </Select>
+            <Select
+              id="goal-account"
+              name="linked_account_id"
+              placeholder="Ninguna"
+              options={[{ value: '', label: 'Ninguna' }, ...accounts.map((a) => ({ value: a.id, label: a.name }))]}
+            />
           </div>
           <div>
             <Label htmlFor="goal-priority">Prioridad</Label>
-            <Select id="goal-priority" name="priority" defaultValue="medium">
-              <option value="low">Baja</option>
-              <option value="medium">Media</option>
-              <option value="high">Alta</option>
-            </Select>
+            <Select
+              id="goal-priority"
+              name="priority"
+              defaultValue="medium"
+              options={[
+                { value: 'low', label: 'Baja' },
+                { value: 'medium', label: 'Media' },
+                { value: 'high', label: 'Alta' },
+              ]}
+            />
           </div>
-          <div className="flex items-center gap-2">
-            <input id="goal-exclude" name="exclude_from_available_balance" type="checkbox" defaultChecked />
+          <div className="flex items-center gap-[8px]">
+            <Checkbox id="goal-exclude" name="exclude_from_available_balance" defaultChecked />
             <Label htmlFor="goal-exclude" className="mb-0">
               Excluir del saldo disponible
             </Label>

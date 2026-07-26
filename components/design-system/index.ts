@@ -14,3 +14,4 @@ export * from './Chart';
 export * from './Toast';
 export * from './BottomSheet';
 export * from './Tooltip';
+export * from './CommandPalette';

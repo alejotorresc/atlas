@@ -1,12 +1,13 @@
 'use client';
 
-import { useSyncExternalStore } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
-import { LogOut, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { LogOut, PanelLeftClose, PanelLeftOpen, Search } from 'lucide-react';
 import { logout } from '@/app/(auth)/actions';
 import { cn } from '@/lib/utils';
 import { Icon } from '@/components/design-system/Icon';
 import { Tooltip } from '@/components/design-system/Tooltip';
+import { CommandPalette } from '@/components/design-system/CommandPalette';
 import { SidebarNav } from './sidebar-nav';
 import { MobileTopbar } from './mobile-topbar';
 import { PageTransition } from './page-transition';
@@ -42,8 +43,11 @@ export function AppShell({ unreadAlertsCount, children }: { unreadAlertsCount: n
     sidebarStore.set(!expanded);
   }
 
+  const [paletteOpen, setPaletteOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-[var(--ds-color-background)] md:flex">
+      <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
       <aside
         className={cn(
           'hidden shrink-0 flex-col border-r border-[var(--ds-neutral-100)] py-[24px] md:flex',
@@ -54,12 +58,31 @@ export function AppShell({ unreadAlertsCount, children }: { unreadAlertsCount: n
         <Link
           href="/"
           className={cn(
-            'font-display mb-[32px] flex h-[32px] items-center text-[17px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]',
+            'font-display mb-[16px] flex h-[32px] items-center text-[17px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]',
             expanded ? 'px-[10px]' : 'justify-center',
           )}
         >
           {expanded ? 'ATLAS' : 'A'}
         </Link>
+
+        <div className="mb-[16px]">
+          <Tooltip label="Buscar (⌘K)" disabled={expanded}>
+            <button
+              type="button"
+              onClick={() => setPaletteOpen(true)}
+              className={cn(
+                'flex items-center rounded-[var(--ds-radius-md)] text-[13px] text-[var(--ds-neutral-400)] hover:bg-[var(--ds-neutral-50)] hover:text-[var(--ds-neutral-700)]',
+                expanded ? 'h-[36px] w-full justify-between px-[10px]' : 'h-[36px] w-[36px] justify-center',
+              )}
+            >
+              <span className="flex items-center gap-[10px]">
+                <Icon icon={Search} size="sm" />
+                {expanded && <span className="font-display">Buscar</span>}
+              </span>
+              {expanded && <span className="font-display text-[11px] text-[var(--ds-neutral-400)]">⌘K</span>}
+            </button>
+          </Tooltip>
+        </div>
 
         <div className="flex flex-1 flex-col">
           <SidebarNav unreadAlertsCount={unreadAlertsCount} expanded={expanded} />

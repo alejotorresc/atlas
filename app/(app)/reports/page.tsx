@@ -2,7 +2,8 @@ import { getCurrentUser } from '@/lib/supabase/server';
 import { getCardUtilizationReport, getExpenseDistribution, getMonthlySummaries } from '@/features/reports/queries';
 import { formatCurrency } from '@/lib/finance/money';
 import { firstDayOfMonthISO } from '@/lib/dates/format';
-import { Card, CardTitle, CardValue } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
+import { NumericDisplay } from '@/components/design-system/NumericDisplay';
 import {
   ExpenseComparisonChart,
   ExpenseDistributionChart,
@@ -26,38 +27,45 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
   const exportHref = `/api/export?month=${month}`;
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="text-xl font-semibold">Reportes</h1>
-        <div className="flex items-center gap-2">
-          <form method="get" className="flex items-center gap-2">
-            <input type="month" name="month" defaultValue={month} className="rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm" />
-            <button type="submit" className="rounded-md border border-[var(--ds-neutral-300)] px-3 py-1.5 text-sm">
+    <div className="space-y-[40px]">
+      <section>
+        <h1 className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Reportes</h1>
+        {currentMonthSummary && (
+          <>
+            <p className="mt-[8px] text-[13px] font-medium text-[var(--ds-neutral-500)]">Flujo neto del mes</p>
+            <div className="mt-[4px]">
+              <NumericDisplay
+                amountMinor={currentMonthSummary.netCashFlow}
+                size="display"
+                tone={currentMonthSummary.netCashFlow < 0 ? 'negative' : 'neutral'}
+              />
+            </div>
+            <p className="mt-[8px] text-[15px] text-[var(--ds-neutral-600)]">
+              Ingresos <NumericDisplay amountMinor={currentMonthSummary.income} size="small" className="inline" /> · Gastos{' '}
+              <NumericDisplay amountMinor={currentMonthSummary.expenses} size="small" className="inline" />
+            </p>
+          </>
+        )}
+        <div className="mt-[20px] flex flex-wrap items-center gap-[12px]">
+          <form method="get" className="flex items-center gap-[8px]">
+            <input
+              type="month"
+              name="month"
+              defaultValue={month}
+              className="rounded-[var(--ds-radius-md)] border border-[var(--ds-neutral-300)] px-[8px] py-[6px] text-[13px]"
+            />
+            <button type="submit" className="rounded-[var(--ds-radius-md)] border border-[var(--ds-neutral-300)] px-[12px] py-[6px] text-[13px]">
               Ver mes
             </button>
           </form>
-          <a href={exportHref} className="rounded-md bg-[var(--ds-color-primary)] px-3 py-1.5 text-sm font-medium text-white">
+          <a
+            href={exportHref}
+            className="rounded-[var(--ds-radius-md)] bg-[var(--ds-color-primary)] px-[12px] py-[6px] text-[13px] font-medium text-white"
+          >
             Exportar CSV
           </a>
         </div>
-      </div>
-
-      {currentMonthSummary && (
-        <div className="grid gap-4 sm:grid-cols-3">
-          <Card>
-            <CardTitle>Ingresos del mes</CardTitle>
-            <CardValue>{formatCurrency(currentMonthSummary.income)}</CardValue>
-          </Card>
-          <Card>
-            <CardTitle>Gastos del mes</CardTitle>
-            <CardValue>{formatCurrency(currentMonthSummary.expenses)}</CardValue>
-          </Card>
-          <Card>
-            <CardTitle>Flujo neto</CardTitle>
-            <CardValue>{formatCurrency(currentMonthSummary.netCashFlow)}</CardValue>
-          </Card>
-        </div>
-      )}
+      </section>
 
       <section>
         <h2 className="mb-2 text-sm font-medium text-[var(--ds-neutral-500)]">Ingresos vs. gastos (6 meses)</h2>

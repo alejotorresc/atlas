@@ -5,7 +5,14 @@ import { monthlyCashFlow } from '@/lib/finance/cashflow';
 import { projectBudget } from '@/lib/finance/budgets';
 import { addDaysUtc } from '@/lib/finance/dates';
 import { getProfile } from '@/features/profile/queries';
-import type { Alert, Budget, SavingsGoal, Transaction } from '@/types/database';
+import type { Account, Alert, Budget, SavingsGoal, Transaction } from '@/types/database';
+
+export interface NextCommitment {
+  name: string;
+  dueDate: string;
+  amountMinor: number;
+  daysUntil: number;
+}
 
 export async function computeSafeToSpend(userId: string): Promise<SafeToSpendBreakdown> {
   const supabase = await createClient();
@@ -71,10 +78,12 @@ export interface DashboardData {
   upcoming15: number;
   upcoming30: number;
   nextExpectedIncome: Transaction | null;
+  nextCommitment: NextCommitment | null;
   recentTransactions: Transaction[];
   activeAlerts: Alert[];
-  budgetsCloseToLimit: Array<{ budget: Budget; categoryName: string; percentageUsed: number }>;
+  budgetsCloseToLimit: Array<{ budget: Budget; categoryName: string; percentageUsed: number; spentMinor: number }>;
   savingsGoals: SavingsGoal[];
+  accounts: Account[];
   hasAnyAccount: boolean;
 }
 
@@ -85,8 +94,21 @@ export async function getDashboardData(userId: string): Promise<DashboardData> {
   const monthEnd = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth() + 1, 1)).toISOString().slice(0, 10);
   const todayStr = today.toISOString().slice(0, 10);
 
-  const [accountsRes, cardsRes, monthTxRes, occ7Res, occ15Res, occ30Res, nextIncomeRes, recentTxRes, alertsRes, budgetsRes, categoriesRes, goalsRes] =
-    await Promise.all([
+  const [
+    accountsRes,
+    cardsRes,
+    monthTxRes,
+    occ7Res,
+    occ15Res,
+    occ30Res,
+    nextIncomeRes,
+    nextCommitmentRes,
+    recentTxRes,
+    alertsRes,
+    budgetsRes,
+    categoriesRes,
+    goalsRes,
+  ] = await Promise.all([
       supabase.from('accounts').select('*').eq('user_id', userId).eq('is_archived', false),
       supabase.from('credit_cards').select('*').eq('user_id', userId).eq('is_archived', false),
       supabase
@@ -123,6 +145,15 @@ export async function getDashboardData(userId: string): Promise<DashboardData> {
         .order('transaction_date')
         .limit(1)
         .maybeSingle(),
+      supabase
+        .from('obligation_occurrences')
+        .select('due_date, expected_amount_minor, recurring_obligations(name)')
+        .eq('user_id', userId)
+        .gte('due_date', todayStr)
+        .in('status', ['upcoming', 'pending', 'overdue', 'partial'])
+        .order('due_date')
+        .limit(1)
+        .maybeSingle(),
       supabase.from('transactions').select('*').eq('user_id', userId).neq('status', 'cancelled').order('transaction_date', { ascending: false }).limit(8),
       supabase.from('alerts').select('*').eq('user_id', userId).is('dismissed_at', null).order('effective_date', { ascending: false }).limit(5),
       supabase.from('budgets').select('*').eq('user_id', userId).eq('month', monthStart),
@@ -151,12 +182,26 @@ export async function getDashboardData(userId: string): Promise<DashboardData> {
         .lte('transaction_date', todayStr);
       const spent = (spendRows ?? []).reduce((s, r) => s + r.amount_minor, 0);
       const { percentageUsed } = projectBudget(budget.budget_amount_minor, spent, dayOfMonth, totalDaysInMonth);
-      return { budget, categoryName: categoriesById.get(budget.category_id) ?? 'Categoria', percentageUsed };
+      return { budget, categoryName: categoriesById.get(budget.category_id) ?? 'Categoria', percentageUsed, spentMinor: spent };
     }),
   );
   const budgetsCloseToLimit = budgetsWithSpend.sort((a, b) => b.percentageUsed - a.percentageUsed).slice(0, 5);
 
   const safeToSpend = await computeSafeToSpend(userId);
+
+  const commitmentRow = nextCommitmentRes.data as
+    | { due_date: string; expected_amount_minor: number; recurring_obligations: { name: string } | { name: string }[] | null }
+    | null;
+  const nextCommitment: NextCommitment | null = commitmentRow
+    ? {
+        name: Array.isArray(commitmentRow.recurring_obligations)
+          ? (commitmentRow.recurring_obligations[0]?.name ?? 'Compromiso')
+          : (commitmentRow.recurring_obligations?.name ?? 'Compromiso'),
+        dueDate: commitmentRow.due_date,
+        amountMinor: commitmentRow.expected_amount_minor,
+        daysUntil: Math.max(0, Math.round((new Date(commitmentRow.due_date).getTime() - today.getTime()) / 86_400_000)),
+      }
+    : null;
 
   return {
     safeToSpend,
@@ -170,10 +215,12 @@ export async function getDashboardData(userId: string): Promise<DashboardData> {
     upcoming15: (occ15Res.data ?? []).reduce((s: number, o: { expected_amount_minor: number }) => s + o.expected_amount_minor, 0),
     upcoming30: (occ30Res.data ?? []).reduce((s: number, o: { expected_amount_minor: number }) => s + o.expected_amount_minor, 0),
     nextExpectedIncome: nextIncomeRes.data ?? null,
+    nextCommitment,
     recentTransactions: recentTxRes.data ?? [],
     activeAlerts: alertsRes.data ?? [],
     budgetsCloseToLimit,
     savingsGoals: goalsRes.data ?? [],
+    accounts: accountsList,
     hasAnyAccount: accountsList.length > 0,
   };
 }

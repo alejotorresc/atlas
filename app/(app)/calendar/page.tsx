@@ -59,43 +59,59 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
     days.push(new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), i + 1)));
   }
 
+  const monthTotal = events.reduce((s, ev) => s + ev.amountMinor, 0);
+
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="text-xl font-semibold capitalize">{monthLabel(currentMonth + '-01')}</h1>
-        <div className="flex gap-2 text-sm">
-          <Link href={`/calendar?month=${adjacentMonth(month, -1)}&view=${view ?? ''}`} className="rounded-md border border-[var(--ds-neutral-300)] px-3 py-1.5">
+    <div className="space-y-[32px]">
+      <section>
+        <h1 className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)] capitalize">
+          {monthLabel(currentMonth + '-01')}
+        </h1>
+        <p className="mt-[8px] text-[15px] text-[var(--ds-neutral-600)]">
+          {events.length === 0 ? 'No hay compromisos este mes.' : `${events.length} eventos por ${formatCurrency(monthTotal)} en total.`}
+        </p>
+        <div className="mt-[20px] flex flex-wrap gap-[8px] text-[13px]">
+          <Link
+            href={`/calendar?month=${adjacentMonth(month, -1)}&view=${view ?? ''}`}
+            className="rounded-[var(--ds-radius-md)] border border-[var(--ds-neutral-200)] px-[12px] py-[6px] text-[var(--ds-neutral-700)]"
+          >
             ← Anterior
           </Link>
-          <Link href={`/calendar?month=${adjacentMonth(month, 1)}&view=${view ?? ''}`} className="rounded-md border border-[var(--ds-neutral-300)] px-3 py-1.5">
+          <Link
+            href={`/calendar?month=${adjacentMonth(month, 1)}&view=${view ?? ''}`}
+            className="rounded-[var(--ds-radius-md)] border border-[var(--ds-neutral-200)] px-[12px] py-[6px] text-[var(--ds-neutral-700)]"
+          >
             Siguiente →
           </Link>
-          <Link href={`/calendar?month=${currentMonth}&view=${isAgenda ? '' : 'agenda'}`} className="rounded-md border border-[var(--ds-neutral-300)] px-3 py-1.5">
+          <Link
+            href={`/calendar?month=${currentMonth}&view=${isAgenda ? '' : 'agenda'}`}
+            className="rounded-[var(--ds-radius-md)] border border-[var(--ds-neutral-200)] px-[12px] py-[6px] text-[var(--ds-neutral-700)]"
+          >
             {isAgenda ? 'Ver mes' : 'Ver agenda'}
           </Link>
         </div>
-      </div>
+      </section>
 
       {!isAgenda ? (
         <div className="overflow-x-auto">
-          <div className="grid min-w-[640px] grid-cols-7 gap-px rounded-lg border border-[var(--ds-neutral-200)] bg-[var(--ds-neutral-200)] text-xs">
+          <div className="grid min-w-[640px] grid-cols-7 gap-[1px] rounded-[var(--ds-radius-lg)] border border-[var(--ds-neutral-100)] bg-[var(--ds-neutral-100)] text-[12px]">
             {['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'].map((d) => (
-              <div key={d} className="bg-[var(--ds-neutral-50)] px-2 py-1 text-center font-medium text-[var(--ds-neutral-500)]">
+              <div key={d} className="bg-[var(--ds-color-surface)] px-[8px] py-[6px] text-center font-medium text-[var(--ds-neutral-500)]">
                 {d}
               </div>
             ))}
             {Array.from({ length: leadingBlank }).map((_, i) => (
-              <div key={`blank-${i}`} className="min-h-24 bg-[var(--ds-color-surface)]" />
+              <div key={`blank-${i}`} className="min-h-[96px] bg-[var(--ds-color-surface)]" />
             ))}
             {days.map((day) => {
               const iso = day.toISOString().slice(0, 10);
               const dayEvents = eventsByDate.get(iso) ?? [];
               return (
-                <div key={iso} className="min-h-24 bg-[var(--ds-color-surface)] p-1">
+                <div key={iso} className="min-h-[96px] bg-[var(--ds-color-surface)] p-[4px]">
                   <p className="text-right text-[var(--ds-neutral-400)]">{day.getUTCDate()}</p>
-                  <div className="space-y-0.5">
+                  <div className="space-y-[2px]">
                     {dayEvents.slice(0, 3).map((ev) => (
-                      <div key={ev.id} className="truncate rounded bg-[var(--ds-neutral-100)] px-1 py-0.5" title={ev.title}>
+                      <div key={ev.id} className="truncate rounded-[var(--ds-radius-sm)] bg-[var(--ds-neutral-50)] px-[4px] py-[2px]" title={ev.title}>
                         {ev.title}
                       </div>
                     ))}
@@ -107,32 +123,32 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
           </div>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-[var(--ds-neutral-200)]">
-          <table className="w-full text-sm">
-            <thead className="bg-[var(--ds-neutral-50)] text-left text-xs uppercase text-[var(--ds-neutral-500)]">
+        <div className="overflow-x-auto rounded-[var(--ds-radius-lg)] border border-[var(--ds-neutral-100)]">
+          <table className="w-full text-[13px]">
+            <thead className="text-left text-[12px] uppercase tracking-[0.02em] text-[var(--ds-neutral-500)]">
               <tr>
-                <th className="px-4 py-2">Fecha</th>
-                <th className="px-4 py-2">Evento</th>
-                <th className="px-4 py-2">Tipo</th>
-                <th className="px-4 py-2 text-right">Monto</th>
+                <th className="px-[16px] py-[8px]">Fecha</th>
+                <th className="px-[16px] py-[8px]">Evento</th>
+                <th className="px-[16px] py-[8px]">Tipo</th>
+                <th className="px-[16px] py-[8px] text-right">Monto</th>
               </tr>
             </thead>
             <tbody>
               {events.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-4 py-8 text-center text-[var(--ds-neutral-500)]">
+                  <td colSpan={4} className="px-[16px] py-[32px] text-center text-[var(--ds-neutral-500)]">
                     No hay eventos este mes.
                   </td>
                 </tr>
               )}
               {events.map((ev) => (
                 <tr key={ev.id} className="border-t border-[var(--ds-neutral-100)]">
-                  <td className="px-4 py-2">{formatDateGT(ev.date)}</td>
-                  <td className="px-4 py-2">{ev.title}</td>
-                  <td className="px-4 py-2">
+                  <td className="px-[16px] py-[8px]">{formatDateGT(ev.date)}</td>
+                  <td className="px-[16px] py-[8px]">{ev.title}</td>
+                  <td className="px-[16px] py-[8px]">
                     <Badge tone={TYPE_TONE[ev.type]}>{TYPE_LABELS[ev.type]}</Badge>
                   </td>
-                  <td className="px-4 py-2 text-right">{formatCurrency(ev.amountMinor, ev.currency)}</td>
+                  <td className="px-[16px] py-[8px] text-right">{formatCurrency(ev.amountMinor, ev.currency)}</td>
                 </tr>
               ))}
             </tbody>

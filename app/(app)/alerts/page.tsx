@@ -36,51 +36,59 @@ export default async function AlertsPage({ searchParams }: { searchParams: Promi
 
   const allAlerts = await listAlerts(user.id);
   const alerts = allAlerts.filter((a) => (severity ? a.severity === severity : true) && (type ? a.alert_type === type : true));
+  const unreadCount = allAlerts.filter((a) => !a.read_at).length;
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="text-xl font-semibold">Alertas</h1>
-        <div className="flex gap-2">
+    <div className="space-y-[32px]">
+      <section>
+        <h1 className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Notificaciones</h1>
+        <p className="mt-[8px] text-[15px] text-[var(--ds-neutral-600)]">
+          {unreadCount === 0 ? 'Estas al dia, no hay notificaciones sin leer.' : `Tienes ${unreadCount} ${unreadCount === 1 ? 'notificacion' : 'notificaciones'} sin leer.`}
+        </p>
+        <div className="mt-[20px] flex flex-wrap gap-[8px]">
           <RefreshAlertsButton />
           <MarkAllReadButton />
         </div>
-      </div>
+      </section>
 
-      <form method="get" className="flex flex-wrap gap-3">
-        <select name="severity" defaultValue={severity ?? ''} className="rounded-md border border-[var(--ds-neutral-300)] px-2 py-1.5 text-sm">
+      <form method="get" className="flex flex-wrap gap-[8px]">
+        <select
+          name="severity"
+          defaultValue={severity ?? ''}
+          className="rounded-[var(--ds-radius-md)] border border-[var(--ds-neutral-300)] px-[8px] py-[6px] text-[13px]"
+        >
           <option value="">Todas las severidades</option>
           <option value="info">Info</option>
           <option value="warning">Advertencia</option>
           <option value="urgent">Urgente</option>
         </select>
-        <button type="submit" className="rounded-md border border-[var(--ds-neutral-300)] px-3 py-1.5 text-sm">
+        <button type="submit" className="rounded-[var(--ds-radius-md)] border border-[var(--ds-neutral-300)] px-[12px] py-[6px] text-[13px]">
           Filtrar
         </button>
       </form>
 
       {alerts.length === 0 ? (
         <Card>
-          <p className="text-sm text-[var(--ds-neutral-600)]">No hay alertas para mostrar.</p>
+          <p className="text-[15px] text-[var(--ds-neutral-600)]">No hay alertas para mostrar.</p>
         </Card>
       ) : (
-        <ul className="space-y-2">
+        <ul className="space-y-[8px]">
           {alerts.map((a) => {
             const href = relatedHref(a.related_entity_type, a.related_entity_id);
             return (
               <li key={a.id}>
                 <Card className={a.read_at ? 'opacity-70' : ''}>
-                  <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-start justify-between gap-[16px]">
                     <div>
-                      <div className="flex items-center gap-2">
-                        <p className="font-medium">{a.title}</p>
+                      <div className="flex items-center gap-[8px]">
+                        <p className="text-[15px] font-medium text-[var(--ds-neutral-900)]">{a.title}</p>
                         <Badge tone={SEVERITY_TONE[a.severity]}>{a.severity}</Badge>
                         {!a.read_at && <Badge tone="info">No leida</Badge>}
                       </div>
-                      <p className="mt-1 text-sm text-[var(--ds-neutral-600)]">{a.message}</p>
-                      <p className="mt-1 text-xs text-[var(--ds-neutral-400)]">{formatDateGT(a.effective_date)}</p>
+                      <p className="mt-[4px] text-[13px] text-[var(--ds-neutral-600)]">{a.message}</p>
+                      <p className="mt-[4px] text-[12px] text-[var(--ds-neutral-400)]">{formatDateGT(a.effective_date)}</p>
                       {href && (
-                        <Link href={href} className="mt-1 inline-block text-xs text-[var(--ds-neutral-600)] underline">
+                        <Link href={href} className="mt-[4px] inline-block text-[12px] text-[var(--ds-neutral-600)] underline">
                           Ver detalle
                         </Link>
                       )}

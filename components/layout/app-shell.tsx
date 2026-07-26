@@ -120,7 +120,7 @@ export function AppShell({ unreadAlertsCount, children }: { unreadAlertsCount: n
       </aside>
 
       <div className="flex min-h-screen flex-1 flex-col">
-        <MobileTopbar unreadAlertsCount={unreadAlertsCount} />
+        <MobileTopbar unreadAlertsCount={unreadAlertsCount} onSearchClick={() => setPaletteOpen(true)} />
         <main className="mx-auto w-full max-w-[1600px] flex-1 px-[20px] py-[24px] md:px-[48px] md:py-[40px]">
           <PageTransition>{children}</PageTransition>
         </main>

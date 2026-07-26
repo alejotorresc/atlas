@@ -4,6 +4,9 @@ import { getAccount, listAccountTransactions } from '@/features/accounts/queries
 import { formatCurrency } from '@/lib/finance/money';
 import { formatDateGT } from '@/lib/dates/format';
 import { Card, CardTitle, CardValue } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { CopyButton } from '@/components/design-system/CopyButton';
+import { ACCOUNT_TYPE_LABELS } from '@/components/finance/account-type-labels';
 import { AccountDetailActions } from './account-detail-actions';
 
 export default async function AccountDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -27,8 +30,16 @@ export default async function AccountDetailPage({ params }: { params: Promise<{ 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-semibold">{account.name}</h1>
+        <div className="flex flex-wrap items-center gap-[8px]">
+          <h1 className="text-xl font-semibold">{account.name}</h1>
+          <Badge tone="neutral">{ACCOUNT_TYPE_LABELS[account.account_type]}</Badge>
+        </div>
         <p className="text-sm text-[var(--ds-neutral-500)]">{account.institution_name ?? 'Sin institucion'}</p>
+        <CopyButton
+          className="-ml-[10px] mt-[4px]"
+          label="Copiar datos de la cuenta"
+          value={[account.name, account.institution_name].filter(Boolean).join(' · ')}
+        />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">

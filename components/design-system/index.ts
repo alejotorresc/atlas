@@ -19,3 +19,4 @@ export * from './Modal';
 export * from './Combobox';
 export * from './Meter';
 export * from './AnimatedNumber';
+export * from './CopyButton';

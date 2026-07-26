@@ -15,6 +15,7 @@ import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { DatePicker } from '@/components/ui/date-picker';
+import { ACCOUNT_TYPE_OPTIONS } from '@/components/finance/account-type-labels';
 
 const STEPS = ['Perfil', 'Cuenta', 'Tarjeta', 'Ingreso', 'Listo'] as const;
 
@@ -106,19 +107,7 @@ export function OnboardingWizard() {
           </div>
           <div>
             <Label htmlFor="account_type">Tipo</Label>
-            <Select
-              id="account_type"
-              name="account_type"
-              defaultValue="checking"
-              options={[
-                { value: 'checking', label: 'Monetaria' },
-                { value: 'savings', label: 'Ahorro' },
-                { value: 'cash', label: 'Efectivo' },
-                { value: 'digital_wallet', label: 'Billetera digital' },
-                { value: 'investment', label: 'Inversion' },
-                { value: 'other', label: 'Otro' },
-              ]}
-            />
+            <Select id="account_type" name="account_type" defaultValue="checking" options={ACCOUNT_TYPE_OPTIONS} />
           </div>
           <div>
             <Label htmlFor="opening_balance">Saldo inicial</Label>

@@ -1,16 +1,18 @@
 import { getCurrentUser } from '@/lib/supabase/server';
 import { getProfile } from '@/features/profile/queries';
 import { listOwnedCategories } from '@/features/categories/queries';
+import { listApiTokens } from '@/features/api-tokens/queries';
 import { Card } from '@/components/ui/card';
 import { ProfileForm } from './profile-form';
 import { PreferencesForm } from './preferences-form';
 import { CategoryManager } from './category-manager';
+import { ApiTokensManager } from './api-tokens-manager';
 
 export default async function SettingsPage() {
   const user = await getCurrentUser();
   if (!user) return null;
 
-  const [profile, categories] = await Promise.all([getProfile(), listOwnedCategories(user.id)]);
+  const [profile, categories, apiTokens] = await Promise.all([getProfile(), listOwnedCategories(user.id), listApiTokens(user.id)]);
   if (!profile) return null;
 
   return (
@@ -34,6 +36,11 @@ export default async function SettingsPage() {
         <Card>
           <PreferencesForm profile={profile} />
         </Card>
+      </section>
+
+      <section>
+        <h2 className="mb-[12px] font-display text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">INTEGRACIONES</h2>
+        <ApiTokensManager tokens={apiTokens} />
       </section>
 
       <section>

@@ -251,6 +251,16 @@ export type MonthlySnapshot = {
   updated_at: string;
 }
 
+export type ApiToken = {
+  id: string;
+  user_id: string;
+  name: string;
+  token_hash: string;
+  last_used_at: string | null;
+  revoked_at: string | null;
+  created_at: string;
+}
+
 type Table<Row, Insert = Partial<Row>, Update = Partial<Row>> = {
   Row: Row;
   Insert: Insert;
@@ -276,6 +286,7 @@ export type Database = {
       budgets: Table<Budget>;
       alerts: Table<Alert>;
       monthly_snapshots: Table<MonthlySnapshot>;
+      api_tokens: Table<ApiToken>;
     };
     Views: Record<string, never>;
     Functions: {
@@ -404,6 +415,20 @@ export type Database = {
         string
       >;
       skip_obligation_occurrence: Fn<{ p_occurrence_id: string }, void>;
+      create_expense_for_token: Fn<
+        {
+          p_user_id: string;
+          p_account_id: string | null;
+          p_credit_card_id: string | null;
+          p_amount_minor: number;
+          p_currency: string;
+          p_transaction_date: string;
+          p_description: string;
+          p_merchant: string | null;
+          p_category_id: string | null;
+        },
+        string
+      >;
     };
   };
 }

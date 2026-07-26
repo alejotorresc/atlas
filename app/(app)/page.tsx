@@ -182,7 +182,7 @@ export default async function DashboardPage() {
 function SectionHeader({ title, href }: { title: string; href: string }) {
   return (
     <div className="mb-[12px] flex items-center justify-between">
-      <h2 className="text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">{title.toUpperCase()}</h2>
+      <h2 className="font-display text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">{title.toUpperCase()}</h2>
       <Link href={href} className="text-[13px] text-[var(--ds-neutral-500)] hover:text-[var(--ds-color-primary)]">
         Ver todo
       </Link>

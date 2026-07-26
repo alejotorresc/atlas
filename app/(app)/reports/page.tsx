@@ -29,7 +29,7 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
   return (
     <div className="space-y-[40px]">
       <section>
-        <h1 className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Reportes</h1>
+        <h1 className="font-display text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Reportes</h1>
         {currentMonthSummary && (
           <>
             <p className="mt-[8px] text-[13px] font-medium text-[var(--ds-neutral-500)]">Flujo neto del mes</p>
@@ -68,7 +68,7 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
       </section>
 
       <section>
-        <h2 className="mb-2 text-sm font-medium text-[var(--ds-neutral-500)]">Ingresos vs. gastos (6 meses)</h2>
+        <h2 className="font-display mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">Ingresos vs. gastos (6 meses)</h2>
         <Card>
           <IncomeExpenseChart data={monthlySummaries} />
           <table className="mt-4 w-full text-sm">
@@ -96,7 +96,7 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
       </section>
 
       <section>
-        <h2 className="mb-2 text-sm font-medium text-[var(--ds-neutral-500)]">Distribucion de gastos por categoria — {month}</h2>
+        <h2 className="font-display mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">Distribucion de gastos por categoria — {month}</h2>
         <Card>
           <ExpenseDistributionChart data={expenseDistribution} />
           <table className="mt-4 w-full text-sm">
@@ -120,21 +120,21 @@ export default async function ReportsPage({ searchParams }: { searchParams: Prom
       </section>
 
       <section>
-        <h2 className="mb-2 text-sm font-medium text-[var(--ds-neutral-500)]">Comparativo de gastos mes a mes</h2>
+        <h2 className="font-display mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">Comparativo de gastos mes a mes</h2>
         <Card>
           <ExpenseComparisonChart data={monthlySummaries} />
         </Card>
       </section>
 
       <section>
-        <h2 className="mb-2 text-sm font-medium text-[var(--ds-neutral-500)]">Aportes a ahorro por mes</h2>
+        <h2 className="font-display mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">Aportes a ahorro por mes</h2>
         <Card>
           <SavingsContributionsChart data={monthlySummaries} />
         </Card>
       </section>
 
       <section>
-        <h2 className="mb-2 text-sm font-medium text-[var(--ds-neutral-500)]">Saldos y utilizacion de tarjetas</h2>
+        <h2 className="font-display mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">Saldos y utilizacion de tarjetas</h2>
         <Card>
           <table className="w-full text-sm">
             <thead className="text-left text-xs uppercase text-[var(--ds-neutral-500)]">

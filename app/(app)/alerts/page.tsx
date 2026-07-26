@@ -41,7 +41,7 @@ export default async function AlertsPage({ searchParams }: { searchParams: Promi
   return (
     <div className="space-y-[32px]">
       <section>
-        <h1 className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Notificaciones</h1>
+        <h1 className="font-display text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Notificaciones</h1>
         <p className="mt-[8px] text-[15px] text-[var(--ds-neutral-600)]">
           {unreadCount === 0 ? 'Estas al dia, no hay notificaciones sin leer.' : `Tienes ${unreadCount} ${unreadCount === 1 ? 'notificacion' : 'notificaciones'} sin leer.`}
         </p>

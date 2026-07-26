@@ -19,7 +19,7 @@ export default async function AccountsPage() {
   return (
     <div className="space-y-[40px]">
       <section>
-        <h1 className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Cuentas</h1>
+        <h1 className="font-display text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Cuentas</h1>
         <p className="mt-[8px] text-[13px] font-medium text-[var(--ds-neutral-500)]">Saldo liquido total</p>
         <div className="mt-[4px]">
           <NumericDisplay amountMinor={liquidTotal} size="display" />
@@ -52,7 +52,7 @@ export default async function AccountsPage() {
 
       {archived.length > 0 && (
         <section>
-          <h2 className="mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">CUENTAS ARCHIVADAS</h2>
+          <h2 className="mb-[12px] font-display text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">CUENTAS ARCHIVADAS</h2>
           <div className="grid gap-[12px] sm:grid-cols-2 lg:grid-cols-3">
             {archived.map((account) => (
               <Card key={account.id} className="opacity-60">

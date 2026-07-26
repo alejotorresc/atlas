@@ -64,7 +64,7 @@ export default async function CalendarPage({ searchParams }: { searchParams: Pro
   return (
     <div className="space-y-[32px]">
       <section>
-        <h1 className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)] capitalize">
+        <h1 className="font-display text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)] capitalize">
           {monthLabel(currentMonth + '-01')}
         </h1>
         <p className="mt-[8px] text-[15px] text-[var(--ds-neutral-600)]">

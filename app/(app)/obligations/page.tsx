@@ -55,7 +55,7 @@ export default async function ObligationsPage() {
   return (
     <div className="space-y-[32px]">
       <section>
-        <h1 className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Obligaciones recurrentes</h1>
+        <h1 className="font-display text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Obligaciones recurrentes</h1>
         <p className="mt-[8px] text-[15px] text-[var(--ds-neutral-600)]">
           {occurrences.length === 0
             ? 'No hay ocurrencias proximas en los siguientes 60 dias.'
@@ -67,7 +67,7 @@ export default async function ObligationsPage() {
       </section>
 
       <section>
-        <h2 className="mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">OBLIGACIONES ACTIVAS</h2>
+        <h2 className="mb-[12px] font-display text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">OBLIGACIONES ACTIVAS</h2>
         {obligations.length === 0 ? (
           <Card>
             <p className="text-[15px] text-[var(--ds-neutral-600)]">Aun no tienes obligaciones registradas.</p>
@@ -103,7 +103,7 @@ export default async function ObligationsPage() {
       </section>
 
       <section>
-        <h2 className="mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">PROXIMAS OCURRENCIAS (60 DIAS)</h2>
+        <h2 className="mb-[12px] font-display text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">PROXIMAS OCURRENCIAS (60 DIAS)</h2>
         {occurrences.length === 0 ? (
           <Card>
             <p className="text-[15px] text-[var(--ds-neutral-600)]">No hay ocurrencias proximas.</p>

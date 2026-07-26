@@ -14,7 +14,7 @@ import { Icon } from './Icon';
  */
 const buttonVariants = cva(
   [
-    'inline-flex items-center justify-center gap-[8px] font-medium whitespace-nowrap',
+    'font-display inline-flex items-center justify-center gap-[8px] font-medium whitespace-nowrap',
     'transition-[background-color,border-color,color,box-shadow,transform]',
     'duration-[var(--ds-duration-fast)] ease-[var(--ds-ease-standard)]',
     'active:scale-[0.98]',

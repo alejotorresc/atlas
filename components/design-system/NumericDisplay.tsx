@@ -4,8 +4,8 @@ import { formatCurrency } from '@/lib/finance/money';
 export type NumericTone = 'neutral' | 'positive' | 'negative';
 
 const SIZE_CLASS = {
-  display: 'text-[40px] leading-[46px] font-medium tracking-[-0.01em]',
-  numericDisplay: 'text-[34px] leading-[40px] font-medium tracking-[-0.02em]',
+  display: 'font-display text-[40px] leading-[46px] font-medium tracking-[-0.01em]',
+  numericDisplay: 'font-display text-[34px] leading-[40px] font-medium tracking-[-0.02em]',
   numericBody: 'text-[15px] leading-[22px] font-medium',
   small: 'text-[13px] leading-[18px] font-medium',
 } as const;

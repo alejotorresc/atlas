@@ -29,7 +29,7 @@ export default async function CardsPage() {
   return (
     <div className="space-y-[40px]">
       <section>
-        <h1 className="text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Tarjetas</h1>
+        <h1 className="font-display text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Tarjetas</h1>
         <p className="mt-[8px] text-[13px] font-medium text-[var(--ds-neutral-500)]">Deuda total en tarjetas</p>
         <div className="mt-[4px]">
           <NumericDisplay amountMinor={totalDebt} size="display" />
@@ -85,7 +85,7 @@ export default async function CardsPage() {
 
       {archived.length > 0 && (
         <section>
-          <h2 className="mb-[12px] text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">TARJETAS ARCHIVADAS</h2>
+          <h2 className="mb-[12px] font-display text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">TARJETAS ARCHIVADAS</h2>
           <div className="grid gap-[12px] sm:grid-cols-2 lg:grid-cols-3">
             {archived.map((card) => (
               <Card key={card.id} className="opacity-60">

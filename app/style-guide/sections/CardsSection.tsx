@@ -48,7 +48,7 @@ export function CardsSection() {
 
       <SubSection title="Account, transaction, budget, savings">
         <div className="grid gap-[16px] sm:grid-cols-2">
-          <AccountCard name="Cuenta monetaria" institution="Banco Industrial" balanceMinor={1250000} />
+          <AccountCard name="Cuenta monetaria" institution="Banco Industrial" balanceMinor={1250000} typeLabel="Monetaria" />
           <TransactionCard type="expense" description="Supermercado La Torre" date="24 jul" amountMinor={45000} />
           <BudgetCard category="Alimentacion" spentMinor={410000} budgetMinor={500000} />
           <SavingsCard name="Fondo de emergencia" currentMinor={300000} targetMinor={3000000} paceLabel="Vas en buen ritmo" />

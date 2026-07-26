@@ -4,10 +4,17 @@ import { revalidatePath } from 'next/cache';
 import { createClient, getCurrentUser } from '@/lib/supabase/server';
 import { cardPaymentSchema, cardSchema } from '@/lib/validation/cards';
 import { parseMoneyToMinorUnits } from '@/lib/finance/money';
+import { splitPayment } from '@/lib/finance/interest';
 
 export interface ActionResult {
   error?: string;
   success?: boolean;
+}
+
+export interface PayCardResult extends ActionResult {
+  interestPortionMinor?: number;
+  principalPortionMinor?: number;
+  amountMinor?: number;
 }
 
 export async function createCard(formData: FormData): Promise<ActionResult> {
@@ -23,6 +30,14 @@ export async function createCard(formData: FormData): Promise<ActionResult> {
     current_balance: formData.get('current_balance') || '0',
     statement_day: Number(formData.get('statement_day')),
     payment_due_day: Number(formData.get('payment_due_day')),
+    minimum_payment: formData.get('minimum_payment') || '',
+    annual_interest_rate: formData.get('annual_interest_rate') || '',
+    interest_calculation_method: formData.get('interest_calculation_method') || 'statement_balance',
+    interest_free_days: formData.get('interest_free_days') || 21,
+    minimum_payment_percentage: formData.get('minimum_payment_percentage') || '',
+    late_fee: formData.get('late_fee') || '',
+    annual_fee: formData.get('annual_fee') || '',
+    in_payment_agreement: formData.get('in_payment_agreement') === 'on',
   });
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? 'Datos invalidos' };
 
@@ -37,6 +52,14 @@ export async function createCard(formData: FormData): Promise<ActionResult> {
     current_balance_minor: parseMoneyToMinorUnits(parsed.data.current_balance || '0'),
     statement_day: parsed.data.statement_day,
     payment_due_day: parsed.data.payment_due_day,
+    minimum_payment_minor: parsed.data.minimum_payment ? parseMoneyToMinorUnits(parsed.data.minimum_payment) : null,
+    annual_interest_rate: parsed.data.annual_interest_rate ? parseFloat(parsed.data.annual_interest_rate) : null,
+    interest_calculation_method: parsed.data.interest_calculation_method,
+    interest_free_days: parsed.data.interest_free_days,
+    minimum_payment_percentage: parsed.data.minimum_payment_percentage ? parseFloat(parsed.data.minimum_payment_percentage) / 100 : null,
+    late_fee_minor: parsed.data.late_fee ? parseMoneyToMinorUnits(parsed.data.late_fee) : 0,
+    annual_fee_minor: parsed.data.annual_fee ? parseMoneyToMinorUnits(parsed.data.annual_fee) : 0,
+    in_payment_agreement: parsed.data.in_payment_agreement ?? false,
   });
   if (error) return { error: 'No se pudo crear la tarjeta.' };
 
@@ -58,6 +81,14 @@ export async function updateCard(cardId: string, formData: FormData): Promise<Ac
       credit_limit: formData.get('credit_limit'),
       statement_day: Number(formData.get('statement_day')),
       payment_due_day: Number(formData.get('payment_due_day')),
+      minimum_payment: formData.get('minimum_payment') || '',
+      annual_interest_rate: formData.get('annual_interest_rate') || '',
+      interest_calculation_method: formData.get('interest_calculation_method') || 'statement_balance',
+      interest_free_days: formData.get('interest_free_days') || 21,
+      minimum_payment_percentage: formData.get('minimum_payment_percentage') || '',
+      late_fee: formData.get('late_fee') || '',
+      annual_fee: formData.get('annual_fee') || '',
+      in_payment_agreement: formData.get('in_payment_agreement') === 'on',
     });
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? 'Datos invalidos' };
 
@@ -71,6 +102,14 @@ export async function updateCard(cardId: string, formData: FormData): Promise<Ac
       credit_limit_minor: parseMoneyToMinorUnits(parsed.data.credit_limit),
       statement_day: parsed.data.statement_day,
       payment_due_day: parsed.data.payment_due_day,
+      minimum_payment_minor: parsed.data.minimum_payment ? parseMoneyToMinorUnits(parsed.data.minimum_payment) : null,
+      annual_interest_rate: parsed.data.annual_interest_rate ? parseFloat(parsed.data.annual_interest_rate) : null,
+      interest_calculation_method: parsed.data.interest_calculation_method,
+      interest_free_days: parsed.data.interest_free_days,
+      minimum_payment_percentage: parsed.data.minimum_payment_percentage ? parseFloat(parsed.data.minimum_payment_percentage) / 100 : null,
+      late_fee_minor: parsed.data.late_fee ? parseMoneyToMinorUnits(parsed.data.late_fee) : 0,
+      annual_fee_minor: parsed.data.annual_fee ? parseMoneyToMinorUnits(parsed.data.annual_fee) : 0,
+      in_payment_agreement: parsed.data.in_payment_agreement ?? false,
     })
     .eq('id', cardId)
     .eq('user_id', user.id);
@@ -93,7 +132,7 @@ export async function archiveCard(cardId: string): Promise<ActionResult> {
   return { success: true };
 }
 
-export async function payCard(cardId: string, formData: FormData): Promise<ActionResult> {
+export async function payCard(cardId: string, formData: FormData): Promise<PayCardResult> {
   const user = await getCurrentUser();
   if (!user) return { error: 'No autenticado' };
 
@@ -112,7 +151,12 @@ export async function payCard(cardId: string, formData: FormData): Promise<Actio
 
   const [{ data: account }, { data: card }] = await Promise.all([
     supabase.from('accounts').select('current_balance_minor').eq('id', parsed.data.source_account_id).eq('user_id', user.id).maybeSingle(),
-    supabase.from('credit_cards').select('current_balance_minor').eq('id', cardId).eq('user_id', user.id).maybeSingle(),
+    supabase
+      .from('credit_cards')
+      .select('current_balance_minor, statement_balance_minor, interest_calculation_method, annual_interest_rate')
+      .eq('id', cardId)
+      .eq('user_id', user.id)
+      .maybeSingle(),
   ]);
 
   if (!account) return { error: 'Cuenta no encontrada.' };
@@ -125,6 +169,8 @@ export async function payCard(cardId: string, formData: FormData): Promise<Actio
     return { error: 'CONFIRM_EXCEEDS_CARD_BALANCE' };
   }
 
+  const { interestPortionMinor, principalPortionMinor } = splitPayment(amountMinor, card, card.annual_interest_rate ?? 0);
+
   const { error } = await supabase.rpc('create_credit_card_payment', {
     p_source_account_id: parsed.data.source_account_id,
     p_credit_card_id: cardId,
@@ -133,11 +179,15 @@ export async function payCard(cardId: string, formData: FormData): Promise<Actio
     p_transaction_date: parsed.data.transaction_date,
     p_description: parsed.data.description,
     p_status: 'cleared',
+    p_interest_portion_minor: interestPortionMinor,
+    p_principal_portion_minor: principalPortionMinor,
   });
   if (error) return { error: 'No se pudo registrar el pago.' };
 
   revalidatePath('/cards');
   revalidatePath(`/cards/${cardId}`);
+  revalidatePath(`/cards/${cardId}/debt`);
+  revalidatePath('/cards/overview');
   revalidatePath('/accounts');
-  return { success: true };
+  return { success: true, interestPortionMinor, principalPortionMinor, amountMinor };
 }

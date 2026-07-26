@@ -7,6 +7,7 @@ import { nextMonthlyDayOccurrence } from '@/lib/finance/dates';
 import { formatDateGT } from '@/lib/dates/format';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { NumericDisplay } from '@/components/design-system/NumericDisplay';
 import { NewCardButton } from './card-form';
 
@@ -34,8 +35,11 @@ export default async function CardsPage() {
         <div className="mt-[4px]">
           <NumericDisplay amountMinor={totalDebt} size="display" />
         </div>
-        <div className="mt-[20px]">
+        <div className="mt-[20px] flex flex-wrap gap-[12px]">
           <NewCardButton />
+          <Link href="/cards/overview">
+            <Button variant="secondary">Ver resumen de deuda</Button>
+          </Link>
         </div>
       </section>
 
@@ -53,30 +57,35 @@ export default async function CardsPage() {
               const nextPayment = nextMonthlyDayOccurrence(today, card.payment_due_day);
 
               return (
-                <Link key={card.id} href={`/cards/${card.id}`}>
-                  <Card state="interactive" className="h-full">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <p className="text-[15px] font-medium text-[var(--ds-neutral-900)]">{card.name}</p>
-                        <p className="text-[13px] text-[var(--ds-neutral-500)]">
-                          {card.institution_name ?? 'Sin institucion'}
-                          {card.last_four ? ` · ****${card.last_four}` : ''}
-                        </p>
+                <div key={card.id}>
+                  <Link href={`/cards/${card.id}`}>
+                    <Card state="interactive" className="h-full">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <p className="text-[15px] font-medium text-[var(--ds-neutral-900)]">{card.name}</p>
+                          <p className="text-[13px] text-[var(--ds-neutral-500)]">
+                            {card.institution_name ?? 'Sin institucion'}
+                            {card.last_four ? ` · ****${card.last_four}` : ''}
+                          </p>
+                        </div>
+                        <Badge tone={utilizationTone(utilization)}>{utilization.toFixed(0)}% usado</Badge>
                       </div>
-                      <Badge tone={utilizationTone(utilization)}>{utilization.toFixed(0)}% usado</Badge>
-                    </div>
-                    <div className="mt-[12px]">
-                      <NumericDisplay amountMinor={card.current_balance_minor} currency={card.currency} size="numericBody" />
-                    </div>
-                    <p className="mt-[4px] text-[13px] text-[var(--ds-neutral-500)]">
-                      Disponible: <NumericDisplay amountMinor={available} currency={card.currency} size="small" className="inline" />
-                    </p>
-                    <div className="mt-[12px] flex justify-between text-[13px] text-[var(--ds-neutral-500)]">
-                      <span>Corte: {formatDateGT(nextStatement.toISOString().slice(0, 10))}</span>
-                      <span>Pago: {formatDateGT(nextPayment.toISOString().slice(0, 10))}</span>
-                    </div>
-                  </Card>
-                </Link>
+                      <div className="mt-[12px]">
+                        <NumericDisplay amountMinor={card.current_balance_minor} currency={card.currency} size="numericBody" />
+                      </div>
+                      <p className="mt-[4px] text-[13px] text-[var(--ds-neutral-500)]">
+                        Disponible: <NumericDisplay amountMinor={available} currency={card.currency} size="small" className="inline" />
+                      </p>
+                      <div className="mt-[12px] flex justify-between text-[13px] text-[var(--ds-neutral-500)]">
+                        <span>Corte: {formatDateGT(nextStatement.toISOString().slice(0, 10))}</span>
+                        <span>Pago: {formatDateGT(nextPayment.toISOString().slice(0, 10))}</span>
+                      </div>
+                    </Card>
+                  </Link>
+                  <Link href={`/cards/${card.id}/debt`} className="mt-[8px] block text-[13px] font-medium text-[var(--ds-color-primary)] hover:underline">
+                    Ver estado de deuda →
+                  </Link>
+                </div>
               );
             })}
           </div>

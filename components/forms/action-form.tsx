@@ -9,14 +9,14 @@ export interface FormActionResult {
   success?: boolean;
 }
 
-export function ActionForm({
+export function ActionForm<TResult extends FormActionResult = FormActionResult>({
   action,
   onSuccess,
   submitLabel = 'Guardar',
   children,
 }: {
-  action: (formData: FormData) => Promise<FormActionResult>;
-  onSuccess?: () => void;
+  action: (formData: FormData) => Promise<TResult>;
+  onSuccess?: (result: TResult) => void;
   submitLabel?: string;
   children: ReactNode;
 }) {
@@ -33,7 +33,7 @@ export function ActionForm({
         return;
       }
       router.refresh();
-      onSuccess?.();
+      onSuccess?.(result);
     });
   }
 

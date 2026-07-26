@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import { getCurrentUser } from '@/lib/supabase/server';
 import { getCard, listCardTransactions } from '@/features/cards/queries';
 import { listAccounts } from '@/features/accounts/queries';
@@ -8,6 +9,7 @@ import { formatDateGT } from '@/lib/dates/format';
 import { NumericDisplay } from '@/components/design-system/NumericDisplay';
 import { TransactionCard } from '@/components/design-system/Cards';
 import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Workspace, ContextSection } from '@/components/layout/workspace';
 import { StaggerList, StaggerItem } from '@/components/design-system/Stagger';
 import { CardDetailActions } from './card-detail-actions';
@@ -89,7 +91,10 @@ export default async function CardDetailPage({ params }: { params: Promise<{ id:
               tone={utilizationTone(utilization)}
             />
           </div>
-          <div className="mt-[20px]">
+          <div className="mt-[20px] flex flex-wrap gap-[12px]">
+            <Link href={`/cards/${card.id}/debt`}>
+              <Button variant="secondary">Ver estado de deuda</Button>
+            </Link>
             <CardDetailActions card={card} accounts={activeAccounts} />
           </div>
         </section>

@@ -78,6 +78,44 @@ subtracting the goal amount again would double-count the reservation. See
 - Utilization alerts fire at 30/50/75/90% thresholds, deduplicated per
   threshold so crossing 82% doesn't re-fire the 30/50/75 alerts again.
 
+## Debt intelligence (interest engine, payoff simulation, debt status)
+
+Everything under "Estado de deuda" (`/cards/[id]/debt`) and "Resumen de
+deuda" (`/cards/overview`) is rule-based and deterministic — computed by
+`lib/finance/interest.ts`, `lib/finance/debt-status.ts`, and
+`lib/finance/debt-insights.ts` — never an LLM call, consistent with the
+"no AI-generated financial advice" rule in CLAUDE.md.
+
+- **Interest estimation is always an estimate.** ATLAS doesn't keep a
+  daily balance ledger, so `interest_calculation_method` offers two
+  approximations: `statement_balance` (exact, using the stored statement
+  balance) and `average_daily_balance` (an approximation averaging the
+  statement and current balances). Every interest figure in the UI is
+  labeled as an estimate with a disclaimer pointing to the bank statement
+  as the source of truth.
+- **Minimum payment** is the card's fixed `minimum_payment_minor` override
+  if set, else `current_balance_minor * minimum_payment_percentage`, else
+  a Q100 floor (or the balance, if smaller) — see
+  `lib/finance/interest.ts::computeMinimumPayment`.
+- **Payoff simulation** (`simulatePayoff`) is a month-by-month
+  amortization loop capped at 600 months; if the payment never exceeds
+  the interest accruing that month, it returns `neverPaysOff: true`
+  instead of looping — the UI shows this as "you would never finish
+  paying" rather than a runaway number.
+- **Payment breakdown**: `payCard` (`features/cards/actions.ts`) computes
+  the interest/principal split via `splitPayment` *before* calling
+  `create_credit_card_payment`, and the RPC persists both portions on the
+  transaction row — the "applied to interest / applied to principal"
+  panel reads directly off the payment result, no refetch needed.
+- **Debt status** (`classifyDebtStatus`) is a priority-ordered
+  classification: a manual `in_payment_agreement` flag overrides
+  everything; then over-limit and paid-in-full are checked as plain
+  facts; the remaining states (`past_due`, `financing_balance`,
+  `minimum_payment_only`, `current`, `generating_interest`) are inferred
+  from whether/when the most recent payment cleared relative to the
+  card's last due date. See the module's tests for the exact priority
+  order.
+
 ## Recurrence assumptions
 
 - Supported frequencies: weekly, biweekly, monthly, quarterly, yearly.

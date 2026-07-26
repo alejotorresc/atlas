@@ -9,15 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { createAccount } from '@/features/accounts/actions';
-
-const ACCOUNT_TYPES = [
-  { value: 'checking', label: 'Monetaria' },
-  { value: 'savings', label: 'Ahorro' },
-  { value: 'cash', label: 'Efectivo' },
-  { value: 'digital_wallet', label: 'Billetera digital' },
-  { value: 'investment', label: 'Inversion' },
-  { value: 'other', label: 'Otro' },
-] as const;
+import { ACCOUNT_TYPE_OPTIONS } from '@/components/finance/account-type-labels';
 
 export function NewAccountButton() {
   const [open, setOpen] = useState(false);
@@ -37,7 +29,7 @@ export function NewAccountButton() {
           </div>
           <div>
             <Label htmlFor="acc-type">Tipo</Label>
-            <Select id="acc-type" name="account_type" options={[...ACCOUNT_TYPES]} defaultValue="checking" />
+            <Select id="acc-type" name="account_type" options={ACCOUNT_TYPE_OPTIONS} defaultValue="checking" />
           </div>
           <div>
             <Label htmlFor="acc-opening">Saldo inicial</Label>

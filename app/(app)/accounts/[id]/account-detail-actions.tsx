@@ -12,16 +12,8 @@ import { DatePicker } from '@/components/ui/date-picker';
 import { ActionForm } from '@/components/forms/action-form';
 import { archiveAccount, adjustAccountBalance, updateAccount } from '@/features/accounts/actions';
 import { todayISO } from '@/lib/dates/format';
+import { ACCOUNT_TYPE_OPTIONS } from '@/components/finance/account-type-labels';
 import type { Account } from '@/types/database';
-
-const ACCOUNT_TYPES = [
-  { value: 'checking', label: 'Monetaria' },
-  { value: 'savings', label: 'Ahorro' },
-  { value: 'cash', label: 'Efectivo' },
-  { value: 'digital_wallet', label: 'Billetera digital' },
-  { value: 'investment', label: 'Inversion' },
-  { value: 'other', label: 'Otro' },
-] as const;
 
 export function AccountDetailActions({ account }: { account: Account }) {
   const router = useRouter();
@@ -58,7 +50,7 @@ export function AccountDetailActions({ account }: { account: Account }) {
           </div>
           <div>
             <Label htmlFor="edit-type">Tipo</Label>
-            <Select id="edit-type" name="account_type" options={[...ACCOUNT_TYPES]} defaultValue={account.account_type} />
+            <Select id="edit-type" name="account_type" options={ACCOUNT_TYPE_OPTIONS} defaultValue={account.account_type} />
           </div>
           <div className="flex items-center gap-[8px]">
             <Checkbox id="edit-include" name="include_in_available_balance" defaultChecked={account.include_in_available_balance} />

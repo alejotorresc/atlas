@@ -5,8 +5,10 @@ import { totalLiquidBalance } from '@/lib/finance/balances';
 import { NumericDisplay } from '@/components/design-system/NumericDisplay';
 import { AccountCard } from '@/components/design-system/Cards';
 import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Workspace, ContextSection } from '@/components/layout/workspace';
 import { StaggerList, StaggerItem } from '@/components/design-system/Stagger';
+import { ACCOUNT_TYPE_LABELS } from '@/components/finance/account-type-labels';
 import { NewAccountButton } from './account-form';
 
 export default async function AccountsPage() {
@@ -40,7 +42,10 @@ export default async function AccountsPage() {
               <div className="space-y-[8px]">
                 {archived.map((account) => (
                   <Card key={account.id} className="opacity-60">
-                    <p className="text-[15px] font-medium text-[var(--ds-neutral-900)]">{account.name}</p>
+                    <div className="flex items-start justify-between gap-[8px]">
+                      <p className="text-[15px] font-medium text-[var(--ds-neutral-900)]">{account.name}</p>
+                      <Badge tone="neutral">{ACCOUNT_TYPE_LABELS[account.account_type]}</Badge>
+                    </div>
                     <div className="mt-[4px]">
                       <NumericDisplay amountMinor={account.current_balance_minor} currency={account.currency} size="small" />
                     </div>
@@ -79,6 +84,7 @@ export default async function AccountsPage() {
                       institution={account.institution_name ?? 'Sin institucion'}
                       balanceMinor={account.current_balance_minor}
                       currency={account.currency}
+                      typeLabel={ACCOUNT_TYPE_LABELS[account.account_type]}
                     />
                   </Link>
                 </StaggerItem>

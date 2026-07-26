@@ -65,14 +65,27 @@ export function RecommendationCard({ title, description, actionLabel }: { title:
 }
 
 /** Account card — balance plus inclusion state. */
-export function AccountCard({ name, institution, balanceMinor, currency = 'GTQ' }: { name: string; institution: string; balanceMinor: number; currency?: string }) {
+export function AccountCard({
+  name,
+  institution,
+  balanceMinor,
+  currency = 'GTQ',
+  typeLabel,
+}: {
+  name: string;
+  institution: string;
+  balanceMinor: number;
+  currency?: string;
+  typeLabel?: string;
+}) {
   return (
     <Card state="interactive">
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-between gap-[8px]">
         <div>
           <p className="text-[15px] font-medium text-[var(--ds-neutral-900)]">{name}</p>
           <p className="text-[13px] text-[var(--ds-neutral-500)]">{institution}</p>
         </div>
+        {typeLabel && <Badge tone="neutral">{typeLabel}</Badge>}
       </div>
       <div className="mt-[12px]">
         <NumericDisplay amountMinor={balanceMinor} currency={currency} size="numericBody" />

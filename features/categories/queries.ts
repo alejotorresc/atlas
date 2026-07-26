@@ -13,3 +13,9 @@ export async function listCategories(userId: string, type?: CategoryType): Promi
   const { data } = await query;
   return data ?? [];
 }
+
+export async function listOwnedCategories(userId: string): Promise<Category[]> {
+  const supabase = await createClient();
+  const { data } = await supabase.from('categories').select('*').eq('user_id', userId).order('category_type').order('name');
+  return data ?? [];
+}

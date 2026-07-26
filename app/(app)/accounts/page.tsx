@@ -5,6 +5,8 @@ import { totalLiquidBalance } from '@/lib/finance/balances';
 import { NumericDisplay } from '@/components/design-system/NumericDisplay';
 import { AccountCard } from '@/components/design-system/Cards';
 import { Card } from '@/components/ui/card';
+import { Workspace, ContextSection } from '@/components/layout/workspace';
+import { StaggerList, StaggerItem } from '@/components/design-system/Stagger';
 import { NewAccountButton } from './account-form';
 
 export default async function AccountsPage() {
@@ -17,54 +19,74 @@ export default async function AccountsPage() {
   const liquidTotal = totalLiquidBalance(active);
 
   return (
-    <div className="space-y-[40px]">
-      <section>
-        <h1 className="font-display text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Cuentas</h1>
-        <p className="mt-[8px] text-[13px] font-medium text-[var(--ds-neutral-500)]">Saldo liquido total</p>
-        <div className="mt-[4px]">
-          <NumericDisplay amountMinor={liquidTotal} size="display" />
-        </div>
-        <div className="mt-[20px]">
-          <NewAccountButton />
-        </div>
-      </section>
+    <Workspace
+      context={
+        <>
+          <ContextSection title="Resumen">
+            <Card className="space-y-[12px]">
+              <div className="flex items-center justify-between text-[13px]">
+                <span className="text-[var(--ds-neutral-500)]">Cuentas activas</span>
+                <span className="text-[var(--ds-neutral-900)]">{active.length}</span>
+              </div>
+              <div className="flex items-center justify-between border-t border-[var(--ds-neutral-100)] pt-[12px] text-[13px]">
+                <span className="text-[var(--ds-neutral-500)]">Saldo liquido total</span>
+                <NumericDisplay amountMinor={liquidTotal} size="small" />
+              </div>
+            </Card>
+          </ContextSection>
 
-      <section>
-        {active.length === 0 ? (
-          <Card>
-            <p className="text-[15px] text-[var(--ds-neutral-600)]">Aun no tienes cuentas. Crea la primera para empezar a registrar movimientos.</p>
-          </Card>
-        ) : (
-          <div className="grid gap-[12px] sm:grid-cols-2 lg:grid-cols-3">
-            {active.map((account) => (
-              <Link key={account.id} href={`/accounts/${account.id}`}>
-                <AccountCard
-                  name={account.name}
-                  institution={account.institution_name ?? 'Sin institucion'}
-                  balanceMinor={account.current_balance_minor}
-                  currency={account.currency}
-                />
-              </Link>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {archived.length > 0 && (
+          {archived.length > 0 && (
+            <ContextSection title="Cuentas archivadas">
+              <div className="space-y-[8px]">
+                {archived.map((account) => (
+                  <Card key={account.id} className="opacity-60">
+                    <p className="text-[15px] font-medium text-[var(--ds-neutral-900)]">{account.name}</p>
+                    <div className="mt-[4px]">
+                      <NumericDisplay amountMinor={account.current_balance_minor} currency={account.currency} size="small" />
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </ContextSection>
+          )}
+        </>
+      }
+    >
+      <div className="space-y-[40px]">
         <section>
-          <h2 className="mb-[12px] font-display text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-500)]">CUENTAS ARCHIVADAS</h2>
-          <div className="grid gap-[12px] sm:grid-cols-2 lg:grid-cols-3">
-            {archived.map((account) => (
-              <Card key={account.id} className="opacity-60">
-                <p className="text-[15px] font-medium text-[var(--ds-neutral-900)]">{account.name}</p>
-                <div className="mt-[4px]">
-                  <NumericDisplay amountMinor={account.current_balance_minor} currency={account.currency} size="small" />
-                </div>
-              </Card>
-            ))}
+          <h1 className="font-display text-[28px] font-medium tracking-[-0.01em] text-[var(--ds-neutral-900)]">Cuentas</h1>
+          <p className="mt-[8px] text-[13px] font-medium text-[var(--ds-neutral-500)]">Saldo liquido total</p>
+          <div className="mt-[4px]">
+            <NumericDisplay amountMinor={liquidTotal} size="display" />
+          </div>
+          <div className="mt-[20px]">
+            <NewAccountButton />
           </div>
         </section>
-      )}
-    </div>
+
+        <section>
+          {active.length === 0 ? (
+            <Card>
+              <p className="text-[15px] text-[var(--ds-neutral-600)]">Aun no tienes cuentas. Crea la primera para empezar a registrar movimientos.</p>
+            </Card>
+          ) : (
+            <StaggerList className="grid gap-[12px] sm:grid-cols-2">
+              {active.map((account) => (
+                <StaggerItem key={account.id}>
+                  <Link href={`/accounts/${account.id}`}>
+                    <AccountCard
+                      name={account.name}
+                      institution={account.institution_name ?? 'Sin institucion'}
+                      balanceMinor={account.current_balance_minor}
+                      currency={account.currency}
+                    />
+                  </Link>
+                </StaggerItem>
+              ))}
+            </StaggerList>
+          )}
+        </section>
+      </div>
+    </Workspace>
   );
 }

@@ -9,9 +9,7 @@ import { Label } from '@/components/ui/label';
 const initialState: ActionResult = {};
 
 export function SignupForm() {
-  const [state, formAction, pending] = useActionState(async (_prev: ActionResult, formData: FormData) => {
-    return (await signup(formData)) ?? {};
-  }, initialState);
+  const [state, formAction, pending] = useActionState(signup, initialState);
 
   return (
     <form action={formAction} className="space-y-4" noValidate>

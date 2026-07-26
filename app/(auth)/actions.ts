@@ -9,7 +9,7 @@ export interface ActionResult {
   success?: boolean;
 }
 
-export async function login(formData: FormData): Promise<ActionResult> {
+export async function login(_prevState: ActionResult, formData: FormData): Promise<ActionResult> {
   const parsed = loginSchema.safeParse({
     email: formData.get('email'),
     password: formData.get('password'),
@@ -27,7 +27,7 @@ export async function login(formData: FormData): Promise<ActionResult> {
   redirect('/');
 }
 
-export async function signup(formData: FormData): Promise<ActionResult> {
+export async function signup(_prevState: ActionResult, formData: FormData): Promise<ActionResult> {
   const parsed = signupSchema.safeParse({
     name: formData.get('name'),
     email: formData.get('email'),
@@ -57,7 +57,7 @@ export async function logout() {
   redirect('/login');
 }
 
-export async function forgotPassword(formData: FormData): Promise<ActionResult> {
+export async function forgotPassword(_prevState: ActionResult, formData: FormData): Promise<ActionResult> {
   const parsed = forgotPasswordSchema.safeParse({ email: formData.get('email') });
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? 'Datos invalidos' };
@@ -69,7 +69,7 @@ export async function forgotPassword(formData: FormData): Promise<ActionResult> 
   return { success: true };
 }
 
-export async function resetPassword(formData: FormData): Promise<ActionResult> {
+export async function resetPassword(_prevState: ActionResult, formData: FormData): Promise<ActionResult> {
   const parsed = resetPasswordSchema.safeParse({
     password: formData.get('password'),
     confirmPassword: formData.get('confirmPassword'),

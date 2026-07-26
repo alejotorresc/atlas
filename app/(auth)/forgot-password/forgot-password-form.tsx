@@ -9,9 +9,7 @@ import { Label } from '@/components/ui/label';
 const initialState: ActionResult = {};
 
 export function ForgotPasswordForm() {
-  const [state, formAction, pending] = useActionState(async (_prev: ActionResult, formData: FormData) => {
-    return (await forgotPassword(formData)) ?? {};
-  }, initialState);
+  const [state, formAction, pending] = useActionState(forgotPassword, initialState);
 
   if (state.success) {
     return (

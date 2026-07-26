@@ -13,9 +13,7 @@ const initialState: ActionResult = {};
 export function ResetPasswordForm() {
   const searchParams = useSearchParams();
   const [sessionReady, setSessionReady] = useState<'checking' | 'ready' | 'invalid'>('checking');
-  const [state, formAction, pending] = useActionState(async (_prev: ActionResult, formData: FormData) => {
-    return (await resetPassword(formData)) ?? {};
-  }, initialState);
+  const [state, formAction, pending] = useActionState(resetPassword, initialState);
 
   useEffect(() => {
     const code = searchParams.get('code');

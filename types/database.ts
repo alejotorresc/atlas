@@ -43,7 +43,7 @@ export type AlertType =
   | 'savings_goal_reached';
 export type AlertSeverity = 'info' | 'warning' | 'urgent';
 
-export interface Profile {
+export type Profile = {
   id: string;
   display_name: string | null;
   primary_currency: string;
@@ -56,7 +56,7 @@ export interface Profile {
   updated_at: string;
 }
 
-export interface Account {
+export type Account = {
   id: string;
   user_id: string;
   name: string;
@@ -71,7 +71,7 @@ export interface Account {
   updated_at: string;
 }
 
-export interface CreditCard {
+export type CreditCard = {
   id: string;
   user_id: string;
   name: string;
@@ -91,7 +91,7 @@ export interface CreditCard {
   updated_at: string;
 }
 
-export interface Category {
+export type Category = {
   id: string;
   user_id: string | null;
   name: string;
@@ -103,7 +103,7 @@ export interface Category {
   updated_at: string;
 }
 
-export interface Transaction {
+export type Transaction = {
   id: string;
   user_id: string;
   transaction_type: TransactionType;
@@ -126,7 +126,7 @@ export interface Transaction {
   updated_at: string;
 }
 
-export interface InstallmentPlan {
+export type InstallmentPlan = {
   id: string;
   user_id: string;
   credit_card_id: string;
@@ -141,7 +141,7 @@ export interface InstallmentPlan {
   updated_at: string;
 }
 
-export interface RecurringObligation {
+export type RecurringObligation = {
   id: string;
   user_id: string;
   name: string;
@@ -162,7 +162,7 @@ export interface RecurringObligation {
   updated_at: string;
 }
 
-export interface ObligationOccurrence {
+export type ObligationOccurrence = {
   id: string;
   user_id: string;
   recurring_obligation_id: string;
@@ -175,7 +175,7 @@ export interface ObligationOccurrence {
   updated_at: string;
 }
 
-export interface SavingsGoal {
+export type SavingsGoal = {
   id: string;
   user_id: string;
   name: string;
@@ -191,7 +191,7 @@ export interface SavingsGoal {
   updated_at: string;
 }
 
-export interface SavingsGoalTransaction {
+export type SavingsGoalTransaction = {
   id: string;
   user_id: string;
   savings_goal_id: string;
@@ -201,7 +201,7 @@ export interface SavingsGoalTransaction {
   created_at: string;
 }
 
-export interface Budget {
+export type Budget = {
   id: string;
   user_id: string;
   category_id: string;
@@ -212,7 +212,7 @@ export interface Budget {
   updated_at: string;
 }
 
-export interface Alert {
+export type Alert = {
   id: string;
   user_id: string;
   alert_type: AlertType;
@@ -228,7 +228,7 @@ export interface Alert {
   created_at: string;
 }
 
-export interface MonthlySnapshot {
+export type MonthlySnapshot = {
   id: string;
   user_id: string;
   month: string;
@@ -242,22 +242,157 @@ export interface MonthlySnapshot {
   updated_at: string;
 }
 
-export interface Database {
+type Table<Row, Insert = Partial<Row>, Update = Partial<Row>> = {
+  Row: Row;
+  Insert: Insert;
+  Update: Update;
+  Relationships: [];
+};
+
+type Fn<Args, Returns> = { Args: Args; Returns: Returns };
+
+export type Database = {
   public: {
     Tables: {
-      profiles: { Row: Profile; Insert: Partial<Profile> & { id: string }; Update: Partial<Profile> };
-      accounts: { Row: Account; Insert: Partial<Account>; Update: Partial<Account> };
-      credit_cards: { Row: CreditCard; Insert: Partial<CreditCard>; Update: Partial<CreditCard> };
-      categories: { Row: Category; Insert: Partial<Category>; Update: Partial<Category> };
-      transactions: { Row: Transaction; Insert: Partial<Transaction>; Update: Partial<Transaction> };
-      installment_plans: { Row: InstallmentPlan; Insert: Partial<InstallmentPlan>; Update: Partial<InstallmentPlan> };
-      recurring_obligations: { Row: RecurringObligation; Insert: Partial<RecurringObligation>; Update: Partial<RecurringObligation> };
-      obligation_occurrences: { Row: ObligationOccurrence; Insert: Partial<ObligationOccurrence>; Update: Partial<ObligationOccurrence> };
-      savings_goals: { Row: SavingsGoal; Insert: Partial<SavingsGoal>; Update: Partial<SavingsGoal> };
-      savings_goal_transactions: { Row: SavingsGoalTransaction; Insert: Partial<SavingsGoalTransaction>; Update: Partial<SavingsGoalTransaction> };
-      budgets: { Row: Budget; Insert: Partial<Budget>; Update: Partial<Budget> };
-      alerts: { Row: Alert; Insert: Partial<Alert>; Update: Partial<Alert> };
-      monthly_snapshots: { Row: MonthlySnapshot; Insert: Partial<MonthlySnapshot>; Update: Partial<MonthlySnapshot> };
+      profiles: Table<Profile, Partial<Profile> & { id: string }>;
+      accounts: Table<Account>;
+      credit_cards: Table<CreditCard>;
+      categories: Table<Category>;
+      transactions: Table<Transaction>;
+      installment_plans: Table<InstallmentPlan>;
+      recurring_obligations: Table<RecurringObligation>;
+      obligation_occurrences: Table<ObligationOccurrence>;
+      savings_goals: Table<SavingsGoal>;
+      savings_goal_transactions: Table<SavingsGoalTransaction>;
+      budgets: Table<Budget>;
+      alerts: Table<Alert>;
+      monthly_snapshots: Table<MonthlySnapshot>;
+    };
+    Views: Record<string, never>;
+    Functions: {
+      seed_default_categories: Fn<{ p_user_id: string }, void>;
+      create_account_income: Fn<
+        {
+          p_account_id: string;
+          p_amount_minor: number;
+          p_currency: string;
+          p_transaction_date: string;
+          p_description: string;
+          p_merchant: string | null;
+          p_category_id: string | null;
+          p_status: TransactionStatus;
+        },
+        string
+      >;
+      create_account_expense: Fn<
+        {
+          p_account_id: string;
+          p_amount_minor: number;
+          p_currency: string;
+          p_transaction_date: string;
+          p_description: string;
+          p_merchant: string | null;
+          p_category_id: string | null;
+          p_status: TransactionStatus;
+        },
+        string
+      >;
+      create_credit_card_expense: Fn<
+        {
+          p_credit_card_id: string;
+          p_amount_minor: number;
+          p_currency: string;
+          p_transaction_date: string;
+          p_description: string;
+          p_merchant: string | null;
+          p_category_id: string | null;
+          p_status: TransactionStatus;
+        },
+        string
+      >;
+      create_account_transfer: Fn<
+        {
+          p_source_account_id: string;
+          p_destination_account_id: string;
+          p_amount_minor: number;
+          p_currency: string;
+          p_transaction_date: string;
+          p_description: string;
+          p_status: TransactionStatus;
+        },
+        string
+      >;
+      create_credit_card_payment: Fn<
+        {
+          p_source_account_id: string;
+          p_credit_card_id: string;
+          p_amount_minor: number;
+          p_currency: string;
+          p_transaction_date: string;
+          p_description: string;
+          p_status: TransactionStatus;
+        },
+        string
+      >;
+      create_savings_contribution: Fn<
+        {
+          p_savings_goal_id: string;
+          p_source_account_id: string | null;
+          p_amount_minor: number;
+          p_currency: string;
+          p_transaction_date: string;
+          p_description: string;
+          p_status: TransactionStatus;
+        },
+        string
+      >;
+      create_savings_withdrawal: Fn<
+        {
+          p_savings_goal_id: string;
+          p_destination_account_id: string | null;
+          p_amount_minor: number;
+          p_currency: string;
+          p_transaction_date: string;
+          p_description: string;
+          p_status: TransactionStatus;
+        },
+        string
+      >;
+      create_refund: Fn<
+        {
+          p_account_id: string | null;
+          p_credit_card_id: string | null;
+          p_amount_minor: number;
+          p_currency: string;
+          p_transaction_date: string;
+          p_description: string;
+          p_category_id: string | null;
+          p_status: TransactionStatus;
+        },
+        string
+      >;
+      create_balance_adjustment: Fn<
+        {
+          p_account_id: string | null;
+          p_credit_card_id: string | null;
+          p_new_balance_minor: number;
+          p_transaction_date: string;
+          p_description: string;
+        },
+        string
+      >;
+      cancel_transaction: Fn<{ p_transaction_id: string }, void>;
+      mark_obligation_occurrence_paid: Fn<
+        {
+          p_occurrence_id: string;
+          p_account_id: string | null;
+          p_credit_card_id: string | null;
+          p_actual_amount_minor: number;
+          p_transaction_date: string;
+        },
+        string
+      >;
+      skip_obligation_occurrence: Fn<{ p_occurrence_id: string }, void>;
     };
   };
 }

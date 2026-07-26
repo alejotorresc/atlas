@@ -100,6 +100,17 @@ export function ApiTokensManager({ tokens }: { tokens: ApiToken[] }) {
                   Cuerpo JSON: <code className="text-[12px]">{'{ "amount": "150.00", "description": "Almuerzo" }'}</code>
                 </li>
               </ol>
+              <p className="mt-[12px] font-medium">Campos opcionales en el cuerpo JSON:</p>
+              <ul className="mt-[4px] list-disc space-y-[4px] pl-[16px]">
+                <li>
+                  <code className="text-[12px]">category</code>: nombre de una categoria de gasto (ej. <code className="text-[12px]">&quot;Comida&quot;</code>).
+                </li>
+                <li>
+                  <code className="text-[12px]">account</code> o <code className="text-[12px]">card</code>: nombre exacto de tu cuenta o
+                  tarjeta (ej. <code className="text-[12px]">&quot;Efectivo&quot;</code>). Si no envias ninguno, se usa tu cuenta activa mas
+                  antigua.
+                </li>
+              </ul>
             </div>
             <Button onClick={() => setNewToken(null)}>Listo</Button>
           </div>

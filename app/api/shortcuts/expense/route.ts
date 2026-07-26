@@ -12,8 +12,13 @@ const bodySchema = z.object({
   description: z.string().min(1),
   merchant: z.string().optional(),
   category: z.string().optional(),
+  // Either the raw id, or a name to match by (e.g. "Efectivo", "Tarjeta BI")
+  // — the latter is what a Shortcut's "Choose from Menu" step should send,
+  // so the user never has to look up and paste a UUID.
   account_id: z.string().uuid().optional(),
   credit_card_id: z.string().uuid().optional(),
+  account: z.string().optional(),
+  card: z.string().optional(),
 });
 
 /**
@@ -69,7 +74,38 @@ export async function POST(request: NextRequest) {
   const userId = tokenRow.user_id;
 
   let accountId = body.account_id ?? null;
-  const creditCardId = body.credit_card_id ?? null;
+  let creditCardId = body.credit_card_id ?? null;
+
+  if (!accountId && !creditCardId && body.account) {
+    const { data: account } = await admin
+      .from('accounts')
+      .select('id')
+      .eq('user_id', userId)
+      .eq('is_archived', false)
+      .ilike('name', body.account)
+      .limit(1)
+      .maybeSingle();
+    if (!account) {
+      return NextResponse.json({ error: `No encontre ninguna cuenta llamada "${body.account}".` }, { status: 400 });
+    }
+    accountId = account.id;
+  }
+
+  if (!accountId && !creditCardId && body.card) {
+    const { data: card } = await admin
+      .from('credit_cards')
+      .select('id')
+      .eq('user_id', userId)
+      .eq('is_archived', false)
+      .ilike('name', body.card)
+      .limit(1)
+      .maybeSingle();
+    if (!card) {
+      return NextResponse.json({ error: `No encontre ninguna tarjeta llamada "${body.card}".` }, { status: 400 });
+    }
+    creditCardId = card.id;
+  }
+
   if (!accountId && !creditCardId) {
     const { data: defaultAccount } = await admin
       .from('accounts')

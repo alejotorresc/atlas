@@ -3,19 +3,21 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 /**
- * Base surface for every card pattern in ATLAS. Interactive cards get a
- * hover elevation bump and a pointer cursor; selected cards get a primary
- * border instead of a shadow change (a shadow alone is too subtle to read
- * as "selected").
+ * Base surface for every card pattern in ATLAS. A resting card has no
+ * shadow and only a hairline border — grouping comes from whitespace, not
+ * elevation. Interactive cards pick up a near-invisible shadow only on
+ * hover, as the one moment elevation is load-bearing (confirming the
+ * element is actionable). Selected cards get a primary border instead of
+ * a shadow change — a shadow alone is too subtle to read as "selected."
  */
 const cardVariants = cva('rounded-[var(--ds-radius-lg)] bg-[var(--ds-color-surface)] border border-[var(--ds-neutral-200)] p-[16px]', {
   variants: {
     state: {
-      resting: 'shadow-[var(--ds-shadow-xs)]',
+      resting: '',
       interactive:
-        'shadow-[var(--ds-shadow-xs)] cursor-pointer transition-shadow duration-[var(--ds-duration-fast)] ease-[var(--ds-ease-standard)] hover:shadow-[var(--ds-shadow-sm)]',
-      selected: 'shadow-[var(--ds-shadow-xs)] border-[var(--ds-color-primary)] border-2',
-      disabled: 'shadow-none opacity-50 pointer-events-none',
+        'cursor-pointer transition-shadow duration-[var(--ds-duration-fast)] ease-[var(--ds-ease-standard)] hover:shadow-[var(--ds-shadow-xs)]',
+      selected: 'border-[var(--ds-color-primary)] border-2',
+      disabled: 'opacity-50 pointer-events-none',
     },
   },
   defaultVariants: { state: 'resting' },

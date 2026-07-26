@@ -12,8 +12,8 @@ const SIZE_CLASS = {
 
 const TONE_CLASS: Record<NumericTone, string> = {
   neutral: 'text-[var(--ds-neutral-900)]',
-  positive: 'text-[var(--ds-color-success)]',
-  negative: 'text-[var(--ds-color-danger)]',
+  positive: 'text-[var(--ds-color-success-text)]',
+  negative: 'text-[var(--ds-color-danger-text)]',
 };
 
 /**

@@ -46,7 +46,7 @@ export function CategoryManager({ categories }: { categories: Category[] }) {
                 <button type="button" className="text-xs text-[var(--ds-neutral-600)] underline" onClick={() => setEditing(c)}>
                   Editar
                 </button>
-                <button type="button" className="text-xs text-[var(--ds-color-danger)] underline" disabled={pending} onClick={() => handleArchive(c)}>
+                <button type="button" className="text-xs text-[var(--ds-color-danger-text)] underline" disabled={pending} onClick={() => handleArchive(c)}>
                   Archivar/eliminar
                 </button>
               </div>

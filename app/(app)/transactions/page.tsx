@@ -135,11 +135,11 @@ export default async function TransactionsPage({
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         <div className="rounded-lg border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)] p-4">
           <p className="text-xs text-[var(--ds-neutral-500)]">Ingresos (pagina actual)</p>
-          <p className="text-lg font-semibold text-[var(--ds-color-success)]">{formatCurrency(totalIncome)}</p>
+          <p className="text-lg font-semibold text-[var(--ds-color-success-text)]">{formatCurrency(totalIncome)}</p>
         </div>
         <div className="rounded-lg border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)] p-4">
           <p className="text-xs text-[var(--ds-neutral-500)]">Gastos (pagina actual)</p>
-          <p className="text-lg font-semibold text-[var(--ds-color-danger)]">{formatCurrency(totalExpense)}</p>
+          <p className="text-lg font-semibold text-[var(--ds-color-danger-text)]">{formatCurrency(totalExpense)}</p>
         </div>
         <div className="rounded-lg border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)] p-4">
           <p className="text-xs text-[var(--ds-neutral-500)]">Total de resultados</p>

@@ -93,7 +93,7 @@ export function TypographySection() {
         </Example>
         <div className="mt-[16px] grid gap-[16px] sm:grid-cols-2">
           <div>
-            <p className="text-[12px] font-medium tracking-[0.02em] text-[var(--ds-color-success)]">USAR PARA</p>
+            <p className="text-[12px] font-medium tracking-[0.02em] text-[var(--ds-color-success-text)]">USAR PARA</p>
             <RuleList>
               {monoUsageRules.allowed.map((a) => (
                 <Rule key={a}>{a}</Rule>
@@ -101,7 +101,7 @@ export function TypographySection() {
             </RuleList>
           </div>
           <div>
-            <p className="text-[12px] font-medium tracking-[0.02em] text-[var(--ds-color-danger)]">NUNCA PARA</p>
+            <p className="text-[12px] font-medium tracking-[0.02em] text-[var(--ds-color-danger-text)]">NUNCA PARA</p>
             <RuleList>
               {monoUsageRules.prohibited.map((p) => (
                 <Rule key={p}>{p}</Rule>

@@ -24,7 +24,7 @@ export function LoginForm() {
         <Input id="password" name="password" type="password" autoComplete="current-password" required />
       </div>
       {state.error && (
-        <p role="alert" className="text-sm text-[var(--ds-color-danger)]">
+        <p role="alert" className="text-sm text-[var(--ds-color-danger-text)]">
           {state.error}
         </p>
       )}

@@ -3,7 +3,7 @@ import { radiusUsage } from '@/lib/design-tokens/radius';
 
 export function LayoutSection() {
   return (
-    <Section id="layout" title="Border radius, grid & layout" description="Soft but architectural — round enough to feel calm, never round enough to feel playful.">
+    <Section id="layout" title="Border radius, grid & layout" description="Corners are subtle enough to soften an edge and never enough to become a visual element — the user should barely notice the radius. Avoid 'bubble UI'.">
       <SubSection title="Border radius">
         <div className="grid grid-cols-2 gap-[16px] sm:grid-cols-3">
           {radiusUsage.map((r) => {

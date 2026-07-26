@@ -68,40 +68,50 @@
  * global (not scoped to /style-guide) so every existing application
  * screen reads from the same tokens as the design system documentation.
  *
- * Color philosophy: mostly monochromatic. ~90% neutral, ~8% the one
- * brand color (primary), ~2% semantic. No gradients, no glassmorphism,
- * no second accent hue.
+ * This is the official ATLAS palette — do not reinterpret it. Balance
+ * across a real screen: ~85% neutral, ~10% Brand Blue, ~5% semantic. No
+ * gradients, no glassmorphism, no second brand hue. Borders, radii, and
+ * shadows are deliberately subtle — grouping comes from whitespace, not
+ * decoration.
  */
 :root {
   /* colors */
-  --ds-color-primary: #2e5bff;
-  --ds-color-primary-hover: #2447d1;
-  --ds-color-primary-pressed: #1b379e;
-  --ds-color-primary-subtle: #eaefff;
-  --ds-color-primary-border: #c7d4ff;
+  --ds-color-primary: #4691f5;
+  --ds-color-primary-hover: #2e7ce0;
+  --ds-color-primary-pressed: #1f5fb8;
+  --ds-color-primary-subtle: #eaf2fe;
+  --ds-color-primary-border: #bfd9fb;
 
-  --ds-color-background: #faf8f4;
+  --ds-color-background: #ffffff;
   --ds-color-surface: #ffffff;
+  --ds-color-surface-secondary: #f0f0f0;
 
-  --ds-color-success: #3f7d58;
-  --ds-color-success-subtle: #e7f1ea;
-  --ds-color-warning: #b8862e;
-  --ds-color-warning-subtle: #fbf1de;
-  --ds-color-danger: #b3483f;
-  --ds-color-danger-subtle: #f7e9e7;
-  --ds-color-info: #5b6472;
-  --ds-color-info-subtle: #edeef1;
+  --ds-color-success: #afd200;
+  --ds-color-success-subtle: #f3f9db;
+  --ds-color-success-text: #5c6b00;
+  --ds-color-warning: #f5dc00;
+  --ds-color-warning-subtle: #fdf8d6;
+  --ds-color-warning-text: #7a6600;
+  --ds-color-caution: #ff9600;
+  --ds-color-caution-subtle: #ffedd1;
+  --ds-color-caution-text: #b36b00;
+  --ds-color-danger: #f02828;
+  --ds-color-danger-subtle: #fce0e0;
+  --ds-color-danger-text: #c41e1e;
+  --ds-color-info: #005fdc;
+  --ds-color-info-subtle: #e1ebfb;
+  --ds-color-info-text: #005fdc;
 
-  --ds-neutral-50: #faf9f7;
-  --ds-neutral-100: #f2f0ec;
-  --ds-neutral-200: #e6e3dc;
-  --ds-neutral-300: #d4d0c7;
-  --ds-neutral-400: #b3aea1;
-  --ds-neutral-500: #8c8677;
-  --ds-neutral-600: #6b665a;
-  --ds-neutral-700: #504c43;
-  --ds-neutral-800: #38352e;
-  --ds-neutral-900: #211f1b;
+  --ds-neutral-50: #f7f7f7;
+  --ds-neutral-100: #f0f0f0;
+  --ds-neutral-200: #dcdcdc;
+  --ds-neutral-300: #c8c8c8;
+  --ds-neutral-400: #a0a0a0;
+  --ds-neutral-500: #8c8c8c;
+  --ds-neutral-600: #787878;
+  --ds-neutral-700: #505050;
+  --ds-neutral-800: #3c3c3c;
+  --ds-neutral-900: #282828;
 
   /* typography */
   --ds-font-sans: "GT Pressura Extended", Arial, Helvetica, sans-serif;
@@ -118,20 +128,20 @@
   --ds-space-48: 48px;
   --ds-space-64: 64px;
 
-  /* radius */
-  --ds-radius-sm: 8px;
-  --ds-radius-md: 12px;
-  --ds-radius-lg: 16px;
-  --ds-radius-xl: 20px;
-  --ds-radius-2xl: 28px;
+  /* radius — subtle: enough to soften, never enough to become a visual element */
+  --ds-radius-sm: 4px;
+  --ds-radius-md: 6px;
+  --ds-radius-lg: 8px;
+  --ds-radius-xl: 10px;
+  --ds-radius-2xl: 14px;
   --ds-radius-pill: 9999px;
 
-  /* shadows */
-  --ds-shadow-xs: 0 1px 2px 0 rgb(33 31 27 / 0.04);
-  --ds-shadow-sm: 0 2px 6px -1px rgb(33 31 27 / 0.06), 0 1px 2px -1px rgb(33 31 27 / 0.04);
-  --ds-shadow-md: 0 8px 16px -4px rgb(33 31 27 / 0.08), 0 2px 4px -2px rgb(33 31 27 / 0.04);
-  --ds-shadow-lg: 0 16px 32px -8px rgb(33 31 27 / 0.12), 0 4px 8px -4px rgb(33 31 27 / 0.06);
-  --ds-shadow-focus: 0 0 0 3px rgb(46 91 255 / 0.35);
+  /* shadows — almost invisible; prefer whitespace over elevation */
+  --ds-shadow-xs: 0 1px 2px 0 rgb(40 40 40 / 0.03);
+  --ds-shadow-sm: 0 2px 6px -2px rgb(40 40 40 / 0.05), 0 1px 2px -1px rgb(40 40 40 / 0.03);
+  --ds-shadow-md: 0 8px 16px -6px rgb(40 40 40 / 0.06), 0 2px 4px -2px rgb(40 40 40 / 0.03);
+  --ds-shadow-lg: 0 16px 32px -12px rgb(40 40 40 / 0.10), 0 4px 8px -4px rgb(40 40 40 / 0.04);
+  --ds-shadow-focus: 0 0 0 3px rgb(70 145 245 / 0.35);
 
   /* motion */
   --ds-duration-instant: 80ms;

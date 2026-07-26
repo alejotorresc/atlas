@@ -17,7 +17,7 @@ export function CancelTransactionButton({ id }: { id: string }) {
   }
 
   return (
-    <button type="button" onClick={handleClick} disabled={pending} className="text-xs text-[var(--ds-color-danger)] underline disabled:opacity-50">
+    <button type="button" onClick={handleClick} disabled={pending} className="text-xs text-[var(--ds-color-danger-text)] underline disabled:opacity-50">
       Cancelar
     </button>
   );

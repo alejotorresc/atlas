@@ -109,9 +109,9 @@ export function TransactionCard({
           className={
             'flex h-[36px] w-[36px] items-center justify-center rounded-full ' +
             (type === 'income'
-              ? 'bg-[var(--ds-color-success-subtle)] text-[var(--ds-color-success)]'
+              ? 'bg-[var(--ds-color-success-subtle)] text-[var(--ds-color-success-text)]'
               : type === 'expense'
-                ? 'bg-[var(--ds-color-danger-subtle)] text-[var(--ds-color-danger)]'
+                ? 'bg-[var(--ds-color-danger-subtle)] text-[var(--ds-color-danger-text)]'
                 : 'bg-[var(--ds-neutral-100)] text-[var(--ds-neutral-600)]')
           }
         >
@@ -196,7 +196,7 @@ export function SavingsCard({
       <div className="mt-[12px] h-[8px] w-full rounded-[var(--ds-radius-pill)] bg-[var(--ds-neutral-100)]">
         <div className="h-[8px] rounded-[var(--ds-radius-pill)] bg-[var(--ds-color-primary)]" style={{ width: `${pct * 100}%` }} />
       </div>
-      {paceLabel && <p className="mt-[8px] text-[13px] text-[var(--ds-color-success)]">{paceLabel}</p>}
+      {paceLabel && <p className="mt-[8px] text-[13px] text-[var(--ds-color-success-text)]">{paceLabel}</p>}
     </Card>
   );
 }

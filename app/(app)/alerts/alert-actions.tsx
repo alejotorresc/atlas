@@ -75,7 +75,7 @@ export function AlertRowActions({ alertId, isRead }: { alertId: string; isRead: 
             router.refresh();
           })
         }
-        className="text-xs text-[var(--ds-color-danger)] underline"
+        className="text-xs text-[var(--ds-color-danger-text)] underline"
       >
         Descartar
       </button>

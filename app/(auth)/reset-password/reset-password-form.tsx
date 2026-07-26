@@ -41,11 +41,11 @@ export function ResetPasswordForm() {
   }
 
   if (sessionReady === 'invalid') {
-    return <p role="alert" className="text-sm text-[var(--ds-color-danger)]">Este enlace de recuperacion no es valido o ya expiro.</p>;
+    return <p role="alert" className="text-sm text-[var(--ds-color-danger-text)]">Este enlace de recuperacion no es valido o ya expiro.</p>;
   }
 
   if (state.success) {
-    return <p role="status" className="text-sm text-[var(--ds-color-success)]">Tu contrasena fue actualizada. Ya puedes iniciar sesion.</p>;
+    return <p role="status" className="text-sm text-[var(--ds-color-success-text)]">Tu contrasena fue actualizada. Ya puedes iniciar sesion.</p>;
   }
 
   return (
@@ -59,7 +59,7 @@ export function ResetPasswordForm() {
         <Input id="confirmPassword" name="confirmPassword" type="password" autoComplete="new-password" required />
       </div>
       {state.error && (
-        <p role="alert" className="text-sm text-[var(--ds-color-danger)]">
+        <p role="alert" className="text-sm text-[var(--ds-color-danger-text)]">
           {state.error}
         </p>
       )}

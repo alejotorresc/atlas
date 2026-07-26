@@ -28,7 +28,7 @@ export function ForgotPasswordForm() {
         <Input id="email" name="email" type="email" autoComplete="email" required />
       </div>
       {state.error && (
-        <p role="alert" className="text-sm text-[var(--ds-color-danger)]">
+        <p role="alert" className="text-sm text-[var(--ds-color-danger-text)]">
           {state.error}
         </p>
       )}

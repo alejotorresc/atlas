@@ -1,13 +1,17 @@
 /**
- * Shadows are soft and diffuse — never a hard drop shadow. They exist to
- * communicate elevation, not to decorate. Values pair with elevation.ts.
+ * Shadows are almost invisible — they are not decoration, and ATLAS does
+ * not use floating-card elevation as a visual style. Prefer whitespace
+ * over elevation to separate content. A resting card typically has NO
+ * shadow at all (see Card in components/design-system); these tokens
+ * exist for the few moments elevation is genuinely load-bearing: a hover
+ * state, a popover, a dialog.
  */
 
 export const shadows = {
   none: 'none',
-  xs: '0 1px 2px 0 rgb(33 31 27 / 0.04)',
-  sm: '0 2px 6px -1px rgb(33 31 27 / 0.06), 0 1px 2px -1px rgb(33 31 27 / 0.04)',
-  md: '0 8px 16px -4px rgb(33 31 27 / 0.08), 0 2px 4px -2px rgb(33 31 27 / 0.04)',
-  lg: '0 16px 32px -8px rgb(33 31 27 / 0.12), 0 4px 8px -4px rgb(33 31 27 / 0.06)',
-  focusRing: '0 0 0 3px rgb(20 69 63 / 0.35)', // primary at low opacity, for focus-visible rings
+  xs: '0 1px 2px 0 rgb(40 40 40 / 0.03)',
+  sm: '0 2px 6px -2px rgb(40 40 40 / 0.05), 0 1px 2px -1px rgb(40 40 40 / 0.03)',
+  md: '0 8px 16px -6px rgb(40 40 40 / 0.06), 0 2px 4px -2px rgb(40 40 40 / 0.03)',
+  lg: '0 16px 32px -12px rgb(40 40 40 / 0.10), 0 4px 8px -4px rgb(40 40 40 / 0.04)',
+  focusRing: '0 0 0 3px rgb(70 145 245 / 0.35)', // Brand Blue at low opacity, for focus-visible rings
 } as const;

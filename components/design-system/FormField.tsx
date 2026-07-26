@@ -6,7 +6,7 @@ export function Label({ className, required, children, ...props }: LabelHTMLAttr
     <label className={cn('block text-[13px] font-medium tracking-[0.02em] text-[var(--ds-neutral-700)] mb-[8px]', className)} {...props}>
       {children}
       {required && (
-        <span className="text-[var(--ds-color-danger)] ml-[4px]" aria-hidden>
+        <span className="text-[var(--ds-color-danger-text)] ml-[4px]" aria-hidden>
           *
         </span>
       )}
@@ -19,7 +19,7 @@ export function HelperText({ children, tone = 'neutral' }: { children: ReactNode
     <p
       className={cn(
         'mt-[8px] text-[13px]',
-        tone === 'danger' ? 'text-[var(--ds-color-danger)]' : 'text-[var(--ds-neutral-500)]',
+        tone === 'danger' ? 'text-[var(--ds-color-danger-text)]' : 'text-[var(--ds-neutral-500)]',
       )}
       role={tone === 'danger' ? 'alert' : undefined}
     >

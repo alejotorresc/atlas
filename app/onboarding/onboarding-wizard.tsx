@@ -62,7 +62,7 @@ export function OnboardingWizard() {
       </ol>
 
       {error && (
-        <p role="alert" className="mb-4 text-sm text-[var(--ds-color-danger)]">
+        <p role="alert" className="mb-4 text-sm text-[var(--ds-color-danger-text)]">
           {error}
         </p>
       )}

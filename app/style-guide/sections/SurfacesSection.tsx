@@ -53,10 +53,16 @@ export function SurfacesSection() {
         </div>
       </SubSection>
 
-      <SubSection title="Elevation">
+      <SubSection title="Elevation — almost invisible">
+        <p className="mb-[16px] text-[13px] text-[var(--ds-neutral-600)]">
+          Shadows are not decoration and ATLAS does not use a &quot;floating card&quot; style. A resting card has no shadow at
+          all — only a hairline border. Prefer whitespace over elevation to separate content; the scale below exists
+          for the few moments elevation is genuinely load-bearing.
+        </p>
         <Example className="flex flex-wrap gap-[24px]">
-          <div className="rounded-[var(--ds-radius-lg)] bg-[var(--ds-color-surface)] p-[16px] shadow-[var(--ds-shadow-xs)]">xs — resting card</div>
-          <div className="rounded-[var(--ds-radius-lg)] bg-[var(--ds-color-surface)] p-[16px] shadow-[var(--ds-shadow-sm)]">sm — hovered card</div>
+          <div className="rounded-[var(--ds-radius-lg)] border border-[var(--ds-neutral-200)] bg-[var(--ds-color-surface)] p-[16px]">none — resting card</div>
+          <div className="rounded-[var(--ds-radius-lg)] bg-[var(--ds-color-surface)] p-[16px] shadow-[var(--ds-shadow-xs)]">xs — hovered card</div>
+          <div className="rounded-[var(--ds-radius-lg)] bg-[var(--ds-color-surface)] p-[16px] shadow-[var(--ds-shadow-sm)]">sm — dropdown menu</div>
           <div className="rounded-[var(--ds-radius-lg)] bg-[var(--ds-color-surface)] p-[16px] shadow-[var(--ds-shadow-md)]">md — popover / toast</div>
           <div className="rounded-[var(--ds-radius-lg)] bg-[var(--ds-color-surface)] p-[16px] shadow-[var(--ds-shadow-lg)]">lg — dialog / sheet</div>
         </Example>

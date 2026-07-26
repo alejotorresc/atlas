@@ -96,7 +96,7 @@ export function Select({
           position="popper"
           sideOffset={4}
           className={cn(
-            'z-50 overflow-hidden rounded-[var(--ds-radius-lg)] border border-[var(--ds-neutral-100)] bg-[var(--ds-color-surface)]',
+            'ds-popover-in z-50 overflow-hidden rounded-[var(--ds-radius-lg)] border border-[var(--ds-neutral-100)] bg-[var(--ds-color-surface)]',
             'shadow-[var(--ds-shadow-md)] w-[var(--radix-select-trigger-width)]',
           )}
         >

@@ -9,6 +9,7 @@ import { Icon } from '@/components/design-system/Icon';
 import { Tooltip } from '@/components/design-system/Tooltip';
 import { SidebarNav } from './sidebar-nav';
 import { MobileTopbar } from './mobile-topbar';
+import { PageTransition } from './page-transition';
 
 const STORAGE_KEY = 'atlas-sidebar-expanded';
 
@@ -97,7 +98,9 @@ export function AppShell({ unreadAlertsCount, children }: { unreadAlertsCount: n
 
       <div className="flex min-h-screen flex-1 flex-col">
         <MobileTopbar unreadAlertsCount={unreadAlertsCount} />
-        <main className="mx-auto w-full max-w-[1600px] flex-1 px-[20px] py-[24px] md:px-[48px] md:py-[40px]">{children}</main>
+        <main className="mx-auto w-full max-w-[1600px] flex-1 px-[20px] py-[24px] md:px-[48px] md:py-[40px]">
+          <PageTransition>{children}</PageTransition>
+        </main>
       </div>
     </div>
   );

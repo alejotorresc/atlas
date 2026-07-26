@@ -15,7 +15,7 @@ const cardVariants = cva('rounded-[var(--ds-radius-lg)] bg-[var(--ds-color-surfa
     state: {
       resting: '',
       interactive:
-        'cursor-pointer transition-shadow duration-[var(--ds-duration-fast)] ease-[var(--ds-ease-standard)] hover:shadow-[var(--ds-shadow-xs)]',
+        'cursor-pointer transition-[box-shadow,transform] duration-[var(--ds-duration-fast)] ease-[var(--ds-ease-standard)] hover:-translate-y-[1px] hover:shadow-[var(--ds-shadow-xs)]',
       selected: 'border-[var(--ds-color-primary)] border-2',
       disabled: 'opacity-50 pointer-events-none',
     },

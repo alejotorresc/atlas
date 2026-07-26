@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/design-system/Icon';
 import { NumericDisplay } from '@/components/design-system/NumericDisplay';
 import { AccountCard, AlertCard, BudgetCard, CalendarEventCard, SavingsCard, TransactionCard } from '@/components/design-system/Cards';
+import { StaggerList, StaggerItem } from '@/components/design-system/Stagger';
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -101,7 +102,7 @@ export default async function DashboardPage() {
         {data.recentTransactions.length === 0 ? (
           <EmptyRow text="Sin movimientos todavia." />
         ) : (
-          <div className="space-y-[8px]">
+          <StaggerList className="space-y-[8px]">
             {data.recentTransactions.slice(0, 5).map((t) => {
               const type =
                 t.transaction_type === 'income' || t.transaction_type === 'refund' || t.transaction_type === 'savings_withdrawal'
@@ -110,30 +111,33 @@ export default async function DashboardPage() {
                     ? 'transfer'
                     : 'expense';
               return (
-                <TransactionCard
-                  key={t.id}
-                  type={type}
-                  description={t.description}
-                  date={formatDateGT(t.transaction_date)}
-                  amountMinor={t.amount_minor}
-                  currency={t.currency}
-                />
+                <StaggerItem key={t.id}>
+                  <TransactionCard
+                    type={type}
+                    description={t.description}
+                    date={formatDateGT(t.transaction_date)}
+                    amountMinor={t.amount_minor}
+                    currency={t.currency}
+                  />
+                </StaggerItem>
               );
             })}
-          </div>
+          </StaggerList>
         )}
       </section>
 
       {/* Accounts */}
       <section>
         <SectionHeader title="Cuentas" href="/accounts" />
-        <div className="grid gap-[12px] sm:grid-cols-2 lg:grid-cols-3">
+        <StaggerList className="grid gap-[12px] sm:grid-cols-2 lg:grid-cols-3">
           {data.accounts.map((a) => (
-            <Link key={a.id} href={`/accounts/${a.id}`}>
-              <AccountCard name={a.name} institution={a.institution_name ?? ''} balanceMinor={a.current_balance_minor} currency={a.currency} />
-            </Link>
+            <StaggerItem key={a.id}>
+              <Link href={`/accounts/${a.id}`}>
+                <AccountCard name={a.name} institution={a.institution_name ?? ''} balanceMinor={a.current_balance_minor} currency={a.currency} />
+              </Link>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerList>
       </section>
 
       {/* Monthly progress */}

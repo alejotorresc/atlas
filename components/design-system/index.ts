@@ -15,3 +15,5 @@ export * from './Toast';
 export * from './BottomSheet';
 export * from './Tooltip';
 export * from './CommandPalette';
+export * from './Modal';
+export * from './Combobox';

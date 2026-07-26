@@ -196,6 +196,60 @@ body {
   transform-origin: var(--radix-popper-transform-origin, center);
 }
 
+/* Modal overlay + content — fade and scale on both open AND close. Radix
+   Dialog keeps a closing element mounted until its CSS animation
+   finishes, so data-state=closed variants here drive the exit too,
+   with no framer-motion/forceMount plumbing required. */
+@keyframes ds-modal-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes ds-modal-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes ds-modal-content-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@keyframes ds-modal-content-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.97);
+  }
+}
+
+.ds-modal-overlay {
+  animation: ds-modal-overlay-in var(--ds-duration-base) var(--ds-ease-decelerate) forwards;
+}
+.ds-modal-overlay[data-state='closed'] {
+  animation: ds-modal-overlay-out var(--ds-duration-fast) var(--ds-ease-accelerate) forwards;
+}
+.ds-modal-content {
+  animation: ds-modal-content-in var(--ds-duration-base) var(--ds-ease-decelerate) forwards;
+}
+.ds-modal-content[data-state='closed'] {
+  animation: ds-modal-content-out var(--ds-duration-fast) var(--ds-ease-accelerate) forwards;
+}
+
 ::selection {
   background: var(--ds-color-primary-subtle);
 }

@@ -9,6 +9,15 @@ const PUBLIC_ROUTES = ['/style-guide'];
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
+  // API routes authenticate themselves (cookie session inside the route
+  // via getCurrentUser(), or — for /api/shortcuts/* — a bearer token with
+  // no cookie session at all). Redirecting an unauthenticated API request
+  // to /login here breaks token-authenticated clients like the iOS
+  // Shortcuts integration, which never sends the app's session cookie.
+  if (request.nextUrl.pathname.startsWith('/api/')) {
+    return response;
+  }
+
   const supabase = createServerClient(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
     cookies: {
       getAll() {
